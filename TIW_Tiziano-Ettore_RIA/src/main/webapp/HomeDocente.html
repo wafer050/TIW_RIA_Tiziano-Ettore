@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Docente's home</title>
+<link rel="stylesheet" type="text/css" media="all" href="CSS/mystyle.css" />
+<script src="utils.js" charset="utf-8" defer></script>
+<script src="HomeDocenteGestioneCorsi.js" charset="utf-8" defer></script>
+<script src="sort.js" charset="utf-8" defer></script>
+</head>
+<body>
+	<div align="right">
+		<a href="Logout">Logout</a>
+	</div>
+	<h1>Welcome to the docente Home page</h1>
+	<p>Nice to see you again <span id="id_nominativo"></span></p>
+	<div id="id_alert" class="alertmessage"></div>
+	
+	<table>
+	
+		<tr>
+			<td><table id="id_tabellacorsi" border="1">
+					<thead>
+						<tr>
+							<th>Corso ID</th>
+							<th>Corso Name</th>
+						</tr>
+					</thead>
+					<tbody id="id_tabellacorsibody">
+					</tbody>
+				</table></td>
+				
+				
+				
+			<td><table id="id_tabellaappelli" border="1">
+					<thead>
+						<tr>
+							<th>Data appello</th>
+						</tr>
+					</thead>
+					<tbody id="id_tabellaappellibody">
+					</tbody>
+				</table>
+			</td>
+				
+				
+				
+			
+		</tr>
+		
+		
+		<tr><td><table id="id_tabellaiscritti" border="1">
+					<thead>
+						<tr>
+							<th>Modifica voto bottone</th>
+							<th>Studente ID</th>
+							<th class="sortable">Studente Nome</th>
+							<th class="sortable">Studente Cognome</th>
+							<th class="sortable">Studente Matricola</th>
+							<th class="sortable">Studente Mail</th>
+							<th class="sortable">Studente Corso di Laurea</th>
+							<th class="sortable" id="specialsort">Studente Voto</th>
+							<th class="sortable">Studente Stato di Valutazione</th>
+						</tr>
+					</thead>
+					<tbody id="id_tabellaiscrittibody">
+						<!-- <tr>
+							<td id=id_modificavotobottone></td>
+							<td id=id_studenteid></td>
+							<td id=id_studentenome></td>
+							<td id=id_studentecognome></td>
+							<td id=id_studentematricola></td>
+							<td id=id_studentemail></td>
+							<td id=id_studentecorsolaurea></td>
+							<td id=id_studentevoto></td>
+							<td id=id_studentestatovalutazione></td>
+						</tr> -->
+					</tbody>
+				</table>
+			</td>
+		</tr>
+		
+		
+		
+		
+		<tr>
+			<td>
+			
+			
+			
+			<form id="id_pubblicaform" action="#">
+			<fieldset>
+                    <input type="hidden" id="appelloid" name="appelloid"></input>
+                    <input type="button" id="id_pubblica" value="PUBBLICA"></input>
+            </fieldset>
+                </form>
+			<!--
+				<form id="id_pubblica" action="#">
+					<input type="hidden" type="button" name="appelloid"></input>
+				</form>
+				-->
+			
+			
+			
+			
+			<!--
+				<button id="id_pubblica">PUBBLICA	
+				</button>
+				-->
+				
+				
+				
+				
+				
+				
+				
+			</td>
+		</tr>
+		
+		
+		
+		
+		<tr>
+			<td>
+				<form id="id_verbalizzaform" action="#">
+			<fieldset>
+                    <input type="hidden" id="appelloid" name="appelloid"></input>
+                    <input type="button" id="id_verbalizza" value="VERBALIZZA"></input>
+            </fieldset>
+                </form>
+			</td>
+		</tr>
+		
+
+	</table>
+	
+	
+	
+	<div id="overlay" class="overlay">
+  <div class="popup">
+  <!-- &times; = 'x' ma migliore -->
+    <span id="chiudiPopup">&times;</span>
+    <p id="noverbale"> non è stato verbalizzato alcun voto! <p>
+    <table id="id_verbale">
+					
+					
+					
+  <tr>
+    <td>id:</td>
+    <td id="campo_verbaleid"></td>
+  </tr>
+  <tr>
+    <td>data creazione:</td>
+    <td id="campo_verbaledatacreazione"></td>
+  </tr>
+  <tr>
+    <td>ora creazione:</td>
+    <td id="campo_verbaleora"></td>
+  </tr>
+  <tr>
+    <td>id appello:</td>
+    <td id="campo_verbaleappello"></td>
+  </tr>
+  <tr>
+    <td>data appello:</td>
+    <td id="campo_verbaledataappello"></td>
+  </tr>
+  <tr>
+    <td>id corso:</td>
+    <td id="campo_verbalecorso"></td>
+  </tr>
+  <tr>
+    <td>nome corso:</td>
+    <td id="campo_verbalenomecorso"></td>
+  </tr>
+</table>
+					
+	
+				
+				<table id="id_studentiverbale" border="1">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Nome</th>
+							<th>Cognome</th>
+							<th>Matricola</th>
+							<th>Mail</th>
+							<th>Corso di Laurea</th>
+							<th>Voto</th>
+						</tr>
+					</thead>
+					<tbody id="id_studentiverbalebody">
+					</tbody>
+				</table>
+				
+				
+  </div>
+</div>
+
+	
+</body>
+</html>
