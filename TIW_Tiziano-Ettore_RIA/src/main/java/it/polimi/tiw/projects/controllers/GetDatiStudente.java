@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-
-import com.google.gson.Gson;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -17,22 +17,24 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
+
 import it.polimi.tiw.projects.beans.Corso;
+import it.polimi.tiw.projects.beans.StudenteAndEsitoAppello;
 import it.polimi.tiw.projects.beans.Appello;
+import it.polimi.tiw.projects.beans.StudenteDati;
 import it.polimi.tiw.projects.beans.User;
-import it.polimi.tiw.projects.beans.Verbale;
-import it.polimi.tiw.projects.dao.VotoDAO;
+import it.polimi.tiw.projects.dao.DocenteDAO;
 import it.polimi.tiw.projects.dao.AppelloDAO;
 import it.polimi.tiw.projects.dao.CorsoDAO;
-import it.polimi.tiw.projects.dao.VerbaleDAO;
+import it.polimi.tiw.projects.dao.StudenteDAO;
 
-
-@WebServlet("/VerbalizzaVoti")
-public class VerbalizzaVoti extends HttpServlet {
+@WebServlet("/GetDatiStudente")
+public class GetDatiStudente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 
-	public VerbalizzaVoti() {
+	public GetDatiStudente() {
 		super();
 	}
 
@@ -51,72 +53,41 @@ public class VerbalizzaVoti extends HttpServlet {
 			throw new UnavailableException("Couldn't get db connection");
 		}
 	}
-
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String idAppello = request.getParameter("appelloid");
-		int idApp;
-		
-		int verbaleId;
-		
-		if (idAppello != null) {
-			try {
-			idApp = Integer.parseInt(idAppello);
-			} catch (NumberFormatException n) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Failure in parameter parsing");
-				return;
-			}
-		} else {
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY,
-					"1)Failure in verbalizzazione's database insertion");
-			return;
-		}
-		
-		AppelloDAO appDAO = new AppelloDAO(connection, idApp);
+		StudenteDati datiStudente = null;
+		String studenteID = request.getParameter("studenteid");
 		try {
-			verbaleId = appDAO.verbalizza();
-		} catch (SQLException e) {
-			// throw new ServletException(e);
-			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "2)Failure in verbalizzazione's database insertion (sql exception)");
-			return;
-		}
-		
-		if (verbaleId == -1) {
-			//resituisci nulla
-			response.getWriter().write("");
-		}
-		else {
-		//restituisci il verbale
-			VerbaleDAO vDAO = new VerbaleDAO(connection, verbaleId);
-			Verbale verbale = null;
+		if (studenteID != null) {
+			int studID = Integer.parseInt(studenteID);
+			StudenteDAO studDAO = new StudenteDAO(connection, studID);
 			try {
-				verbale = vDAO.getDatiVerbale();
+				datiStudente = studDAO.findDatiStudente();
 			} catch (SQLException e) {
 				// throw new ServletException(e);
-				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "3)Failure in verbale's database retrieval (sql exception)");
+				response.sendError(HttpServletResponse.SC_BAD_GATEWAY,
+						"Failure in studente's database extraction");
 				return;
 			}
-			
-			
-			try {
-				verbale.setStudenti(vDAO.studentiVerbalizzati());
-			} catch (SQLException e) {
-				response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "4)Failure in verbale's studenti's database retrieval (sql exception)");
-				return;
-			}
-			
-			String json = new Gson().toJson(verbale);
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			response.getWriter().write(json);
 		}
+		} catch (NumberFormatException n) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Failure in parameter parsing");
+			return;
+		}
+		
+		String json = new Gson().toJson(datiStudente);
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(json);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		doGet(request, response); // Handle POST as GET
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
-	
+
 	public void destroy() {
 		try {
 			if (connection != null) {

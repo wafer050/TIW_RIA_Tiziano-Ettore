@@ -54,7 +54,8 @@
 						} else if (req.status == 403) {
 							window.location.href = req.getResponseHeader("Location");
 							//Location definito nel filtro loginChecker
-							window.sessionStorage.removeItem('user');
+							//window.sessionStorage.removeItem('user');
+							window.sessionStorage.clear();
 						}
 						else {
 							self.alert.textContent = message;
@@ -141,7 +142,8 @@
 						} else if (req.status == 403) {
 							window.location.href = req.getResponseHeader("Location");
 							//Location definito nel filtro loginChecker
-							window.sessionStorage.removeItem('user');
+							//window.sessionStorage.removeItem('user');
+							window.sessionStorage.clear();
 						}
 						else {
 							self.alert.textContent = message;
@@ -170,7 +172,7 @@
 				dateanchor.setAttribute('appelloid', appello.id); // set a custom HTML attribute
 				dateanchor.addEventListener("click", (e) => {
 					// dependency via module parameter
-
+					sessionStorage.setItem("currentAppelloId", e.target.getAttribute("appelloid"));
 					iscritti.show(e.target.getAttribute("appelloid"));
 
 				}, false);
@@ -215,16 +217,18 @@
 			//console.log("Appelloid passato al server:", appelloid);
 
 
-
+			//form modifica voto
+			document.getElementById("id_modificavotoform").style.visibility = "hidden";
+			
 			//mostra bottone pubblica
 			document.getElementById("id_pubblica").style.visibility = "visible";
-			sessionStorage.setItem("currentAppelloId", appelloid);
+			//sessionStorage.setItem("currentAppelloId", appelloid);
 			//mostra bottone verbalizza
 			document.getElementById("id_verbalizza").style.visibility = "visible";
 
 			//il resto di iscritti
 			var self = this;
-			makeCall("GET", "GetIscritti?appelloid=" + appelloid, null,
+			makeCall("GET", "GetIscritti?appelloid=" + sessionStorage.getItem("currentAppelloId"), null,
 				function(req) {
 					if (req.readyState == 4) {
 						var message = req.responseText;
@@ -240,7 +244,8 @@
 						} else if (req.status == 403) {
 							window.location.href = req.getResponseHeader("Location");
 							//Location definito nel filtro loginChecker
-							window.sessionStorage.removeItem('user');
+							//window.sessionStorage.removeItem('user');
+							window.sessionStorage.clear();
 						}
 						else {
 							self.alert.textContent = message;
@@ -265,6 +270,36 @@
 					bottone = document.createElement("button")
 					bottonecell.appendChild(bottone);
 					bottone.appendChild(document.createTextNode("bottone modifica voto"));
+					
+					
+					//fa comparire il form per inserire il voto
+					bottone.addEventListener('click', (e) => {
+						makeCall("GET", "GetDatiStudente?studenteid=" + iscritto.id, null,
+											function(req) {
+												if (req.readyState == 4) {
+													var message = req.responseText;
+													if (req.status == 200) {
+														var datiStudenteToShow = JSON.parse(req.responseText);
+						
+						document.getElementById("id_modificavotoform").style.visibility = "visible";
+						
+						document.getElementById("campo_studenteid").innerText = datiStudenteToShow.id;
+						
+						document.getElementById("hidden_campo_studenteid").value = datiStudenteToShow.id;
+						document.getElementById("modificavoto_appelloid").value = sessionStorage.getItem("currentAppelloId")
+						
+						document.getElementById("campo_studentenome").innerText = datiStudenteToShow.nome;
+						document.getElementById("campo_studentecognome").innerText = datiStudenteToShow.cognome;
+						document.getElementById("campo_studentematricola").innerText = datiStudenteToShow.matricola;
+						document.getElementById("campo_studentemail").innerText = datiStudenteToShow.mail;
+						document.getElementById("campo_studentecorsolaurea").innerText = datiStudenteToShow.corsoLaurea;
+						
+						
+						
+						}
+						}
+						});
+						});	
 				}
 				else {
 					bottonecell.appendChild(document.createTextNode("non modificabile"));
@@ -356,6 +391,47 @@
 				document.getElementById("id_tabellaiscritti"),
 				document.getElementById("id_tabellaiscrittibody"));
 
+			//form modifica voto
+			document.getElementById("id_modificavotoform").style.visibility = "hidden";
+			document.getElementById("invio_formmodificavoto").addEventListener('click', (e) =>{
+				form = e.target.closest("form")
+				if (form.checkValidity()) {
+					makeCall("POST", "ModificaVoto", form, 
+					function(req){
+						if (req.readyState == 4) {
+							var message = req.responseText;
+							if (req.status == 200) {
+								//refresh
+								pageOrchestrator.refresh(sessionStorage.getItem("currentCorsoId"),
+								sessionStorage.getItem("currentAppelloId"));
+
+
+
+							}
+							else {
+								alertContainer.textContent = message;
+													}
+													}
+						
+						
+						
+						
+						
+						
+					}
+				 )
+				
+				
+				
+				}
+				else{
+					form.reportValidity();
+				}
+				
+				
+			})
+				
+				
 			//bottone pubblica
 			document.getElementById("id_pubblica").style.visibility = "hidden";
 			document.getElementById('id_pubblica').addEventListener('click', (e) => {
@@ -373,7 +449,7 @@
 
 							}
 							else {
-								self.alert.textContent = message;
+								alertContainer.textContent = message;
 							}
 						}
 					}
@@ -489,7 +565,7 @@
 							}
 							}
 							else {
-								self.alert.textContent = message;
+								alertContainer.textContent = message;
 							}
 						}
 					}
@@ -498,7 +574,8 @@
 
 
 
-
+			
+			
 
 
 
@@ -509,7 +586,8 @@
 
 
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
-				window.sessionStorage.removeItem('user');
+				//window.sessionStorage.removeItem('user');
+				window.sessionStorage.clear();
 			})
 		};
 
