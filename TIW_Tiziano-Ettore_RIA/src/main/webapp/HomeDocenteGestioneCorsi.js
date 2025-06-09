@@ -207,8 +207,8 @@
 
 		this.reset = function() {
 			this.listcontainer.style.visibility = "hidden";
-			document.getElementById("id_pubblica").style.visibility = "hidden";
-			document.getElementById("id_verbalizza").style.visibility = "hidden";
+			document.getElementById("id_pubblicaform").style.visibility = "hidden";
+			document.getElementById("id_verbalizzaform").style.visibility = "hidden";
 		}
 
 		this.show = function(appelloid, next) {
@@ -221,10 +221,12 @@
 			document.getElementById("id_modificavotoform").style.visibility = "hidden";
 			
 			//mostra bottone pubblica
-			document.getElementById("id_pubblica").style.visibility = "visible";
+			document.getElementById("id_pubblicaform").style.visibility = "visible";
 			//sessionStorage.setItem("currentAppelloId", appelloid);
 			//mostra bottone verbalizza
-			document.getElementById("id_verbalizza").style.visibility = "visible";
+			document.getElementById("id_verbalizzaform").style.visibility = "visible";
+			//mostra bottone inserimento multiplo
+			document.getElementById("id_inserimentomultiplo").style.visibility = "visible";
 
 			//il resto di iscritti
 			var self = this;
@@ -391,7 +393,75 @@
 				document.getElementById("id_tabellaiscritti"),
 				document.getElementById("id_tabellaiscrittibody"));
 
-			//form modifica voto
+				
+			//bottone inserimento multiplo
+			document.getElementById("id_inserimentomultiplo").style.visibility = "hidden";
+			document.getElementById("no_votononinserito").style.visibility = "hidden";
+			document.getElementById("id_bottoneinserimentomultiplo").addEventListener('click', (e) =>{
+				
+				document.getElementById("overlay2").style.visibility = "visible";
+				document.getElementById("overlay2").style.display = "flex";
+				
+				//clona
+				let righe = Array.from(document.getElementById("id_tabellaiscritti").cloneNode(true)
+					.querySelectorAll('tbody > tr'));
+				
+				let righe_votoNonInserito = righe.filter(riga =>
+					Array.from(riga.querySelectorAll('td')).at(-1).textContent === "non inserito"
+				)
+				
+				if(righe_votoNonInserito.length === 0){
+					document.getElementById("tabella_votononinserito").style.visibility = "hidden";
+					document.getElementById("no_votononinserito").style.visibility = "visible";
+					
+				}
+				else{
+					document.getElementById("tabella_votononinserito").style.visibility = "visible";
+					document.getElementById("no_votononinserito").style.visibility = "hidden";
+					
+					let body = document.getElementById("id_tabella_votononinserito");
+					body.innerHTML= "";
+				
+					righe_votoNonInserito.forEach(riga => {
+						//cancella bottone singola modifica
+						riga.children[0].remove();
+						
+						let formCell = document.createElement("td");
+						let input = document.createElement('input');
+							input.type = 'text';
+							input.name = 'voto';
+							
+						formCell.appendChild(input);
+						riga.appendChild(formCell);
+						
+						body.appendChild(riga);
+					
+					})
+					
+				
+				}
+				
+				
+			}
+			);
+			//chiudi se cliccki su x oppure fuori
+			document.getElementById("chiudiPopup2").addEventListener("click", function() {
+							document.getElementById("overlay2").style.display = "none";
+						});
+
+						// Chiudi se clicchi fuori dal popup
+			document.getElementById("overlay2").addEventListener("click", function(e) {
+				if (e.target === this) {
+					this.style.display = "none";
+					}
+			});
+				
+				
+				
+				
+				
+				
+			//form modifica voto singolo
 			document.getElementById("id_modificavotoform").style.visibility = "hidden";
 			document.getElementById("invio_formmodificavoto").addEventListener('click', (e) =>{
 				form = e.target.closest("form")
@@ -412,12 +482,6 @@
 								alertContainer.textContent = message;
 													}
 													}
-						
-						
-						
-						
-						
-						
 					}
 				 )
 				
@@ -433,7 +497,7 @@
 				
 				
 			//bottone pubblica
-			document.getElementById("id_pubblica").style.visibility = "hidden";
+			document.getElementById("id_pubblicaform").style.visibility = "hidden";
 			document.getElementById('id_pubblica').addEventListener('click', (e) => {
 				makeCall("GET", "PubblicaVoti?appelloid=" + sessionStorage.getItem("currentAppelloId"), null,
 					function(req) {
@@ -476,7 +540,7 @@
 
 
 
-			document.getElementById("id_verbalizza").style.visibility = "hidden";
+			document.getElementById("id_verbalizzaform").style.visibility = "hidden";
 			document.getElementById('id_verbalizza').addEventListener('click', (e) => {
 				makeCall("GET", "VerbalizzaVoti?appelloid=" + sessionStorage.getItem("currentAppelloId"), null,
 					function(req) {

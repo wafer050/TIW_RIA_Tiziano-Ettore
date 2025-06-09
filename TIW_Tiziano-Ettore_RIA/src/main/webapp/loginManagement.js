@@ -10,7 +10,11 @@
       makeCall("POST", 'CheckLogin', e.target.closest("form"),
         function(x) {
           if (x.readyState == XMLHttpRequest.DONE) {
-            var message = JSON.parse(x.responseText);
+			try{
+            	var message = JSON.parse(x.responseText);
+			} catch (e){
+				document.getElementById("errormessage").textContent = message;
+			}
 			if(x.status == 200){
 				sessionStorage.setItem('user', JSON.stringify(message));
 				if(message.role === ("docente")){

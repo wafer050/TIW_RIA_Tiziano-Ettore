@@ -28,25 +28,22 @@
 					</thead>
 					<tbody id="id_tabellacorsibody">
 					</tbody>
-				</table></td>
-				
-				
-				
-			<td><table id="id_tabellaappelli" border="1">
-					<thead>
-						<tr>
-							<th>Data appello</th>
-						</tr>
-					</thead>
-					<tbody id="id_tabellaappellibody">
-					</tbody>
-				</table>
-			</td>
-				
-				
-				
-			
+				</table></td>	
 		</tr>
+		
+		
+		<tr><td><table id="id_tabellaappelli" border="1">
+						<thead>
+							<tr>
+								<th>Data appello</th>
+							</tr>
+						</thead>
+						<tbody id="id_tabellaappellibody">
+						</tbody>
+					</table>
+			</td>
+		</tr>
+		
 		
 		
 		<tr><td><table id="id_tabellaiscritti" border="1">
@@ -64,75 +61,14 @@
 						</tr>
 					</thead>
 					<tbody id="id_tabellaiscrittibody">
-						<!-- <tr>
-							<td id=id_modificavotobottone></td>
-							<td id=id_studenteid></td>
-							<td id=id_studentenome></td>
-							<td id=id_studentecognome></td>
-							<td id=id_studentematricola></td>
-							<td id=id_studentemail></td>
-							<td id=id_studentecorsolaurea></td>
-							<td id=id_studentevoto></td>
-							<td id=id_studentestatovalutazione></td>
-						</tr> -->
 					</tbody>
 				</table>
 			</td>
-		</tr>
-		
-		
-		
-		
-		<tr>
-			<td>
-			
-			
-			
-			<form id="id_pubblicaform" action="#">
-			<fieldset>
-                    <input type="hidden" id="appelloid" name="appelloid"></input>
-                    <input type="button" id="id_pubblica" value="PUBBLICA"></input>
-            </fieldset>
-                </form>
-			<!--
-				<form id="id_pubblica" action="#">
-					<input type="hidden" type="button" name="appelloid"></input>
-				</form>
-				-->
 			
 			
 			
 			
-			<!--
-				<button id="id_pubblica">PUBBLICA	
-				</button>
-				-->
-				
-				
-				
-				
-				
-				
-				
-			</td>
-		</tr>
-		
-		
-		
-		
-		<tr>
-			<td>
-				<form id="id_verbalizzaform" action="#">
-			<fieldset>
-                    <input type="hidden" id="appelloid" name="appelloid"></input>
-                    <input type="button" id="id_verbalizza" value="VERBALIZZA"></input>
-            </fieldset>
-                </form>
-			</td>
-		</tr>
-		
-		
-		<tr>
+			
 			<td>
 					<table id="id_modificavotoform">
 						<tr>
@@ -173,20 +109,108 @@
 						</tr>
 					</table>
 			</td>
+			
+			
+				
 		</tr>
 		
 		
 		
-
+		
+		<tr>
+			<td>
+			
+			
+			
+			<form id="id_pubblicaform" action="#">
+			<fieldset>
+                    <input type="hidden" id="appelloid" name="appelloid"></input>
+                    <input type="button" id="id_pubblica" value="PUBBLICA"></input>
+            </fieldset>
+                </form>					
+			</td>
+		</tr>
+		
+		
+		
+		
+		<tr>
+			<td>
+				<form id="id_verbalizzaform" action="#">
+			<fieldset>
+                    <input type="hidden" id="appelloid" name="appelloid"></input>
+                    <input type="button" id="id_verbalizza" value="VERBALIZZA"></input>
+            </fieldset>
+                </form>
+			</td>
+		</tr>
+		
+		
+		<tr>
+			<td>
+				<form id="id_inserimentomultiplo" action="#">
+					<fieldset>
+                    	<input type="button" id="id_bottoneinserimentomultiplo"
+                    		value="INSERIMENTO MULTIPLO">
+            		</fieldset>
+                </form>
+			</td>
+		</tr>
+			
 	</table>
 	
 	
 	
 	
+	<!-- pop up inserimento multiplo -->
+		<div id="overlay2" class="overlay">
+  <div class="popup">
+  <!-- &times; = 'x' ma migliore -->
+    <span id="chiudiPopup2">&times;</span>
+    <p id="no_votononinserito"> non ci sono studenti senza voto! <p>
+				
+				<table id="tabella_votononinserito" border="1">
+					<thead>
+						<tr>
+							<th>Studente ID</th>
+							<th>Studente Nome</th>
+							<th>Studente Cognome</th>
+							<th>Studente Matricola</th>
+							<th>Studente Mail</th>
+							<th>Studente Corso di Laurea</th>
+							<th>Studente Voto</th>
+							<th>Studente Stato di Valutazione</th>
+							<th>INSERISCI IN QUESTA COLONNA I VOTI</th>
+						</tr>
+					</thead>
+					
+					 <tfoot>
+    					<tr>
+      						<td>
+        						<button id="id_eseguiinserimentomultiplo">INVIO</button>
+     						 </td>
+   						 </tr>
+  					</tfoot>
+					
+					<tbody id="id_tabella_votononinserito">
+					</tbody>
+				</table>
+				
+				
+  </div>
+</div>
 	
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	<!-- pop up verbalizza -->
 	<div id="overlay" class="overlay">
   <div class="popup">
   <!-- &times; = 'x' ma migliore -->
