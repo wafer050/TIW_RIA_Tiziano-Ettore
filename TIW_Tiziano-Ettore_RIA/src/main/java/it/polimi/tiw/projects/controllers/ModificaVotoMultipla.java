@@ -1,0 +1,112 @@
+package it.polimi.tiw.projects.controllers;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.List;
+
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.UnavailableException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import it.polimi.tiw.projects.beans.Corso;
+import it.polimi.tiw.projects.beans.Appello;
+import it.polimi.tiw.projects.beans.User;
+import it.polimi.tiw.projects.dao.VotoDAO;
+import it.polimi.tiw.projects.dao.AppelloDAO;
+import it.polimi.tiw.projects.dao.CorsoDAO;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+@WebServlet("/ModificaVotoMultipla")
+@MultipartConfig
+public class ModificaVotoMultipla extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private Connection connection = null;
+
+	public ModificaVotoMultipla() {
+		super();
+	}
+
+	public void init() throws ServletException {
+		try {
+			ServletContext context = getServletContext();
+			String driver = context.getInitParameter("dbDriver");
+			String url = context.getInitParameter("dbUrl");
+			String user = context.getInitParameter("dbUser");
+			String password = context.getInitParameter("dbPassword");
+			Class.forName(driver);
+			connection = DriverManager.getConnection(url, user, password);
+		} catch (ClassNotFoundException e) {
+			throw new UnavailableException("Can't load database driver");
+		} catch (SQLException e) {
+			throw new UnavailableException("Couldn't get db connection");
+		}
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		
+		String idStudenti = request.getParameter("idStudenti");
+		String votiInseriti = request.getParameter("votiInseriti");
+		String idAppello = request.getParameter("appelloid");
+		int[] idStud;
+		String[] votiIns;
+		int idApp;
+		
+		try {
+			if (idStudenti != null && idAppello != null && votiInseriti != null) {
+				idStud = new Gson().fromJson(idStudenti, int[].class);
+				votiIns = new Gson().fromJson(votiInseriti, String[].class);			
+				idApp = Integer.parseInt(idAppello);
+			} else {
+				response.sendError(HttpServletResponse.SC_BAD_GATEWAY,
+						"1) Failure in voto's database insertion");
+				return;
+			}
+			} catch (Exception n) {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Failure in parameter parsing");
+				return;
+			}
+		
+		
+		
+		
+		
+		VotoDAO vDAO = new VotoDAO(connection);
+		try {
+			vDAO.inserisciMultiplo(votiIns, idStud, idApp);
+		} catch (SQLException e) {
+			// throw new ServletException(e);
+			response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "2) Failure in voto's database insertion (sql exception)");
+			return;
+		}
+		
+		
+	}
+
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.sendError(HttpServletResponse.SC_BAD_GATEWAY, "servlet non supporta GET");
+	}
+	
+	
+	public void destroy() {
+		try {
+			if (connection != null) {
+				connection.close();
+			}
+		} catch (SQLException sqle) {
+		}
+	}
+}

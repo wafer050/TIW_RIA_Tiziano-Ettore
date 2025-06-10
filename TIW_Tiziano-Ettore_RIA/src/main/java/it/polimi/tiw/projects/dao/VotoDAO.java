@@ -15,6 +15,23 @@ public class VotoDAO {
 		//this.idStudente = ids;
 		//this.idAppello = ida;
 	}
+	
+	public void inserisciMultiplo(String[] voti, int[] idStudenti, int idAppello) throws SQLException {
+		this.con.setAutoCommit(false);
+		
+		for(int i = 0; i < voti.length; i++) {
+			this.inserisci(voti[i], idStudenti[i], idAppello);
+		}
+		
+		this.con.setAutoCommit(true);
+		
+		
+		
+		
+		
+		
+		
+	}
 
 	public void inserisci(String voto, int idStudente, int idAppello) throws SQLException {
 		String query = "UPDATE esito SET voto = ?, stato_di_valutazione = 'inserito' WHERE id_studente = ? AND id_appello = ? "

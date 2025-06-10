@@ -11,9 +11,14 @@
 	    if (formElement == null) {
 	      req.send();
 	    } else {
+			if (formElement instanceof FormData) {
+			    req.send(formElement);
+			} else {
 	      req.send(new FormData(formElement));
-	    }
 	    if (formElement !== null && reset === true) {
 	      formElement.reset();
 	    }
 	  }
+	  }
+	  }
+	  

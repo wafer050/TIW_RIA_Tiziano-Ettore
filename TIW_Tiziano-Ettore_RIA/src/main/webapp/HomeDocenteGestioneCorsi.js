@@ -455,6 +455,66 @@
 					this.style.display = "none";
 					}
 			});
+			
+			
+			
+			//bottone invio inserimento multiplo:
+			document.getElementById("id_eseguiinserimentomultiplo").addEventListener("click", function(){
+				let righe = Array.from(document.getElementById("tabella_votononinserito").cloneNode(true)
+									.querySelectorAll('tbody > tr'));
+									
+				let righeModificate = righe.filter(riga =>
+					Array.from(riga.querySelectorAll('td')).at(-1).querySelector('input').value !== ""
+					)	
+													
+								
+				let idStudenti = righeModificate.map(riga => 
+					riga.querySelectorAll('td')[0].textContent
+					    );
+				let votiInseriti = righeModificate.map(riga =>
+					Array.from(riga.querySelectorAll('td')).at(-1).querySelector('input').value
+						);
+				
+				/*	
+				let idStudenti = Array.from(righeModificate[0].querySelectorAll('td'))
+					.map(td => td.textContent);
+				let votiInseriti = Array.from(righeModificate[righeModificate.length - 1]
+					.querySelectorAll('td')).map(td => td.querySelector('input'))
+					.map(input => input.value);
+				*/
+				/*
+				let form = document.getElementById("form_id_inserimentomultiplo");
+				form.querySelector('input[name="idStudenti"]').value = JSON.stringify(idStudenti);
+				form.querySelector('input[name="votiInseriti"]').value = JSON.stringify(votiInseriti);
+				form.querySelector('input[name="appelloid"]').value = sessionStorage.getItem("currentAppelloId");
+				*/
+				
+				let formData = new FormData();
+				formData.append("idStudenti", JSON.stringify(idStudenti));
+				formData.append("votiInseriti", JSON.stringify(votiInseriti));
+				formData.append("appelloid", sessionStorage.getItem("currentAppelloId"));
+				
+				makeCall("POST", "ModificaVotoMultipla", formData, function(req){
+					if (req.readyState == 4) {
+												var message = req.responseText;
+												if (req.status == 200) {
+													//refresh
+													pageOrchestrator.refresh(sessionStorage.getItem("currentCorsoId"),
+													sessionStorage.getItem("currentAppelloId"));
+
+
+
+												}
+												else {
+													alertContainer.textContent = message;
+																		}
+																		}
+				})
+				
+			});
+			
+			
+			
 				
 				
 				
