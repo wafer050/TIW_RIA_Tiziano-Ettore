@@ -5,7 +5,9 @@ th.sortable {
 }
 
 
-
+.superhidden {
+	display: none;
+}
 
 
 

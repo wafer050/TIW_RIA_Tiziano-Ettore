@@ -694,36 +694,138 @@
 						}
 					}
 				);
-			})
+			});
 
 
 
 			
 			
 
+			
+			
+			
+			//document.getElementById("verbali").style.display = "none";
+			document.getElementById("id_verbale2").style.visibility = "hidden";
+			document.getElementById("id_studentiverbale2").style.visibility = "hidden";
+			
+			//MOSTRA CORSI
+			document.getElementById("corsiEaltro").classList.remove("superhidden");
+			document.getElementById("verbali").classList.add("superhidden");
+			//xxxxxx
+			
+			
+			//MOSTRA VERBALI
+			document.getElementById("mostraverbali").addEventListener('click', () => {
+				//document.getElementById("corsiEaltro").style.display = "none";
+				document.getElementById("corsiEaltro").classList.add("superhidden");
+				document.getElementById("verbali").classList.remove("superhidden");
+				
+				makeCall("GET", "GetVerbali", null,
+									function(req) {
+										if (req.readyState == 4) {
+											var message = req.responseText;
+											if (req.status == 200) {
+
+												//refresh
+												
+												let verbaliToShow = JSON.parse(req.responseText);
+												let body = document.getElementById("id_tabellaverbali");
+												body.innerHTML = "";
+												let row;
+												let id; let dataCreazione; let oraCreazione; let idAppello; let dataAppello;let idCorso;
+												let nomeCorso; let paginaVerbale;
+												let bottone; let bottoneCell;
+												
+												
+												verbaliToShow.forEach(function(verbale){
+					
+												row = document.createElement("tr");	
+												body.appendChild(row);
+																					
+												id = document.createElement("td");
+												id.appendChild(document.createTextNode(verbale.id));
+																					
+												dataCreazione = document.createElement("td");
+												dataCreazione.appendChild(document.createTextNode(verbale.dataCreazione));
+																					
+												oraCreazione = document.createElement("td");
+												oraCreazione.appendChild(document.createTextNode(verbale.oraCreazione));
+																					
+												idAppello = document.createElement("td");
+												idAppello.appendChild(document.createTextNode(verbale.idAppello));
+																					
+												dataAppello = document.createElement("td");
+												dataAppello.appendChild(document.createTextNode(verbale.dataAppello));
+																					
+												idCorso = document.createElement("td");
+												idCorso.appendChild(document.createTextNode(verbale.idCorso));
+																					
+												nomeCorso = document.createElement("td");
+												nomeCorso.appendChild(document.createTextNode(verbale.nomeCorso));
+												
+												paginaVerbale = document.createElement("td");
+												paginaVerbale.appendChild(document.createTextNode(verbale.paginaVerbale));
+												
+												bottoneCell = document.createElement("td");
+												bottone = document.createElement("button");
+												bottoneCell.appendChild(bottone);
+												bottone.appendChild(document.createTextNode("bottone Verbale"));
+																					
+																					
+												row.appendChild(id);
+												row.appendChild(dataCreazione);
+												row.appendChild(oraCreazione);
+												row.appendChild(idAppello);
+												row.appendChild(dataAppello);
+												row.appendChild(idCorso);
+												row.appendChild(nomeCorso);
+												row.appendChild(paginaVerbale);
+												
+												
+												//xxxxxxx
+												
+												
+											});
+																		
+
+											}
+											else {
+												alertContainer.textContent = message;
+											}
+										}
+									}
+								);
+							});
+							
+							
 
 
-			//details and wizard
-
-
-
-
-
+			//logout
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
 				//window.sessionStorage.removeItem('user');
 				window.sessionStorage.clear();
 			})
+			
+			
+			
+			
+			
+			
+			//per evitare flckering
+			//document.getElementById("corsiEaltro").style.visibility = "visible";
+			document.getElementById("corsiEaltro").classList.remove("superhidden");
 		};
 
 
 
 
-		this.refresh = function(currentCorso, currentAppello) { // currentCorso initially null at start
+		this.refresh = function(currentCorso, currentAppello, showVerbali) { // currentCorso initially null at start
 			alertContainer.textContent = "";        // not null after creation of status change
 			corsiList.reset();
 			appelliList.reset();
 			iscritti.reset();
-
+			
+			if (showVerbali === undefined){
 			corsiList.show(function() {
 				if (currentCorso != undefined) {
 					corsiList.autoclick(currentCorso);
@@ -732,12 +834,12 @@
 					}
 				}
 			}); // closure preserves visibility of this
+			}
+			else{
+				//show verbali
+			}
 
 
-
-
-
-			//wizard.reset();
 
 
 

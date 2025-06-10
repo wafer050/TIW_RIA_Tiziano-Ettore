@@ -10,13 +10,121 @@
 </head>
 <body>
 	<div align="right">
-		<a href="Logout">Logout</a>
+	<table>
+		<tr>
+			<td>MOSTRA CORSI</td>
+			<td id="mostraverbali">MOSTRA VERBALI</td>
+			<td><a href="Logout">Logout</a></td>
+		</tr>
+	</table>
 	</div>
 	<h1>Welcome to the docente Home page</h1>
 	<p>Nice to see you again <span id="id_nominativo"></span></p>
 	<div id="id_alert" class="alertmessage"></div>
 	
-	<table>
+	
+	
+	
+	
+	
+	
+	
+	<table id="verbali" class="superhidden" border="1">
+		<tr><td>
+		<table>
+		<thead>
+			<tr>
+				<th>Verbale ID</th>
+				<th>Data Creazione</th>
+				<th>Ora Creazione</th>
+				<th>Appello id</th>
+				<th>Appello Data</th>
+				<th>Corso id</th>
+				<th>Corso Nome</th>
+				<th>vai alla pagina di questo verbale</th>
+			</tr>
+		</thead>
+		<tbody id="id_tabellaverbali">
+		</tbody>
+		</table>
+		</td>
+		
+		<td>
+			<table id="id_verbale2">
+    
+    <caption>INFORMAZIONI VERBALE</caption>
+					
+					
+					
+  <tr>
+    <td>id:</td>
+    <td id="campo_verbaleid2"></td>
+  </tr>
+  <tr>
+    <td>data creazione:</td>
+    <td id="campo_verbaledatacreazione2"></td>
+  </tr>
+  <tr>
+    <td>ora creazione:</td>
+    <td id="campo_verbaleora2"></td>
+  </tr>
+  <tr>
+    <td>id appello:</td>
+    <td id="campo_verbaleappello2"></td>
+  </tr>
+  <tr>
+    <td>data appello:</td>
+    <td id="campo_verbaledataappello2"></td>
+  </tr>
+  <tr>
+    <td>id corso:</td>
+    <td id="campo_verbalecorso2"></td>
+  </tr>
+  <tr>
+    <td>nome corso:</td>
+    <td id="campo_verbalenomecorso2"></td>
+  </tr>
+</table>
+					
+	
+				
+				<table id="id_studentiverbale2" border="1">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Nome</th>
+							<th>Cognome</th>
+							<th>Matricola</th>
+							<th>Mail</th>
+							<th>Corso di Laurea</th>
+							<th>Voto</th>
+						</tr>
+					</thead>
+					<tbody id="id_studentiverbalebody2">
+					</tbody>
+				</table>
+				
+				
+		</td>
+		
+		
+		</tr>
+	</table>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<table id="corsiEaltro" class="superhidden">
 	
 		<tr>
 			<td><table id="id_tabellacorsi" border="1">
@@ -195,16 +303,6 @@
 					<tbody id="id_tabella_votononinserito">
 					</tbody>
 				</table>
-				
-				<!--
-				<form type = hidden id="form_id_inserimentomultiplo" action="#">
-					<fieldset>
-						<input type="hidden" name="idStudenti">
-						<input type="hidden" name="votiInseriti">
-						<input type="hidden" name="appelloid">
-            		</fieldset>
-                </form>
-               --> 
   </div>
 </div>
 	
