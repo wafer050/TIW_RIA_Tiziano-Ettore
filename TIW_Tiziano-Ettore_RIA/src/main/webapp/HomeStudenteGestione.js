@@ -225,12 +225,12 @@
 			document.getElementById("corsiEaltro").classList.remove("superhidden");
 
 			//logout
-			/*
+			
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
 				//window.sessionStorage.removeItem('user');
 				window.sessionStorage.clear();
 			})
-			*/
+			
 
 			//per evitare flckering
 			//document.getElementById("corsiEaltro").style.visibility = "visible";
