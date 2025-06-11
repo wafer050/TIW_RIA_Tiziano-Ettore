@@ -47,7 +47,7 @@
 							if (corsiToShow.length == 0) {
 								self.alert.textContent = "No corsi yet!";
 								return;
-							}
+							}							
 							self.update(corsiToShow); // self visible by closure
 							if (next) next(); // show the default element of the list if present
 
@@ -90,7 +90,20 @@
 				nameanchor.addEventListener("click", (e) => {
 					// dependency via module parameter
 					sessionStorage.setItem("currentCorsoId", e.target.getAttribute("corsoid"));
+					
+					
+					
+					
+					if(sessionStorage.getItem("currentAppelloId") !== undefined){
+						appelliList.show(e.target.getAttribute("corsoid"), function(){appelliList.autoclick()});
+					}
+					else{
 					appelliList.show(e.target.getAttribute("corsoid")); // the list must know the details container
+					}
+					
+					
+					
+					
 				}, false);
 				nameanchor.href = "#";
 				row.appendChild(namecell);
@@ -137,7 +150,34 @@
 								return;
 							}
 							self.update(appelliToShow); // self visible by closure
-							if (next) next(); // show the default element of the list if present
+							
+							
+							
+							
+							
+							//timeout inserito per evitare che next esegua prima che il browser
+							//abbia finito di renderizzare tutto (inclusi i bottoni)
+							/*
+							if (next) {
+							  requestAnimationFrame(() => {
+							    next();
+							  });
+							  }
+							  */
+							/*
+							if (next){
+								setTimeout(() => {
+								  next();
+								}, 1000);
+							}
+							*/
+							
+							/*
+							if (next) setTimeout(next, 0);
+							*/
+							
+							if (next) {next();}
+							
 
 						} else if (req.status == 403) {
 							window.location.href = req.getResponseHeader("Location");
@@ -711,7 +751,6 @@
 			//MOSTRA CORSI
 			document.getElementById("corsiEaltro").classList.remove("superhidden");
 			document.getElementById("verbali").classList.add("superhidden");
-			//xxxxxx
 			
 			
 			//MOSTRA VERBALI
@@ -763,13 +802,11 @@
 												nomeCorso = document.createElement("td");
 												nomeCorso.appendChild(document.createTextNode(verbale.nomeCorso));
 												
-												paginaVerbale = document.createElement("td");
-												paginaVerbale.appendChild(document.createTextNode(verbale.paginaVerbale));
-												
 												bottoneCell = document.createElement("td");
 												bottone = document.createElement("button");
 												bottoneCell.appendChild(bottone);
-												bottone.appendChild(document.createTextNode("bottone Verbale"));
+												bottone.textContent = "BOTTONE VERBALE";
+									
 																					
 																					
 												row.appendChild(id);
@@ -778,11 +815,98 @@
 												row.appendChild(idAppello);
 												row.appendChild(dataAppello);
 												row.appendChild(idCorso);
-												row.appendChild(nomeCorso);
-												row.appendChild(paginaVerbale);
+												row.appendChild(nomeCorso);	
+												row.appendChild(bottoneCell); 
 												
 												
-												//xxxxxxx
+												
+												//xxxxxxxxxxxxx
+												bottone.addEventListener('click', (e) =>{
+													document.getElementById("id_verbale2").style.visibility = "visible";
+													
+													let vId = e.target.closest('tr').querySelector('td:first-child').textContent;
+													
+													makeCall("GET", "GetVerbale?verbaleid=" + vId, null, 
+														function(req){
+															if (req.readyState == 4) {
+																var message = req.responseText;
+																if (req.status == 200) {
+																	//xxxx
+																	
+																	
+																	
+																	let verbaleToShow = JSON.parse(req.responseText);
+
+																										document.getElementById("campo_verbaleid2").innerText = verbaleToShow.id;
+																										document.getElementById("campo_verbaledatacreazione2").innerText = verbaleToShow.dataCreazione;
+																										document.getElementById("campo_verbaleora2").innerText = verbaleToShow.oraCreazione;
+																										document.getElementById("campo_verbaleappello2").innerText = verbaleToShow.idAppello;
+																										document.getElementById("campo_verbaledataappello2").innerText = verbaleToShow.dataAppello;
+																										document.getElementById("campo_verbalecorso2").innerText = verbaleToShow.idCorso;
+																										document.getElementById("campo_verbalenomecorso2").innerText = verbaleToShow.nomeCorso;
+																										
+																										
+																										
+																										document.getElementById("id_studentiverbale2").style.visibility = "visible";
+																										//studenti:
+																										let row;
+																										let body;
+																										let id; let nome; let cognome; let matricola; let mail; let corsoLaurea; let voto;
+																										document.getElementById("id_studentiverbalebody2").innerHTML = "";
+																										
+																										verbaleToShow.studenti.forEach(function(studente) {
+																										row = document.createElement("tr");	
+																										body = document.getElementById("id_studentiverbalebody2");
+																										body.appendChild(row);
+																										
+																										id = document.createElement("td");
+																										id.appendChild(document.createTextNode(studente.id));
+																										
+																										nome = document.createElement("td");
+																										nome.appendChild(document.createTextNode(studente.nome));
+																										
+																										cognome = document.createElement("td");
+																										cognome.appendChild(document.createTextNode(studente.cognome));
+																										
+																										matricola = document.createElement("td");
+																										matricola.appendChild(document.createTextNode(studente.matricola));
+																										
+																										mail = document.createElement("td");
+																										mail.appendChild(document.createTextNode(studente.mail));
+																										
+																										corsoLaurea = document.createElement("td");
+																										corsoLaurea.appendChild(document.createTextNode(studente.corsoLaurea));
+																										
+																										voto = document.createElement("td");
+																										voto.appendChild(document.createTextNode(studente.voto));
+																										
+																										
+																										row.appendChild(id);
+																										row.appendChild(nome);
+																										row.appendChild(cognome);
+																										row.appendChild(matricola);
+																										row.appendChild(mail);
+																										row.appendChild(corsoLaurea);
+																										row.appendChild(voto);
+																										});
+																	
+																	
+																	
+																	
+																	
+																
+																}
+																else {
+																								alertContainer.textContent = message;
+																							}
+															
+														}
+														}
+														);
+													
+												});
+												
+												
 												
 												
 											});
