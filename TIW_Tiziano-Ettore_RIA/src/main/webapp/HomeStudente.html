@@ -1,13 +1,50 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Studente's home</title>
+<link rel="stylesheet" type="text/css" media="all" href="CSS/mystyle.css" />
+<script src="utils.js" charset="utf-8" defer></script>
+<script src="HomeStudenteGestione.js" charset="utf-8" defer></script>
 </head>
 <body>
-	<div align="right">
-		<a th:href="@{/Logout}">Logout</a>
-	</div> 
-	<h1>Welcome to the studente Home page</h1>
+	<h1>Welcome to the Studente Home page</h1>
+	<p>Nice to see you again <span id="id_nominativo"></span></p>
+	<div id="id_alert" class="alertmessage"></div>
+	
+	
+	<table id="corsiEaltro" class="superhidden">
+	
+		<tr>
+			<td><table id="id_tabellacorsi" border="1">
+					<thead>
+						<tr>
+							<th>Corso ID</th>
+							<th>Corso Name</th>
+						</tr>
+					</thead>
+					<tbody id="id_tabellacorsibody">
+					</tbody>
+				</table></td>	
+		</tr>
+		
+		
+		<tr><td><table id="id_tabellaappelli" border="1">
+						<thead>
+							<tr>
+								<th>Data appello</th>
+							</tr>
+						</thead>
+						<tbody id="id_tabellaappellibody">
+						</tbody>
+					</table>
+			</td>
+		</tr>
+		</table>
+	
+	
+	
+	
+	
 </body>
 </html>
