@@ -9,6 +9,7 @@ import java.util.List;
 
 import it.polimi.tiw.projects.beans.Appello;
 import it.polimi.tiw.projects.beans.Corso;
+import it.polimi.tiw.projects.beans.Esito;
 import it.polimi.tiw.projects.beans.StudenteDati;
 
 public class StudenteDAO {
@@ -77,6 +78,52 @@ public class StudenteDAO {
 				}
 			}
 			return appelli;
+		}
+
+		public Esito findEsitoAppello(int appelloID) throws SQLException {
+			String query = "SELECT * FROM vw_esito_studente_appello WHERE studente_id = ? and appello_id = ?";
+
+		    try (PreparedStatement ps = con.prepareStatement(query)) {
+		        ps.setInt(1, this.id);
+		        ps.setInt(2, appelloID);
+		        try (ResultSet rs = ps.executeQuery()) {
+		        	if (!rs.isBeforeFirst()) // no results, credential check failed
+						return null;
+					else {
+						rs.next();
+						Esito esito = new Esito();
+						esito.setIdStudente(rs.getInt("studente_id"));
+						esito.setNome(rs.getString("studente_nome"));
+						esito.setCognome(rs.getString("studente_cognome"));
+						esito.setMatricola(rs.getInt("studente_matricola"));
+						esito.setMail(rs.getString("studente_mail"));
+						esito.setCorsoLaurea(rs.getString("studente_corso_di_laurea"));
+						esito.setIdCorso(rs.getInt("corso_id"));
+						esito.setNomeCorso(rs.getString("corso_nome"));
+						esito.setIdAppello(rs.getInt("appello_id"));
+						esito.setDataAppello(rs.getString("appello_data"));
+						esito.setVoto(rs.getString("esito_voto"));
+						esito.setStatoDiValutazione(rs.getString("esito_stato"));
+						return esito;
+					}
+		        }
+		    }
+		}
+
+		public void rifiutaVoto(int idAppello) throws SQLException {
+			String query = "UPDATE esito SET stato_di_valutazione = 'rifiutato' WHERE id_studente = ? and id_appello = ?";
+
+			try (PreparedStatement pstatement = con.prepareStatement(query);) {
+				pstatement.setInt(1, this.id);
+				pstatement.setInt(2, idAppello);
+
+				int rows = pstatement.executeUpdate();
+				if (rows == 0) {
+					throw new SQLException();
+				}
+			}
+
+			return;
 		}
 
 }
