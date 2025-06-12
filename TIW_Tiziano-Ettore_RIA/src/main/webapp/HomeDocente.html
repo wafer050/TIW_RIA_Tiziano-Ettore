@@ -12,8 +12,8 @@
 	<div align="right">
 	<table>
 		<tr>
-			<td>MOSTRA CORSI</td>
-			<td id="mostraverbali">MOSTRA VERBALI</td>
+			<td id="mostracorsi" class="likeHref">MOSTRA CORSI</td>
+			<td id="mostraverbali" class="likeHref">MOSTRA VERBALI</td>
 			<td><a href="Logout">Logout</a></td>
 		</tr>
 	</table>
@@ -207,10 +207,11 @@
 							<td colspan="2">
 							<form>
 							<fieldset>
-							<p>voto: <input type="text" name="voto"></p>
+							<p>voto: <input type="text" name="voto" id = "modificasingola"></p>
 							<input type="button" id="invio_formmodificavoto" value="modificaVoto">
 							<input type="hidden" id="modificavoto_appelloid" name="appelloid">
                     		<input type="hidden" id="hidden_campo_studenteid" name="studenteid">
+                    		<!--<p id="erroreinput2">VOTI INSERITI SBAGLIATI</p> -->
                     		</fieldset>
                     		</form>
 							</td>
@@ -296,6 +297,7 @@
     					<tr>
       						<td>
         						<button id="id_eseguiinserimentomultiplo">INVIO</button>
+        						<p id="erroreinput">VOTI INSERITI SBAGLIATI</p>
      						 </td>
    						 </tr>
   					</tfoot>

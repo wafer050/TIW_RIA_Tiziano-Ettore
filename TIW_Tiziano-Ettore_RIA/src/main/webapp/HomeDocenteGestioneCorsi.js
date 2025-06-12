@@ -435,6 +435,8 @@
 
 				
 			//bottone inserimento multiplo
+			document.getElementById("erroreinput").style.visibility = "hidden";
+			
 			document.getElementById("id_inserimentomultiplo").style.visibility = "hidden";
 			document.getElementById("no_votononinserito").style.visibility = "hidden";
 			document.getElementById("id_bottoneinserimentomultiplo").addEventListener('click', (e) =>{
@@ -470,6 +472,7 @@
 						let input = document.createElement('input');
 							input.type = 'text';
 							input.name = 'voto';
+							
 							
 						formCell.appendChild(input);
 						riga.appendChild(formCell);
@@ -515,19 +518,30 @@
 					Array.from(riga.querySelectorAll('td')).at(-1).querySelector('input').value
 						);
 				
-				/*	
-				let idStudenti = Array.from(righeModificate[0].querySelectorAll('td'))
-					.map(td => td.textContent);
-				let votiInseriti = Array.from(righeModificate[righeModificate.length - 1]
-					.querySelectorAll('td')).map(td => td.querySelector('input'))
-					.map(input => input.value);
-				*/
-				/*
-				let form = document.getElementById("form_id_inserimentomultiplo");
-				form.querySelector('input[name="idStudenti"]').value = JSON.stringify(idStudenti);
-				form.querySelector('input[name="votiInseriti"]').value = JSON.stringify(votiInseriti);
-				form.querySelector('input[name="appelloid"]').value = sessionStorage.getItem("currentAppelloId");
-				*/
+				let votoGiusto = true;
+				if (votiInseriti.length === 0){
+					votoGiusto = false;
+				}
+				votiInseriti.forEach((voto) =>{
+				
+				let lode = "30 e lode";
+					if (!(voto === lode || voto === "18" || voto === "19" || voto === "20" ||
+						voto === "21" || voto === "22"|| voto === "23" || voto === "24" ||
+						voto === "25" || voto === "26" || voto === "27" || voto === "28" ||
+						voto === "29" || voto === "30")
+					){
+						votoGiusto = false;
+					}										
+				});		
+				
+					
+				if (!votoGiusto){
+					document.getElementById("erroreinput").style.visibility = "visible";
+					return;
+				}
+				document.getElementById("erroreinput").style.visibility = "hidden";		
+						
+						
 				
 				let formData = new FormData();
 				formData.append("idStudenti", JSON.stringify(idStudenti));
@@ -562,9 +576,46 @@
 				
 				
 			//form modifica voto singolo
+			//document.getElementById("erroreinput2").style.visibility = "hidden";
 			document.getElementById("id_modificavotoform").style.visibility = "hidden";
 			document.getElementById("invio_formmodificavoto").addEventListener('click', (e) =>{
 				form = e.target.closest("form")
+				
+				
+				let input = document.getElementById("modificasingola").value;
+				
+				let votoGiusto = true;
+							let lode = "30 e lode";
+									if (!(input === lode || input === "18" || input === "19" || input === "20" ||
+										input === "21" || input === "22"|| input === "23" || input === "24" ||
+										input === "25" || input === "26" || input === "27" || input === "28" ||
+										input === "29" || input === "30")
+									){
+										votoGiusto = false;
+									}										
+									
+				if (!votoGiusto){
+					document.getElementById("modificasingola").setCustomValidity("INSERIMENTO VOTO ERRATO");
+				}
+				else{
+					document.getElementById("modificasingola").setCustomValidity("");
+				}
+									
+									
+								
+								/*
+								if (!votoGiusto){
+									document.getElementById("erroreinput2").style.visibility = "visible";
+									return;
+								}
+								document.getElementById("erroreinput2").style.visibility = "hidden";		
+								*/
+				
+				
+				
+				
+				
+				
 				if (form.checkValidity()) {
 					makeCall("POST", "ModificaVoto", form, 
 					function(req){
@@ -752,6 +803,12 @@
 			document.getElementById("corsiEaltro").classList.remove("superhidden");
 			document.getElementById("verbali").classList.add("superhidden");
 			
+			document.getElementById("mostracorsi").addEventListener('click', () => {
+				document.getElementById("verbali").classList.add("superhidden");
+				document.getElementById("corsiEaltro").classList.remove("superhidden");
+				corsiList.show();
+			});
+			
 			
 			//MOSTRA VERBALI
 			document.getElementById("mostraverbali").addEventListener('click', () => {
@@ -923,6 +980,8 @@
 							
 							
 
+					
+							
 
 			//logout
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
@@ -948,6 +1007,8 @@
 			corsiList.reset();
 			appelliList.reset();
 			iscritti.reset();
+			document.getElementById("overlay").style.display = "none";
+			document.getElementById("overlay2").style.display = "none";
 			
 			if (showVerbali === undefined){
 			corsiList.show(function() {

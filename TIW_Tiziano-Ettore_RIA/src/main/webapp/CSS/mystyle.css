@@ -4,6 +4,12 @@ th.sortable {
   cursor: pointer;
 }
 
+.likeHref {
+	color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 
 .superhidden {
 	display: none;
