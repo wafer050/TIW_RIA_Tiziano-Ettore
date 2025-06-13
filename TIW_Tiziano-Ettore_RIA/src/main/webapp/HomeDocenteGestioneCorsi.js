@@ -316,7 +316,9 @@
 					
 					//fa comparire il form per inserire il voto
 					bottone.addEventListener('click', (e) => {
-						makeCall("GET", "GetDatiStudente?studenteid=" + iscritto.id, null,
+						makeCall("GET", "GetDatiStudente?studenteid=" + iscritto.id
+										+"&appelloid=" + sessionStorage.getItem("currentAppelloId")
+								, null,
 											function(req) {
 												if (req.readyState == 4) {
 													var message = req.responseText;
