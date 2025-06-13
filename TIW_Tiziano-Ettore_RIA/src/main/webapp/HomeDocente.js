@@ -47,7 +47,7 @@
 							if (corsiToShow.length == 0) {
 								self.alert.textContent = "No corsi yet!";
 								return;
-							}							
+							}
 							self.update(corsiToShow); // self visible by closure
 							if (next) next(); // show the default element of the list if present
 
@@ -90,20 +90,21 @@
 				nameanchor.addEventListener("click", (e) => {
 					// dependency via module parameter
 					sessionStorage.setItem("currentCorsoId", e.target.getAttribute("corsoid"));
-					
-					
-					
-					
-					if(sessionStorage.getItem("currentAppelloId") !== undefined){
-						appelliList.show(e.target.getAttribute("corsoid"), function(){appelliList.autoclick()});
+
+
+
+
+					if (sessionStorage.getItem("currentAppelloId") !== null) {
+						appelliList.show(e.target.getAttribute("corsoid"), function() { 
+							appelliList.autoclick(sessionStorage.getItem("currentAppelloId")) });
 					}
-					else{
-					appelliList.show(e.target.getAttribute("corsoid")); // the list must know the details container
+					else {
+						appelliList.show(e.target.getAttribute("corsoid")); // the list must know the details container
 					}
-					
-					
-					
-					
+
+
+
+
 				}, false);
 				nameanchor.href = "#";
 				row.appendChild(namecell);
@@ -150,17 +151,17 @@
 								return;
 							}
 							self.update(appelliToShow); // self visible by closure
-							
-							
-							
-							
-							
+
+
+
+
+
 							//timeout inserito per evitare che next esegua prima che il browser
 							//abbia finito di renderizzare tutto (inclusi i bottoni)
 							/*
 							if (next) {
 							  requestAnimationFrame(() => {
-							    next();
+								next();
 							  });
 							  }
 							  */
@@ -171,13 +172,13 @@
 								}, 1000);
 							}
 							*/
-							
+
 							/*
 							if (next) setTimeout(next, 0);
 							*/
-							
-							if (next) {next();}
-							
+
+							if (next) { next(); }
+
 
 						} else if (req.status == 403) {
 							window.location.href = req.getResponseHeader("Location");
@@ -259,7 +260,7 @@
 
 			//form modifica voto
 			document.getElementById("id_modificavotoform").style.visibility = "hidden";
-			
+
 			//mostra bottone pubblica
 			document.getElementById("id_pubblicaform").style.visibility = "visible";
 			//sessionStorage.setItem("currentAppelloId", appelloid);
@@ -312,38 +313,38 @@
 					bottone = document.createElement("button")
 					bottonecell.appendChild(bottone);
 					bottone.appendChild(document.createTextNode("bottone modifica voto"));
-					
-					
+
+
 					//fa comparire il form per inserire il voto
 					bottone.addEventListener('click', (e) => {
 						makeCall("GET", "GetDatiStudente?studenteid=" + iscritto.id
-										+"&appelloid=" + sessionStorage.getItem("currentAppelloId")
-								, null,
-											function(req) {
-												if (req.readyState == 4) {
-													var message = req.responseText;
-													if (req.status == 200) {
-														var datiStudenteToShow = JSON.parse(req.responseText);
-						
-						document.getElementById("id_modificavotoform").style.visibility = "visible";
-						
-						document.getElementById("campo_studenteid").innerText = datiStudenteToShow.id;
-						
-						document.getElementById("hidden_campo_studenteid").value = datiStudenteToShow.id;
-						document.getElementById("modificavoto_appelloid").value = sessionStorage.getItem("currentAppelloId")
-						
-						document.getElementById("campo_studentenome").innerText = datiStudenteToShow.nome;
-						document.getElementById("campo_studentecognome").innerText = datiStudenteToShow.cognome;
-						document.getElementById("campo_studentematricola").innerText = datiStudenteToShow.matricola;
-						document.getElementById("campo_studentemail").innerText = datiStudenteToShow.mail;
-						document.getElementById("campo_studentecorsolaurea").innerText = datiStudenteToShow.corsoLaurea;
-						
-						
-						
-						}
-						}
-						});
-						});	
+							+ "&appelloid=" + sessionStorage.getItem("currentAppelloId")
+							, null,
+							function(req) {
+								if (req.readyState == 4) {
+									var message = req.responseText;
+									if (req.status == 200) {
+										var datiStudenteToShow = JSON.parse(req.responseText);
+
+										document.getElementById("id_modificavotoform").style.visibility = "visible";
+
+										document.getElementById("campo_studenteid").innerText = datiStudenteToShow.id;
+
+										document.getElementById("hidden_campo_studenteid").value = datiStudenteToShow.id;
+										document.getElementById("modificavoto_appelloid").value = sessionStorage.getItem("currentAppelloId")
+
+										document.getElementById("campo_studentenome").innerText = datiStudenteToShow.nome;
+										document.getElementById("campo_studentecognome").innerText = datiStudenteToShow.cognome;
+										document.getElementById("campo_studentematricola").innerText = datiStudenteToShow.matricola;
+										document.getElementById("campo_studentemail").innerText = datiStudenteToShow.mail;
+										document.getElementById("campo_studentecorsolaurea").innerText = datiStudenteToShow.corsoLaurea;
+
+
+
+									}
+								}
+							});
+					});
 				}
 				else {
 					bottonecell.appendChild(document.createTextNode("non modificabile"));
@@ -435,220 +436,220 @@
 				document.getElementById("id_tabellaiscritti"),
 				document.getElementById("id_tabellaiscrittibody"));
 
-				
+
 			//bottone inserimento multiplo
 			document.getElementById("erroreinput").style.visibility = "hidden";
-			
+
 			document.getElementById("id_inserimentomultiplo").style.visibility = "hidden";
 			document.getElementById("no_votononinserito").style.visibility = "hidden";
-			document.getElementById("id_bottoneinserimentomultiplo").addEventListener('click', (e) =>{
-				
+			document.getElementById("id_bottoneinserimentomultiplo").addEventListener('click', (e) => {
+
 				document.getElementById("overlay2").style.visibility = "visible";
 				document.getElementById("overlay2").style.display = "flex";
-				
+
 				//clona
 				let righe = Array.from(document.getElementById("id_tabellaiscritti").cloneNode(true)
 					.querySelectorAll('tbody > tr'));
-				
+
 				let righe_votoNonInserito = righe.filter(riga =>
 					Array.from(riga.querySelectorAll('td')).at(-1).textContent === "non inserito"
 				)
-				
-				if(righe_votoNonInserito.length === 0){
+
+				if (righe_votoNonInserito.length === 0) {
 					document.getElementById("tabella_votononinserito").style.visibility = "hidden";
 					document.getElementById("no_votononinserito").style.visibility = "visible";
-					
+
 				}
-				else{
+				else {
 					document.getElementById("tabella_votononinserito").style.visibility = "visible";
 					document.getElementById("no_votononinserito").style.visibility = "hidden";
-					
+
 					let body = document.getElementById("id_tabella_votononinserito");
-					body.innerHTML= "";
-				
+					body.innerHTML = "";
+
 					righe_votoNonInserito.forEach(riga => {
 						//cancella bottone singola modifica
 						riga.children[0].remove();
-						
+
 						let formCell = document.createElement("td");
 						let input = document.createElement('input');
-							input.type = 'text';
-							input.name = 'voto';
-							
-							
+						input.type = 'text';
+						input.name = 'voto';
+
+
 						formCell.appendChild(input);
 						riga.appendChild(formCell);
-						
+
 						body.appendChild(riga);
-					
+
 					})
-					
-				
+
+
 				}
-				
-				
+
+
 			}
 			);
 			//chiudi se cliccki su x oppure fuori
 			document.getElementById("chiudiPopup2").addEventListener("click", function() {
-							document.getElementById("overlay2").style.display = "none";
-						});
+				document.getElementById("overlay2").style.display = "none";
+			});
 
-						// Chiudi se clicchi fuori dal popup
+			// Chiudi se clicchi fuori dal popup
 			document.getElementById("overlay2").addEventListener("click", function(e) {
 				if (e.target === this) {
 					this.style.display = "none";
-					}
+				}
 			});
-			
-			
-			
+
+
+
 			//bottone invio inserimento multiplo:
-			document.getElementById("id_eseguiinserimentomultiplo").addEventListener("click", function(){
+			document.getElementById("id_eseguiinserimentomultiplo").addEventListener("click", function() {
 				let righe = Array.from(document.getElementById("tabella_votononinserito").cloneNode(true)
-									.querySelectorAll('tbody > tr'));
-									
+					.querySelectorAll('tbody > tr'));
+
 				let righeModificate = righe.filter(riga =>
 					Array.from(riga.querySelectorAll('td')).at(-1).querySelector('input').value !== ""
-					)	
-													
-								
-				let idStudenti = righeModificate.map(riga => 
+				)
+
+
+				let idStudenti = righeModificate.map(riga =>
 					riga.querySelectorAll('td')[0].textContent
-					    );
+				);
 				let votiInseriti = righeModificate.map(riga =>
 					Array.from(riga.querySelectorAll('td')).at(-1).querySelector('input').value
-						);
-				
+				);
+
 				let votoGiusto = true;
-				if (votiInseriti.length === 0){
+				if (votiInseriti.length === 0) {
 					votoGiusto = false;
 				}
-				votiInseriti.forEach((voto) =>{
-				
-				let lode = "30 e lode";
+				votiInseriti.forEach((voto) => {
+
+					let lode = "30 e lode";
 					if (!(voto === lode || voto === "18" || voto === "19" || voto === "20" ||
-						voto === "21" || voto === "22"|| voto === "23" || voto === "24" ||
+						voto === "21" || voto === "22" || voto === "23" || voto === "24" ||
 						voto === "25" || voto === "26" || voto === "27" || voto === "28" ||
 						voto === "29" || voto === "30")
-					){
+					) {
 						votoGiusto = false;
-					}										
-				});		
-				
-					
-				if (!votoGiusto){
+					}
+				});
+
+
+				if (!votoGiusto) {
 					document.getElementById("erroreinput").style.visibility = "visible";
 					return;
 				}
-				document.getElementById("erroreinput").style.visibility = "hidden";		
-						
-						
-				
+				document.getElementById("erroreinput").style.visibility = "hidden";
+
+
+
 				let formData = new FormData();
 				formData.append("idStudenti", JSON.stringify(idStudenti));
 				formData.append("votiInseriti", JSON.stringify(votiInseriti));
 				formData.append("appelloid", sessionStorage.getItem("currentAppelloId"));
-				
-				makeCall("POST", "ModificaVotoMultipla", formData, function(req){
+
+				makeCall("POST", "ModificaVotoMultipla", formData, function(req) {
 					if (req.readyState == 4) {
-												var message = req.responseText;
-												if (req.status == 200) {
-													//refresh
-													pageOrchestrator.refresh(sessionStorage.getItem("currentCorsoId"),
-													sessionStorage.getItem("currentAppelloId"));
-
-
-
-												}
-												else {
-													alertContainer.textContent = message;
-																		}
-																		}
-				})
-				
-			});
-			
-			
-			
-				
-				
-				
-				
-				
-				
-			//form modifica voto singolo
-			//document.getElementById("erroreinput2").style.visibility = "hidden";
-			document.getElementById("id_modificavotoform").style.visibility = "hidden";
-			document.getElementById("invio_formmodificavoto").addEventListener('click', (e) =>{
-				form = e.target.closest("form")
-				
-				
-				let input = document.getElementById("modificasingola").value;
-				
-				let votoGiusto = true;
-							let lode = "30 e lode";
-									if (!(input === lode || input === "18" || input === "19" || input === "20" ||
-										input === "21" || input === "22"|| input === "23" || input === "24" ||
-										input === "25" || input === "26" || input === "27" || input === "28" ||
-										input === "29" || input === "30")
-									){
-										votoGiusto = false;
-									}										
-									
-				if (!votoGiusto){
-					document.getElementById("modificasingola").setCustomValidity("INSERIMENTO VOTO ERRATO");
-				}
-				else{
-					document.getElementById("modificasingola").setCustomValidity("");
-				}
-									
-									
-								
-								/*
-								if (!votoGiusto){
-									document.getElementById("erroreinput2").style.visibility = "visible";
-									return;
-								}
-								document.getElementById("erroreinput2").style.visibility = "hidden";		
-								*/
-				
-				
-				
-				
-				
-				
-				if (form.checkValidity()) {
-					makeCall("POST", "ModificaVoto", form, 
-					function(req){
-						if (req.readyState == 4) {
-							var message = req.responseText;
-							if (req.status == 200) {
-								//refresh
-								pageOrchestrator.refresh(sessionStorage.getItem("currentCorsoId"),
+						var message = req.responseText;
+						if (req.status == 200) {
+							//refresh
+							pageOrchestrator.refresh(sessionStorage.getItem("currentCorsoId"),
 								sessionStorage.getItem("currentAppelloId"));
 
 
 
-							}
-							else {
-								alertContainer.textContent = message;
-													}
-													}
+						}
+						else {
+							alertContainer.textContent = message;
+						}
 					}
-				 )
-				
-				
-				
+				})
+
+			});
+
+
+
+
+
+
+
+
+
+			//form modifica voto singolo
+			//document.getElementById("erroreinput2").style.visibility = "hidden";
+			document.getElementById("id_modificavotoform").style.visibility = "hidden";
+			document.getElementById("invio_formmodificavoto").addEventListener('click', (e) => {
+				form = e.target.closest("form")
+
+
+				let input = document.getElementById("modificasingola").value;
+
+				let votoGiusto = true;
+				let lode = "30 e lode";
+				if (!(input === lode || input === "18" || input === "19" || input === "20" ||
+					input === "21" || input === "22" || input === "23" || input === "24" ||
+					input === "25" || input === "26" || input === "27" || input === "28" ||
+					input === "29" || input === "30")
+				) {
+					votoGiusto = false;
 				}
-				else{
+
+				if (!votoGiusto) {
+					document.getElementById("modificasingola").setCustomValidity("INSERIMENTO VOTO ERRATO");
+				}
+				else {
+					document.getElementById("modificasingola").setCustomValidity("");
+				}
+
+
+
+				/*
+				if (!votoGiusto){
+					document.getElementById("erroreinput2").style.visibility = "visible";
+					return;
+				}
+				document.getElementById("erroreinput2").style.visibility = "hidden";		
+				*/
+
+
+
+
+
+
+				if (form.checkValidity()) {
+					makeCall("POST", "ModificaVoto", form,
+						function(req) {
+							if (req.readyState == 4) {
+								var message = req.responseText;
+								if (req.status == 200) {
+									//refresh
+									pageOrchestrator.refresh(sessionStorage.getItem("currentCorsoId"),
+										sessionStorage.getItem("currentAppelloId"));
+
+
+
+								}
+								else {
+									alertContainer.textContent = message;
+								}
+							}
+						}
+					)
+
+
+
+				}
+				else {
 					form.reportValidity();
 				}
-				
-				
+
+
 			})
-				
-				
+
+
 			//bottone pubblica
 			document.getElementById("id_pubblicaform").style.visibility = "hidden";
 			document.getElementById('id_pubblica').addEventListener('click', (e) => {
@@ -720,7 +721,7 @@
 								}
 								else {
 									document.getElementById("id_studentiverbalebody").innerHTML = ""; // empty the table body
-									
+
 									document.getElementById("noverbale").style.visibility = "hidden";
 									document.getElementById("id_verbale").style.visibility = "visible";
 									document.getElementById("id_studentiverbale").style.visibility = "visible";
@@ -734,52 +735,52 @@
 									document.getElementById("campo_verbaledataappello").innerText = verbaleToShow.dataAppello;
 									document.getElementById("campo_verbalecorso").innerText = verbaleToShow.idCorso;
 									document.getElementById("campo_verbalenomecorso").innerText = verbaleToShow.nomeCorso;
-									
-									
-									
-									
+
+
+
+
 									//studenti:
 									var row;
 									var body;
 									var id; var nome; var cognome; var matricola; var mail; var corsoLaurea; var voto;
 									verbaleToShow.studenti.forEach(function(studente) {
-									row = document.createElement("tr");	
-									body = document.getElementById("id_studentiverbalebody");
-									body.appendChild(row);
-									
-									id = document.createElement("td");
-									id.appendChild(document.createTextNode(studente.id));
-									
-									nome = document.createElement("td");
-									nome.appendChild(document.createTextNode(studente.nome));
-									
-									cognome = document.createElement("td");
-									cognome.appendChild(document.createTextNode(studente.cognome));
-									
-									matricola = document.createElement("td");
-									matricola.appendChild(document.createTextNode(studente.matricola));
-									
-									mail = document.createElement("td");
-									mail.appendChild(document.createTextNode(studente.mail));
-									
-									corsoLaurea = document.createElement("td");
-									corsoLaurea.appendChild(document.createTextNode(studente.corsoLaurea));
-									
-									voto = document.createElement("td");
-									voto.appendChild(document.createTextNode(studente.voto));
-									
-									
-									row.appendChild(id);
-									row.appendChild(nome);
-									row.appendChild(cognome);
-									row.appendChild(matricola);
-									row.appendChild(mail);
-									row.appendChild(corsoLaurea);
-									row.appendChild(voto);
+										row = document.createElement("tr");
+										body = document.getElementById("id_studentiverbalebody");
+										body.appendChild(row);
+
+										id = document.createElement("td");
+										id.appendChild(document.createTextNode(studente.id));
+
+										nome = document.createElement("td");
+										nome.appendChild(document.createTextNode(studente.nome));
+
+										cognome = document.createElement("td");
+										cognome.appendChild(document.createTextNode(studente.cognome));
+
+										matricola = document.createElement("td");
+										matricola.appendChild(document.createTextNode(studente.matricola));
+
+										mail = document.createElement("td");
+										mail.appendChild(document.createTextNode(studente.mail));
+
+										corsoLaurea = document.createElement("td");
+										corsoLaurea.appendChild(document.createTextNode(studente.corsoLaurea));
+
+										voto = document.createElement("td");
+										voto.appendChild(document.createTextNode(studente.voto));
+
+
+										row.appendChild(id);
+										row.appendChild(nome);
+										row.appendChild(cognome);
+										row.appendChild(matricola);
+										row.appendChild(mail);
+										row.appendChild(corsoLaurea);
+										row.appendChild(voto);
 									});
-				
-								
-							}
+
+
+								}
 							}
 							else {
 								alertContainer.textContent = message;
@@ -791,211 +792,211 @@
 
 
 
-			
-			
 
-			
-			
-			
+
+
+
+
+
 			//document.getElementById("verbali").style.display = "none";
 			document.getElementById("id_verbale2").style.visibility = "hidden";
 			document.getElementById("id_studentiverbale2").style.visibility = "hidden";
-			
+
 			//MOSTRA CORSI
 			document.getElementById("corsiEaltro").classList.remove("superhidden");
 			document.getElementById("verbali").classList.add("superhidden");
-			
+
 			document.getElementById("mostracorsi").addEventListener('click', () => {
 				document.getElementById("verbali").classList.add("superhidden");
 				document.getElementById("corsiEaltro").classList.remove("superhidden");
 				corsiList.show();
 			});
-			
-			
+
+
 			//MOSTRA VERBALI
 			document.getElementById("mostraverbali").addEventListener('click', () => {
 				//document.getElementById("corsiEaltro").style.display = "none";
 				document.getElementById("corsiEaltro").classList.add("superhidden");
 				document.getElementById("verbali").classList.remove("superhidden");
-				
+
 				makeCall("GET", "GetVerbali", null,
-									function(req) {
-										if (req.readyState == 4) {
-											var message = req.responseText;
-											if (req.status == 200) {
+					function(req) {
+						if (req.readyState == 4) {
+							var message = req.responseText;
+							if (req.status == 200) {
 
-												//refresh
-												
-												let verbaliToShow = JSON.parse(req.responseText);
-												let body = document.getElementById("id_tabellaverbali");
-												body.innerHTML = "";
-												let row;
-												let id; let dataCreazione; let oraCreazione; let idAppello; let dataAppello;let idCorso;
-												let nomeCorso; let paginaVerbale;
-												let bottone; let bottoneCell;
-												
-												
-												verbaliToShow.forEach(function(verbale){
-					
-												row = document.createElement("tr");	
-												body.appendChild(row);
-																					
-												id = document.createElement("td");
-												id.appendChild(document.createTextNode(verbale.id));
-																					
-												dataCreazione = document.createElement("td");
-												dataCreazione.appendChild(document.createTextNode(verbale.dataCreazione));
-																					
-												oraCreazione = document.createElement("td");
-												oraCreazione.appendChild(document.createTextNode(verbale.oraCreazione));
-																					
-												idAppello = document.createElement("td");
-												idAppello.appendChild(document.createTextNode(verbale.idAppello));
-																					
-												dataAppello = document.createElement("td");
-												dataAppello.appendChild(document.createTextNode(verbale.dataAppello));
-																					
-												idCorso = document.createElement("td");
-												idCorso.appendChild(document.createTextNode(verbale.idCorso));
-																					
-												nomeCorso = document.createElement("td");
-												nomeCorso.appendChild(document.createTextNode(verbale.nomeCorso));
-												
-												bottoneCell = document.createElement("td");
-												bottone = document.createElement("button");
-												bottoneCell.appendChild(bottone);
-												bottone.textContent = "BOTTONE VERBALE";
-									
-																					
-																					
-												row.appendChild(id);
-												row.appendChild(dataCreazione);
-												row.appendChild(oraCreazione);
-												row.appendChild(idAppello);
-												row.appendChild(dataAppello);
-												row.appendChild(idCorso);
-												row.appendChild(nomeCorso);	
-												row.appendChild(bottoneCell); 
-												
-												
-												
-												//xxxxxxxxxxxxx
-												bottone.addEventListener('click', (e) =>{
-													document.getElementById("id_verbale2").style.visibility = "visible";
-													
-													let vId = e.target.closest('tr').querySelector('td:first-child').textContent;
-													
-													makeCall("GET", "GetVerbale?verbaleid=" + vId, null, 
-														function(req){
-															if (req.readyState == 4) {
-																var message = req.responseText;
-																if (req.status == 200) {
-																	//xxxx
-																	
-																	
-																	
-																	let verbaleToShow = JSON.parse(req.responseText);
+								//refresh
 
-																										document.getElementById("campo_verbaleid2").innerText = verbaleToShow.id;
-																										document.getElementById("campo_verbaledatacreazione2").innerText = verbaleToShow.dataCreazione;
-																										document.getElementById("campo_verbaleora2").innerText = verbaleToShow.oraCreazione;
-																										document.getElementById("campo_verbaleappello2").innerText = verbaleToShow.idAppello;
-																										document.getElementById("campo_verbaledataappello2").innerText = verbaleToShow.dataAppello;
-																										document.getElementById("campo_verbalecorso2").innerText = verbaleToShow.idCorso;
-																										document.getElementById("campo_verbalenomecorso2").innerText = verbaleToShow.nomeCorso;
-																										
-																										
-																										
-																										document.getElementById("id_studentiverbale2").style.visibility = "visible";
-																										//studenti:
-																										let row;
-																										let body;
-																										let id; let nome; let cognome; let matricola; let mail; let corsoLaurea; let voto;
-																										document.getElementById("id_studentiverbalebody2").innerHTML = "";
-																										
-																										verbaleToShow.studenti.forEach(function(studente) {
-																										row = document.createElement("tr");	
-																										body = document.getElementById("id_studentiverbalebody2");
-																										body.appendChild(row);
-																										
-																										id = document.createElement("td");
-																										id.appendChild(document.createTextNode(studente.id));
-																										
-																										nome = document.createElement("td");
-																										nome.appendChild(document.createTextNode(studente.nome));
-																										
-																										cognome = document.createElement("td");
-																										cognome.appendChild(document.createTextNode(studente.cognome));
-																										
-																										matricola = document.createElement("td");
-																										matricola.appendChild(document.createTextNode(studente.matricola));
-																										
-																										mail = document.createElement("td");
-																										mail.appendChild(document.createTextNode(studente.mail));
-																										
-																										corsoLaurea = document.createElement("td");
-																										corsoLaurea.appendChild(document.createTextNode(studente.corsoLaurea));
-																										
-																										voto = document.createElement("td");
-																										voto.appendChild(document.createTextNode(studente.voto));
-																										
-																										
-																										row.appendChild(id);
-																										row.appendChild(nome);
-																										row.appendChild(cognome);
-																										row.appendChild(matricola);
-																										row.appendChild(mail);
-																										row.appendChild(corsoLaurea);
-																										row.appendChild(voto);
-																										});
-																	
-																	
-																	
-																	
-																	
-																
-																}
-																else {
-																								alertContainer.textContent = message;
-																							}
-															
-														}
-														}
-														);
-													
-												});
-												
-												
-												
-												
-											});
-																		
+								let verbaliToShow = JSON.parse(req.responseText);
+								let body = document.getElementById("id_tabellaverbali");
+								body.innerHTML = "";
+								let row;
+								let id; let dataCreazione; let oraCreazione; let idAppello; let dataAppello; let idCorso;
+								let nomeCorso; let paginaVerbale;
+								let bottone; let bottoneCell;
 
+
+								verbaliToShow.forEach(function(verbale) {
+
+									row = document.createElement("tr");
+									body.appendChild(row);
+
+									id = document.createElement("td");
+									id.appendChild(document.createTextNode(verbale.id));
+
+									dataCreazione = document.createElement("td");
+									dataCreazione.appendChild(document.createTextNode(verbale.dataCreazione));
+
+									oraCreazione = document.createElement("td");
+									oraCreazione.appendChild(document.createTextNode(verbale.oraCreazione));
+
+									idAppello = document.createElement("td");
+									idAppello.appendChild(document.createTextNode(verbale.idAppello));
+
+									dataAppello = document.createElement("td");
+									dataAppello.appendChild(document.createTextNode(verbale.dataAppello));
+
+									idCorso = document.createElement("td");
+									idCorso.appendChild(document.createTextNode(verbale.idCorso));
+
+									nomeCorso = document.createElement("td");
+									nomeCorso.appendChild(document.createTextNode(verbale.nomeCorso));
+
+									bottoneCell = document.createElement("td");
+									bottone = document.createElement("button");
+									bottoneCell.appendChild(bottone);
+									bottone.textContent = "BOTTONE VERBALE";
+
+
+
+									row.appendChild(id);
+									row.appendChild(dataCreazione);
+									row.appendChild(oraCreazione);
+									row.appendChild(idAppello);
+									row.appendChild(dataAppello);
+									row.appendChild(idCorso);
+									row.appendChild(nomeCorso);
+									row.appendChild(bottoneCell);
+
+
+
+
+									bottone.addEventListener('click', (e) => {
+										document.getElementById("id_verbale2").style.visibility = "visible";
+
+										let vId = e.target.closest('tr').querySelector('td:first-child').textContent;
+
+										makeCall("GET", "GetVerbale?verbaleid=" + vId, null,
+											function(req) {
+												if (req.readyState == 4) {
+													var message = req.responseText;
+													if (req.status == 200) {
+														//xxxx
+
+
+
+														let verbaleToShow = JSON.parse(req.responseText);
+
+														document.getElementById("campo_verbaleid2").innerText = verbaleToShow.id;
+														document.getElementById("campo_verbaledatacreazione2").innerText = verbaleToShow.dataCreazione;
+														document.getElementById("campo_verbaleora2").innerText = verbaleToShow.oraCreazione;
+														document.getElementById("campo_verbaleappello2").innerText = verbaleToShow.idAppello;
+														document.getElementById("campo_verbaledataappello2").innerText = verbaleToShow.dataAppello;
+														document.getElementById("campo_verbalecorso2").innerText = verbaleToShow.idCorso;
+														document.getElementById("campo_verbalenomecorso2").innerText = verbaleToShow.nomeCorso;
+
+
+
+														document.getElementById("id_studentiverbale2").style.visibility = "visible";
+														//studenti:
+														let row;
+														let body;
+														let id; let nome; let cognome; let matricola; let mail; let corsoLaurea; let voto;
+														document.getElementById("id_studentiverbalebody2").innerHTML = "";
+
+														verbaleToShow.studenti.forEach(function(studente) {
+															row = document.createElement("tr");
+															body = document.getElementById("id_studentiverbalebody2");
+															body.appendChild(row);
+
+															id = document.createElement("td");
+															id.appendChild(document.createTextNode(studente.id));
+
+															nome = document.createElement("td");
+															nome.appendChild(document.createTextNode(studente.nome));
+
+															cognome = document.createElement("td");
+															cognome.appendChild(document.createTextNode(studente.cognome));
+
+															matricola = document.createElement("td");
+															matricola.appendChild(document.createTextNode(studente.matricola));
+
+															mail = document.createElement("td");
+															mail.appendChild(document.createTextNode(studente.mail));
+
+															corsoLaurea = document.createElement("td");
+															corsoLaurea.appendChild(document.createTextNode(studente.corsoLaurea));
+
+															voto = document.createElement("td");
+															voto.appendChild(document.createTextNode(studente.voto));
+
+
+															row.appendChild(id);
+															row.appendChild(nome);
+															row.appendChild(cognome);
+															row.appendChild(matricola);
+															row.appendChild(mail);
+															row.appendChild(corsoLaurea);
+															row.appendChild(voto);
+														});
+
+
+
+
+
+
+													}
+													else {
+														alertContainer.textContent = message;
+													}
+
+												}
 											}
-											else {
-												alertContainer.textContent = message;
-											}
-										}
-									}
-								);
-							});
-							
-							
+										);
 
-					
-							
+									});
+
+
+
+
+								});
+
+
+							}
+							else {
+								alertContainer.textContent = message;
+							}
+						}
+					}
+				);
+			});
+
+
+
+
+
 
 			//logout
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
 				//window.sessionStorage.removeItem('user');
 				window.sessionStorage.clear();
 			})
-			
-			
-			
-			
-			
-			
+
+
+
+
+
+
 			//per evitare flckering
 			//document.getElementById("corsiEaltro").style.visibility = "visible";
 			document.getElementById("corsiEaltro").classList.remove("superhidden");
@@ -1004,15 +1005,14 @@
 
 
 
-		this.refresh = function(currentCorso, currentAppello, showVerbali) { // currentCorso initially null at start
+		this.refresh = function(currentCorso, currentAppello) { // currentCorso initially null at start
 			alertContainer.textContent = "";        // not null after creation of status change
 			corsiList.reset();
 			appelliList.reset();
 			iscritti.reset();
 			document.getElementById("overlay").style.display = "none";
 			document.getElementById("overlay2").style.display = "none";
-			
-			if (showVerbali === undefined){
+
 			corsiList.show(function() {
 				if (currentCorso != undefined) {
 					corsiList.autoclick(currentCorso);
@@ -1020,11 +1020,8 @@
 						appelliList.autoclick(currentAppello)
 					}
 				}
-			}); // closure preserves visibility of this
-			}
-			else{
-				//show verbali
-			}
+			});
+
 
 
 
