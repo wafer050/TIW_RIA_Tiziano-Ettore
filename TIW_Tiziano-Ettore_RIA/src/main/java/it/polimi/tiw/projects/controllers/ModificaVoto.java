@@ -63,7 +63,7 @@ public class ModificaVoto extends HttpServlet {
         System.out.println("voto: " + voto);
 		
 		try {
-		if (idStudente != null && idAppello != null && voto != null) {
+		if (idStudente != null && idAppello != null && voto != null && voto != "") {
 			idStud = Integer.parseInt(idStudente);
 			idApp = Integer.parseInt(idAppello);
 		} else {
