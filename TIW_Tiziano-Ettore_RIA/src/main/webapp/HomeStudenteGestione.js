@@ -263,11 +263,6 @@
 			const rifiutaBtn = document.getElementById("rifiutaBtn");
 			if (((Number(esito.voto) >= 18 && Number(esito.voto) <= 30) || esito.voto === "30 e lode") && esito.statoDiValutazione === "pubblicato") {
 				rifiutaBtn.classList.remove("superhidden");
-				rifiutaBtn.onclick = function() {
-					//TODO rifiuto del voto
-
-					self.update(esito);
-				};
 			} else {
 				rifiutaBtn.classList.add("superhidden");
 			}
@@ -298,44 +293,76 @@
 
 			//Bottoni
 
+
+			//bottone rifiuta
+			document.getElementById("rifiutaBtn").addEventListener('click', (e) => {
+				makeCall("POST", "RifiutaVoto?appelloid=" + sessionStorage.getItem("currentAppelloId"), null,
+					function(req) {
+						if (req.readyState == 4) {
+							var message = req.responseText;
+							if (req.status == 200) {
+								//refresh
+								pageOrchestrator.refresh(sessionStorage.getItem("currentCorsoId"),
+									sessionStorage.getItem("currentAppelloId"));
+							}
+							else {
+								alertContainer.textContent = message;
+							}
+						}
+					}
+				);
+			})
+
+			/*
+			//chiudi se cliccki su x oppure fuori
+			document.getElementById("chiudiPopup2").addEventListener("click", function() {
+				document.getElementById("overlay2").style.display = "none";
+			});
+			// Chiudi se clicchi fuori dal popup
+			document.getElementById("overlay").addEventListener("click", function(e) {
+				if (e.target === this) {
+					this.style.display = "none";
+				}
+			});
+			*/
+
+
 			//MOSTRA CORSI
 			document.getElementById("corsiEaltro").classList.remove("superhidden");
+			document.getElementById("mostracorsi").addEventListener('click', () => {
+				document.getElementById("corsiEaltro").classList.remove("superhidden");
+				corsiList.show();
+			});
 
 			//logout
-
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
-				//window.sessionStorage.removeItem('user');
 				window.sessionStorage.clear();
 			})
 
 
 			//per evitare flckering
-			//document.getElementById("corsiEaltro").style.visibility = "visible";
 			//document.getElementById("corsiEaltro").classList.remove("superhidden");
 		}
 
 
 
-		this.refresh = function(currentCorso, currentAppello, showVerbali) { // currentCorso initially null at start
+		this.refresh = function(currentCorso, currentAppello) { // currentCorso initially null at start
 			alertContainer.textContent = "";        // not null after creation of status change
 			corsiList.reset();
 			appelliList.reset();
+			esito.reset();
 			//iscritti.reset();
+			//document.getElementById("overlay").style.display = "none";
+			//document.getElementById("overlay2").style.display = "none";
 
-			if (showVerbali === undefined) {
-				corsiList.show(function() {
-					if (currentCorso != undefined) {
-						corsiList.autoclick(currentCorso);
-						if (currentAppello != undefined) {
-							appelliList.autoclick(currentAppello)
-						}
+			corsiList.show(function() {
+				if (currentCorso != undefined) {
+					corsiList.autoclick(currentCorso);
+					if (currentAppello != undefined) {
+						appelliList.autoclick(currentAppello)
 					}
-				}); // closure preserves visibility of this
-			}
-			else {
-				//show verbali
-			}
-
+				}
+			});
 		};
 
 	}
