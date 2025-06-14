@@ -1,21 +1,21 @@
-{ // avoid variables ending up in the global scope
+{ /// avoid variables ending up in the global scope
 
-	// page components
-	//let missionDetails, missionsList, wizard,
-	let corsiList, appelliList, wizard, //iscritti
-		pageOrchestrator = new PageOrchestrator(); // main controller
+	/// page components
+	///let missionDetails, missionsList, wizard,
+	let corsiList, appelliList, esito,
+		pageOrchestrator = new PageOrchestrator(); ///main controller
 
 	window.addEventListener("load", () => {
 		if (sessionStorage.getItem("user") == null) {
 			window.location.href = "index.html";
 		} else {
-			pageOrchestrator.start(); // initialize the components
+			pageOrchestrator.start(); /// initialize the components
 			pageOrchestrator.refresh();
-		} // display initial content
+		} /// display initial content
 	}, false);
 
 
-	// Constructors of view components
+	///Constructors of view components
 
 	function PersonalMessage(_user, messagecontainer) {
 		this.nome = JSON.parse(_user).nome;
@@ -48,13 +48,13 @@
 								self.alert.textContent = "No corsi yet!";
 								return;
 							}
-							self.update(corsiToShow); // self visible by closure
-							if (next) next(); // show the default element of the list if present
+							self.update(corsiToShow); /// self visible by closure
+							if (next) next(); /// show the default element of the list if present
 
 						} else if (req.status == 403) {
 							window.location.href = req.getResponseHeader("Location");
-							//Location definito nel filtro loginChecker
-							//window.sessionStorage.removeItem('user');
+							///Location definito nel filtro loginChecker
+							///window.sessionStorage.removeItem('user');
 							window.sessionStorage.clear();
 						}
 						else {
@@ -68,10 +68,10 @@
 
 		this.update = function(listaCorsi) {
 			var elem, i, row, idcell, namecell, nameanchor, linkText;
-			this.listcontainerbody.innerHTML = ""; // empty the table body
-			// build updated list
+			this.listcontainerbody.innerHTML = ""; /// empty the table body
+			/// build updated list
 			var self = this;
-			listaCorsi.forEach(function(corso) { // self visible here, not this
+			listaCorsi.forEach(function(corso) { /// self visible here, not this
 				row = document.createElement("tr");
 				idcell = document.createElement("td");
 				idcell.textContent = corso.id;
@@ -85,18 +85,18 @@
 				namecell.appendChild(nameanchor);
 				linkText = document.createTextNode(corso.name);
 				nameanchor.appendChild(linkText);
-				// make list item clickable
-				nameanchor.setAttribute('corsoid', corso.id); // set a custom HTML attribute
+				/// make list item clickable
+				nameanchor.setAttribute('corsoid', corso.id); /// set a custom HTML attribute
 				nameanchor.addEventListener("click", (e) => {
-					// dependency via module parameter
+					/// dependency via module parameter
 					sessionStorage.setItem("currentCorsoId", e.target.getAttribute("corsoid"));
-					appelliList.show(e.target.getAttribute("corsoid")); // the list must know the details container
+					appelliList.show(e.target.getAttribute("corsoid")); /// the list must know the details container
 				}, false);
 				nameanchor.href = "#";
 				row.appendChild(namecell);
 				self.listcontainerbody.appendChild(row);
 			});
-			//document.getElementById("corsiEaltro").classList.remove("superhidden");
+			///document.getElementById("corsiEaltro").classList.remove("superhidden");
 			this.listcontainer.style.visibility = "visible";
 
 		}
@@ -104,7 +104,7 @@
 		this.autoclick = function(corsoId) {
 			var e = new Event("click");
 			var selector = "a[corsoid='" + corsoId + "']";
-			var anchorToClick =  // the first the one with that id
+			var anchorToClick =  /// the first the one with that id
 				(corsoId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
 			if (anchorToClick) anchorToClick.dispatchEvent(e);
 		}
@@ -137,13 +137,13 @@
 								self.alert.textContent = "No appelli yet!";
 								return;
 							}
-							self.update(appelliToShow); // self visible by closure
-							if (next) next(); // show the default element of the list if present
+							self.update(appelliToShow); /// self visible by closure
+							if (next) next(); /// show the default element of the list if present
 
 						} else if (req.status == 403) {
 							window.location.href = req.getResponseHeader("Location");
-							//Location definito nel filtro loginChecker
-							//window.sessionStorage.removeItem('user');
+							///Location definito nel filtro loginChecker
+							///window.sessionStorage.removeItem('user');
 							window.sessionStorage.clear();
 						}
 						else {
@@ -157,10 +157,10 @@
 
 		this.update = function(listaAppelli) {
 			var elem, i, row, datecell, dateanchor, linkText;
-			this.listcontainerbody.innerHTML = ""; // empty the table body
-			// build updated list
+			this.listcontainerbody.innerHTML = ""; /// empty the table body
+			/// build updated list
 			var self = this;
-			listaAppelli.forEach(function(appello) { // self visible here, not this
+			listaAppelli.forEach(function(appello) { /// self visible here, not this
 				row = document.createElement("tr");
 
 				datecell = document.createElement("td");
@@ -169,10 +169,10 @@
 				datecell.appendChild(dateanchor);
 				linkText = document.createTextNode(appello.date);
 				dateanchor.appendChild(linkText);
-				// make list item clickable
-				dateanchor.setAttribute('appelloid', appello.id); // set a custom HTML attribute
+				/// make list item clickable
+				dateanchor.setAttribute('appelloid', appello.id); /// set a custom HTML attribute
 				dateanchor.addEventListener("click", (e) => {
-					// dependency via module parameter
+					/// dependency via module parameter
 					sessionStorage.setItem("currentAppelloId", e.target.getAttribute("appelloid"));
 					//TODO 
 					esito.show(e.target.getAttribute("appelloid"));
@@ -189,7 +189,7 @@
 		this.autoclick = function(appelloId) {
 			var e = new Event("click");
 			var selector = "a[appelloid='" + appelloId + "']";
-			var anchorToClick =  // the first the one with that id
+			var anchorToClick =  /// the first the one with that id
 				(appelloId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
 			if (anchorToClick) anchorToClick.dispatchEvent(e);
 		}
@@ -332,10 +332,6 @@
 
 			//MOSTRA CORSI
 			document.getElementById("corsiEaltro").classList.remove("superhidden");
-			document.getElementById("mostracorsi").addEventListener('click', () => {
-				document.getElementById("corsiEaltro").classList.remove("superhidden");
-				corsiList.show();
-			});
 
 			//logout
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
@@ -349,14 +345,12 @@
 
 
 
-		this.refresh = function(currentCorso, currentAppello) { // currentCorso initially null at start
-			alertContainer.textContent = "";        // not null after creation of status change
+		this.refresh = function(currentCorso, currentAppello) { /// currentCorso initially null at start
+			alertContainer.textContent = "";        /// not null after creation of status change
 			corsiList.reset();
 			appelliList.reset();
 			esito.reset();
-			//iscritti.reset();
 			//document.getElementById("overlay").style.display = "none";
-			//document.getElementById("overlay2").style.display = "none";
 
 			corsiList.show(function() {
 				if (currentCorso != undefined) {
