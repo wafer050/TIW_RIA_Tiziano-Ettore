@@ -195,77 +195,83 @@
 		}
 
 	}
-		
-	
+
+
 	//da rivedere la forma per renderlo omogeneo col resto del codice
 	function Esito(_alert) {
-	    this.alert = _alert;
+		this.alert = _alert;
 
-	    this.reset = function() {
-	        document.getElementById("esitoSection").classList.add("superhidden");
-	        document.getElementById("datiEsito").classList.add("superhidden");
-	        document.getElementById("rifiutaBtn").classList.add("superhidden");
-	        document.getElementById("votoRifiutatoMsg").classList.add("superhidden");
-	        document.getElementById("esitoMessage").textContent = "";
-	    };
+		this.reset = function() {
+			document.getElementById("esitoSection").classList.add("superhidden");
+			document.getElementById("datiEsito").classList.add("superhidden");
+			document.getElementById("rifiutaBtn").classList.add("superhidden");
+			document.getElementById("votoRifiutatoMsg").classList.add("superhidden");
+			document.getElementById("esitoNonPubblicatoMessage").classList.add("superhidden");
+		};
 
-	    this.show = function(appelloid, next) {
-	        var self = this;
-	        makeCall("GET", "GetEsitoStudente?appelloid=" + sessionStorage.getItem("currentAppelloId"), null, function(req) {
-	            if (req.readyState == 4) {
-	                var message = req.responseText;
-	                if (req.status == 200) {
-	                    var esito = JSON.parse(req.responseText);
-						if(esito.statoDiValutazione === "non inserito" || esito.statoDiValutazione === "inserito") {
-	                        self.reset();
-	                        document.getElementById("esitoSection").classList.remove("superhidden");
-	                        document.getElementById("esitoMessage").textContent = "Voto non ancora pubblicato";
-	                    } else {
-	                        self.update(esito);
-	                        if (next) next();
-	                    }
-	                } else if (req.status == 403) {
-	                    window.location.href = req.getResponseHeader("Location");
-	                    window.sessionStorage.clear();
-	                } else {
-	                    self.alert.textContent = message;
-	                }
-	            }
-	        });
-	    };
+		this.show = function(appelloid, next) {
+			var self = this;
+			makeCall("GET", "GetEsitoStudente?appelloid=" + sessionStorage.getItem("currentAppelloId"), null, function(req) {
+				if (req.readyState == 4) {
+					var message = req.responseText;
+					if (req.status == 200) {
+						var esito = JSON.parse(req.responseText);
+						if (esito.statoDiValutazione === "non inserito" || esito.statoDiValutazione === "inserito") {
+							self.reset();
+							document.getElementById("esitoSection").classList.remove("superhidden");
+							document.getElementById("esitoNonPubblicatoMessage").classList.remove("superhidden");
+						} else {
+							self.update(esito);
+							if (next) next();
+						}
+					} else if (req.status == 403) {
+						window.location.href = req.getResponseHeader("Location");
+						window.sessionStorage.clear();
+					} else {
+						self.alert.textContent = message;
+					}
+				}
+			});
+		};
 
-	    this.update = function(esito) {
-	        // Mostra sezione
-	        document.getElementById("esitoSection").classList.remove("superhidden");
-	        document.getElementById("esitoMessage").classList.add("superhidden");
-	        document.getElementById("datiEsito").classList.remove("superhidden");
+		this.update = function(esito) {
+			var self = this;
+			// Mostra sezione
+			document.getElementById("esitoSection").classList.remove("superhidden");
+			document.getElementById("esitoNonPubblicatoMessage").classList.add("superhidden");
+			document.getElementById("datiEsito").classList.remove("superhidden");
 
-	        // Popola i dati
-	        document.getElementById("esitoStudente").textContent = esito.nome + " " + esito.cognome;
+			// Popola i dati
+			document.getElementById("esitoStudente").textContent = esito.nome + " " + esito.cognome;
 			document.getElementById("esitoMatricola").textContent = esito.matricola;
 			document.getElementById("esitoEmail").textContent = esito.mail;
 			document.getElementById("esitoCorsoDiLaurea").textContent = esito.corsoLaurea;
 			document.getElementById("esitoCorso").textContent = esito.nomeCorso;
-	        document.getElementById("esitoData").textContent = esito.dataAppello;
-	        document.getElementById("esitoVoto").textContent = esito.voto;
+			document.getElementById("esitoData").textContent = esito.dataAppello;
+			document.getElementById("esitoVoto").textContent = esito.voto;
 			document.getElementById("esitoStatoDiValutazione").textContent = esito.statoDiValutazione;
 
-	        // Gestione bottone RIFIUTA
-	        const rifiutaBtn = document.getElementById("rifiutaBtn");
-	        const votoRifiutatoMsg = document.getElementById("votoRifiutatoMsg");
+			//testo voto rifiutato
+			const votoRifiutatoMsg = document.getElementById("votoRifiutatoMsg");
+			if (esito.statoDiValutazione === "rifiutato") {
+				votoRifiutatoMsg.classList.remove("superhidden");
+			} else {
+				votoRifiutatoMsg.classList.add("superhidden");
+			}
 
-	        if (esito.voto >= 18 && esito.voto <= 30 && esito.statoDiValutazione === "pubblicato") {
-	            rifiutaBtn.classList.remove("superhidden");
-	            rifiutaBtn.onclick = function() {
+			// Gestione bottone RIFIUTA
+			const rifiutaBtn = document.getElementById("rifiutaBtn");
+			if (((Number(esito.voto) >= 18 && Number(esito.voto) <= 30) || esito.voto === "30 e lode") && esito.statoDiValutazione === "pubblicato") {
+				rifiutaBtn.classList.remove("superhidden");
+				rifiutaBtn.onclick = function() {
 					//TODO rifiuto del voto
-	                document.getElementById("esitoVoto").textContent = esito.voto + " (Il voto è stato rifiutato)";
-	                votoRifiutatoMsg.classList.remove("superhidden");
-	                rifiutaBtn.classList.add("superhidden");
-	            };
-	        } else {
-	            rifiutaBtn.classList.add("superhidden");
-	        }
-	    };
+
+					self.update(esito);
+				};
+			} else {
+				rifiutaBtn.classList.add("superhidden");
+			}
+		};
 	}
 
 
