@@ -174,9 +174,7 @@
 				dateanchor.addEventListener("click", (e) => {
 					/// dependency via module parameter
 					sessionStorage.setItem("currentAppelloId", e.target.getAttribute("appelloid"));
-					//TODO 
 					esito.show(e.target.getAttribute("appelloid"));
-
 				}, false);
 				dateanchor.href = "#";
 				row.appendChild(datecell);
@@ -339,7 +337,7 @@
 			})
 
 
-			//per evitare flckering
+			//per evitare flickering
 			//document.getElementById("corsiEaltro").classList.remove("superhidden");
 		}
 
