@@ -96,7 +96,9 @@
 
 					if (sessionStorage.getItem("currentAppelloId") !== null) {
 						appelliList.show(e.target.getAttribute("corsoid"), function() { 
-							appelliList.autoclick(sessionStorage.getItem("currentAppelloId")) });
+							//appelliList.autoclick(sessionStorage.getItem("currentAppelloId"))
+							appelliList.autoclick();
+						 });
 					}
 					else {
 						appelliList.show(e.target.getAttribute("corsoid")); // the list must know the details container
