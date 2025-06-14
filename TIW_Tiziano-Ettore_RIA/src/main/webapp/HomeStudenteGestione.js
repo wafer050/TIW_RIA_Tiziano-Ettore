@@ -289,10 +289,13 @@
 				document.getElementById("id_tabellaappelli"),
 				document.getElementById("id_tabellaappellibody"));
 
-			esito = new Esito(alertContainer);
+			esito = new Esito(
+				alertContainer
+			);
 
 			//Bottoni
 
+			
 
 			//bottone rifiuta
 			document.getElementById("rifiutaBtn").addEventListener('click', (e) => {
