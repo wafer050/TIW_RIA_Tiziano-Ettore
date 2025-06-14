@@ -202,7 +202,7 @@
 		this.reset = function() {
 			document.getElementById("esitoSection").classList.add("superhidden");
 			document.getElementById("datiEsito").classList.add("superhidden");
-			document.getElementById("rifiutaBtn").classList.add("superhidden");
+			document.getElementById("cestino").classList.add("superhidden");
 			document.getElementById("votoRifiutatoMsg").classList.add("superhidden");
 			document.getElementById("esitoNonPubblicatoMessage").classList.add("superhidden");
 		};
@@ -258,11 +258,11 @@
 			}
 
 			// Gestione bottone RIFIUTA
-			const rifiutaBtn = document.getElementById("rifiutaBtn");
+			const cestino = document.getElementById("cestino");
 			if (((Number(esito.voto) >= 18 && Number(esito.voto) <= 30) || esito.voto === "30 e lode") && esito.statoDiValutazione === "pubblicato") {
-				rifiutaBtn.classList.remove("superhidden");
+				cestino.classList.remove("superhidden");
 			} else {
-				rifiutaBtn.classList.add("superhidden");
+				cestino.classList.add("superhidden");
 			}
 		};
 	}
@@ -291,8 +291,13 @@
 				alertContainer
 			);
 
-			//bottone rifiuta
-			document.getElementById("rifiutaBtn").addEventListener('click', (e) => {
+			//cestino
+			document.getElementById("cestino").addEventListener('dragover', (e) => {
+				e.preventDefault();
+			})
+
+			document.getElementById("cestino").addEventListener('drop', (e) => {
+				e.preventDefault();
 				document.getElementById("overlay").style.display = "flex";
 			})
 
@@ -313,7 +318,7 @@
 						}
 					}
 				);
-				
+
 			})
 
 			///chiudi se clicchi cancella

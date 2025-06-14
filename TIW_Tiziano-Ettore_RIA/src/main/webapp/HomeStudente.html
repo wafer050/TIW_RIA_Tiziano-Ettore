@@ -58,7 +58,7 @@
 		<p id="esitoNonPubblicatoMessage" class="superhidden">
 			<em>Voto non ancora pubblicato</em>
 		</p>
-		<div id="datiEsito" class="superhidden">
+		<div id="datiEsito" draggable="true" class="superhidden">
 			<p>
 				<strong>Studente:</strong> <span id="esitoStudente"></span>
 			</p>
@@ -84,11 +84,12 @@
 				<strong>Stato di valutazione:</strong> <span
 					id="esitoStatoDiValutazione"></span>
 			</p>
-			<button id="rifiutaBtn">RIFIUTA</button>
+		</div>
+			<div id="cestino" class="dropzone"> &lt;Icona cestino&gt;> RIFIUTA</div>
+			
 			<p id="votoRifiutatoMsg" class="superhidden">
 				<em>Il voto è stato rifiutato</em>
 			</p>
-		</div>
 	</div>
 
 
