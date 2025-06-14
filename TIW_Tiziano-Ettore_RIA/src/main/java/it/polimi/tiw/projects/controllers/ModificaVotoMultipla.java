@@ -68,6 +68,13 @@ public class ModificaVotoMultipla extends HttpServlet {
 				idStud = new Gson().fromJson(idStudenti, int[].class);
 				votiIns = new Gson().fromJson(votiInseriti, String[].class);			
 				idApp = Integer.parseInt(idAppello);
+				
+				for (String voto : votiIns) {
+					if (voto == "") {
+						throw new IllegalArgumentException("voto vuoto");
+					}
+				}
+				
 			} else {
 				response.sendError(HttpServletResponse.SC_BAD_GATEWAY,
 						"1) Failure in voto's database insertion");
