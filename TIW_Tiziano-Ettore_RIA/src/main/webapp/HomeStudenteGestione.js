@@ -291,12 +291,14 @@
 				alertContainer
 			);
 
-			//Bottoni
-
-			
-
 			//bottone rifiuta
 			document.getElementById("rifiutaBtn").addEventListener('click', (e) => {
+				document.getElementById("overlay").style.display = "flex";
+			})
+
+			//rifiuta se clicchi conferma
+			document.getElementById("confermaRifiuto").addEventListener('click', (e) => {
+				//document.getElementById("overlay").style.display = "none";
 				makeCall("POST", "RifiutaVoto?appelloid=" + sessionStorage.getItem("currentAppelloId"), null,
 					function(req) {
 						if (req.readyState == 4) {
@@ -305,27 +307,27 @@
 								//refresh
 								pageOrchestrator.refresh(sessionStorage.getItem("currentCorsoId"),
 									sessionStorage.getItem("currentAppelloId"));
-							}
-							else {
+							} else {
 								alertContainer.textContent = message;
 							}
 						}
 					}
 				);
+				
 			})
 
-			/*
-			//chiudi se cliccki su x oppure fuori
-			document.getElementById("chiudiPopup2").addEventListener("click", function() {
-				document.getElementById("overlay2").style.display = "none";
+			///chiudi se clicchi cancella
+			document.getElementById("cancellaRifiuto").addEventListener("click", function() {
+				document.getElementById("overlay").style.display = "none";
 			});
+
 			// Chiudi se clicchi fuori dal popup
 			document.getElementById("overlay").addEventListener("click", function(e) {
 				if (e.target === this) {
 					this.style.display = "none";
 				}
 			});
-			*/
+
 
 
 			//MOSTRA CORSI
@@ -348,7 +350,7 @@
 			corsiList.reset();
 			appelliList.reset();
 			esito.reset();
-			//document.getElementById("overlay").style.display = "none";
+			document.getElementById("overlay").style.display = "none";
 
 			corsiList.show(function() {
 				if (currentCorso != undefined) {
