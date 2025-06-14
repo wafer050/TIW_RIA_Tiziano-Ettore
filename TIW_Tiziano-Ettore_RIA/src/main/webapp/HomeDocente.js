@@ -88,6 +88,59 @@
 				// make list item clickable
 				nameanchor.setAttribute('corsoid', corso.id); // set a custom HTML attribute
 				nameanchor.addEventListener("click", (e) => {
+					
+					
+					
+					
+					//xxxxxxxxx
+					 let clickedCorsoId = e.target.getAttribute("corsoid");
+					    let previousCorsoId = sessionStorage.getItem("currentCorsoId");
+					    
+					    sessionStorage.setItem("currentCorsoId", clickedCorsoId);
+					    let isFirstTime = sessionStorage.getItem("firstTimeClick") === "true";
+						
+						let corsoDiverso = false;
+					    if (clickedCorsoId !== previousCorsoId) {
+					        sessionStorage.removeItem("currentAppelloId");
+							corsoDiverso = true;
+					    }
+
+					    if (isFirstTime === true) {
+					        // Comportamento prima volta
+					        //sessionStorage.setItem("firstTimeClick", "false");
+					        appelliList.show(clickedCorsoId); // Mostra solo appelli
+					    } else {
+					        // Comportamento normale
+					        appelliList.show(clickedCorsoId, () => {
+					            let targetAppelloId = sessionStorage.getItem("currentAppelloId");
+								 if (corsoDiverso) {
+								                //autoclick sul primo appello
+								                appelliList.autoclick();
+								                // Aggiorna sessionStorage con il primo appello
+								                let firstAppello = appelliList.listcontainerbody.querySelector("a[appelloid]");
+								                if (firstAppello) {
+								                    sessionStorage.setItem("currentAppelloId", firstAppello.getAttribute("appelloid"));
+								                }
+								            } else 
+													//if (document.querySelector(`a[appelloid='${targetAppelloId}']`)) {
+								                // Altrimenti autoclick sull'appello salvato
+								                appelliList.autoclick(targetAppelloId);
+								            //}
+								        });
+								    }
+								}, false);
+
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					/*
 					// dependency via module parameter
 					sessionStorage.setItem("currentCorsoId", e.target.getAttribute("corsoid"));
 
@@ -108,6 +161,7 @@
 
 
 				}, false);
+				*/
 				nameanchor.href = "#";
 				row.appendChild(namecell);
 				self.listcontainerbody.appendChild(row);
@@ -214,6 +268,9 @@
 				// make list item clickable
 				dateanchor.setAttribute('appelloid', appello.id); // set a custom HTML attribute
 				dateanchor.addEventListener("click", (e) => {
+					
+						sessionStorage.setItem("firstTimeClick", false);
+
 					// dependency via module parameter
 					sessionStorage.setItem("currentAppelloId", e.target.getAttribute("appelloid"));
 					iscritti.show(e.target.getAttribute("appelloid"));
@@ -227,6 +284,7 @@
 
 		}
 
+		/*
 		this.autoclick = function(appelloId) {
 			var e = new Event("click");
 			var selector = "a[appelloid='" + appelloId + "']";
@@ -234,6 +292,27 @@
 				(appelloId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
 			if (anchorToClick) anchorToClick.dispatchEvent(e);
 		}
+		*/
+		
+		
+		this.autoclick = function(appelloId) {
+		    let targetId = appelloId;
+		    if (!targetId) {
+		        let firstAppello = this.listcontainerbody.querySelector("a[appelloid]");
+				targetId = firstAppello ? firstAppello.getAttribute("appelloid") : null;
+		    }
+		    
+		    if (targetId) {
+		        let e = new Event("click");
+		        let anchor = document.querySelector(`a[appelloid='${targetId}']`);
+		        if (anchor) {
+		            sessionStorage.setItem("currentAppelloId", targetId);
+		            anchor.dispatchEvent(e);
+		        }
+		    }
+		};
+
+		
 
 	}
 
@@ -437,6 +516,10 @@
 				alertContainer,
 				document.getElementById("id_tabellaiscritti"),
 				document.getElementById("id_tabellaiscrittibody"));
+				
+				
+			//per distinguere primo click
+			 sessionStorage.setItem("firstTimeClick", "true");
 
 
 			//bottone inserimento multiplo
