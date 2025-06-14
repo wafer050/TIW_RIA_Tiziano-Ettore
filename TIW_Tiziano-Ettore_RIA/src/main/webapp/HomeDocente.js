@@ -531,7 +531,8 @@
 					if (!(voto === lode || voto === "18" || voto === "19" || voto === "20" ||
 						voto === "21" || voto === "22" || voto === "23" || voto === "24" ||
 						voto === "25" || voto === "26" || voto === "27" || voto === "28" ||
-						voto === "29" || voto === "30")
+						voto === "29" || voto === "30" || input === "assente" || input === "rimandato"
+						|| input === "riprovato")
 					) {
 						votoGiusto = false;
 					}
@@ -592,7 +593,8 @@
 				if (!(input === lode || input === "18" || input === "19" || input === "20" ||
 					input === "21" || input === "22" || input === "23" || input === "24" ||
 					input === "25" || input === "26" || input === "27" || input === "28" ||
-					input === "29" || input === "30")
+					input === "29" || input === "30" || input === "assente" || input === "rimandato"
+					|| input === "riprovato")
 				) {
 					votoGiusto = false;
 				}
