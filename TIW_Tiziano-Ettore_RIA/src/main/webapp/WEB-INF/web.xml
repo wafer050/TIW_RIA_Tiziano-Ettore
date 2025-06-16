@@ -1,145 +1,152 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-         version="3.1">
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1">
 
-    <display-name>TIW_Tiziano-Ettore_RIA</display-name>
+	<display-name>TIW_Tiziano-Ettore_RIA</display-name>
 
-    <context-param>
-        <param-name>dbUrl</param-name>
-        <param-value>jdbc:mysql://localhost:3306/universita?serverTimezone=UTC</param-value>
-    </context-param>
-    <context-param>
-        <param-name>dbUser</param-name>
-        <param-value>root</param-value>
-    </context-param>
-    <context-param>
-        <param-name>dbPassword</param-name>
-        <param-value>password</param-value>
-    </context-param>
-    <context-param>
-        <param-name>dbDriver</param-name>
-        <param-value>com.mysql.cj.jdbc.Driver</param-value>
-    </context-param>
-    
-    <filter> 
-      <filter-name>NoCacher</filter-name>
-      <filter-class>it.polimi.tiw.projects.filters.NoCacher</filter-class> 
- 	</filter>
- 	
- 	<filter-mapping> 
-    <filter-name>NoCacher</filter-name>
-    <url-pattern>/index.html</url-pattern>
-    <url-pattern>/Homedocente.html</url-pattern>
-    <url-pattern>/HomeStudente.html</url-pattern> 
- </filter-mapping>
- 
- 
- 	<filter>
-        <filter-name>Checker</filter-name>
-        <filter-class>it.polimi.tiw.projects.filters.Checker</filter-class>
-    </filter>
-    
-    <filter-mapping>
-        <filter-name>Checker</filter-name>
-        <url-pattern>/GetAppelli</url-pattern>
-        <url-pattern>/GetCorsi</url-pattern>
-        <url-pattern>/GetDatiStudente</url-pattern>
-        <url-pattern>/GetIscritti</url-pattern>
-        <url-pattern>/GetVerbale</url-pattern>
-        <url-pattern>/GetVerbali</url-pattern>
-        <url-pattern>/Logout</url-pattern>
-        <url-pattern>/ModificaVoto</url-pattern>
-        <url-pattern>/ModificaVotoMultipla</url-pattern>
-        <url-pattern>/PubblicaVoti</url-pattern>
-        <url-pattern>/VerbalizzaVoti</url-pattern>        
-    </filter-mapping>
-    
-    
-    <filter>
-        <filter-name>AppelloDelDocenteChecker</filter-name>
-        <filter-class>it.polimi.tiw.projects.filters.Checker</filter-class>
-    </filter>
-    
-    <filter-mapping>
-    	<filter-name>AppelloDelDocenteChecker</filter-name>
-    	<url-pattern>/GetIscritti</url-pattern>
-    	<url-pattern>/ModificaVoto</url-pattern>
-    	<url-pattern>/ModificaVotoMultipla</url-pattern>
-    	<url-pattern>/PubblicaVoti</url-pattern>
-    	<url-pattern>/VerbalizzaVoti</url-pattern>
-    </filter-mapping>
-    
-    
-    <filter>
-        <filter-name>CorsoDelDocenteChecker</filter-name>
-        <filter-class>it.polimi.tiw.projects.filters.Checker</filter-class>
-    </filter>
-    
-    <filter-mapping>
-    	<filter-name>CorsoDelDocenteChecker</filter-name>
-    	<url-pattern>/GetAppelli</url-pattern>
-    </filter-mapping>
-    
-    
-    <filter>
-        <filter-name>DocenteChecker</filter-name>
-        <filter-class>it.polimi.tiw.projects.filters.Checker</filter-class>
-    </filter>
-    
-    <filter-mapping>
-    	<filter-name>DocenteChecker</filter-name>
-    	<url-pattern>/GetAppelli</url-pattern>
-        <url-pattern>/GetCorsi</url-pattern>
-        <url-pattern>/GetDatiStudente</url-pattern>
-        <url-pattern>/GetIscritti</url-pattern>
-        <url-pattern>/GetVerbale</url-pattern>
-        <url-pattern>/GetVerbali</url-pattern>
-        <url-pattern>/Logout</url-pattern>
-        <url-pattern>/ModificaVoto</url-pattern>
-        <url-pattern>/ModificaVotoMultipla</url-pattern>
-        <url-pattern>/PubblicaVoti</url-pattern>
-        <url-pattern>/VerbalizzaVoti</url-pattern>
-    </filter-mapping>
-    
-    
-     <filter>
-        <filter-name>VerbaleDelDocenteChecker</filter-name>
-        <filter-class>it.polimi.tiw.projects.filters.Checker</filter-class>
-    </filter>
-    
-    <filter-mapping>
-    	<filter-name>VerbaleDelDocenteChecker</filter-name>
-    	<url-pattern>/GetVerbale</url-pattern>
-    </filter-mapping>
-    
-    
-    <filter>
-        <filter-name>StudenteDiAppelloChecker</filter-name>
-        <filter-class>it.polimi.tiw.projects.filters.Checker</filter-class>
-    </filter>
-    
-    <filter-mapping>
-    	<filter-name>StudenteDiAppelloChecker</filter-name>
-    	<url-pattern>/GetDatiStudente</url-pattern>
-    	<!--<url-pattern>/ModificaVoto</url-pattern> -->
-    </filter-mapping>
-    
-    
-    <!--
-    <filter>
-        <filter-name>xxxx</filter-name>
-        <filter-class>it.polimi.tiw.projects.filters.Checker</filter-class>
-    </filter>
-    
-    <filter-mapping>
-    	<filter-name>xxx</filter-name>
-    	<url-pattern>xxx</url-pattern>
-    </filter-mapping>
-    -->
-    
-     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-    </welcome-file-list>
+	<context-param>
+		<param-name>dbUrl</param-name>
+		<param-value>jdbc:mysql://localhost:3306/universita?serverTimezone=UTC</param-value>
+	</context-param>
+	<context-param>
+		<param-name>dbUser</param-name>
+		<param-value>root</param-value>
+	</context-param>
+	<context-param>
+		<param-name>dbPassword</param-name>
+		<param-value>password</param-value>
+	</context-param>
+	<context-param>
+		<param-name>dbDriver</param-name>
+		<param-value>com.mysql.cj.jdbc.Driver</param-value>
+	</context-param>
+
+	<filter>
+		<filter-name>NoCacher</filter-name>
+		<filter-class>it.polimi.tiw.projects.filters.NoCacher</filter-class>
+	</filter>
+	<filter>
+		<filter-name>Checker</filter-name>
+		<filter-class>it.polimi.tiw.projects.filters.Checker</filter-class>
+	</filter>
+	<filter>
+		<filter-name>DocenteChecker</filter-name>
+		<filter-class>it.polimi.tiw.projects.filters.DocenteChecker</filter-class>
+	</filter>
+	<filter>
+		<filter-name>StudenteChecker</filter-name>
+		<filter-class>it.polimi.tiw.projects.filters.StudenteChecker</filter-class>
+	</filter>
+	<filter>
+		<filter-name>CorsoDelDocenteChecker</filter-name>
+		<filter-class>it.polimi.tiw.projects.filters.CorsoDelDocenteChecker</filter-class>
+	</filter>
+	<filter>
+		<filter-name>AppelloDelDocenteChecker</filter-name>
+		<filter-class>it.polimi.tiw.projects.filters.AppelloDelDocenteChecker</filter-class>
+	</filter>
+	<filter>
+		<filter-name>StudenteDiAppelloChecker</filter-name>
+		<filter-class>it.polimi.tiw.projects.filters.StudenteDiAppelloChecker</filter-class>
+	</filter>
+	<filter>
+		<filter-name>VerbaleDelDocenteChecker</filter-name>
+		<filter-class>it.polimi.tiw.projects.filters.VerbaleDelDocenteChecker</filter-class>
+	</filter>
+	<filter>
+		<filter-name>CorsoDelloStudenteChecker</filter-name>
+		<filter-class>it.polimi.tiw.projects.filters.CorsoDelloStudenteChecker</filter-class>
+	</filter>
+	<filter>
+		<filter-name>AppelloDelloStudenteChecker</filter-name>
+		<filter-class>it.polimi.tiw.projects.filters.AppelloDelloStudenteChecker</filter-class>
+	</filter>
+
+
+
+
+	<filter-mapping>
+		<filter-name>NoCacher</filter-name>
+		<url-pattern>/index.html</url-pattern>
+		<url-pattern>/Homedocente.html</url-pattern>
+		<url-pattern>/HomeStudente.html</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>Checker</filter-name>
+		<url-pattern>/GetAppelli</url-pattern>
+		<url-pattern>/GetCorsi</url-pattern>
+		<url-pattern>/GetDatiStudente</url-pattern>
+		<url-pattern>/GetIscritti</url-pattern>
+		<url-pattern>/GetVerbale</url-pattern>
+		<url-pattern>/GetVerbali</url-pattern>
+		<url-pattern>/Logout</url-pattern>
+		<url-pattern>/ModificaVoto</url-pattern>
+		<url-pattern>/ModificaVotoMultipla</url-pattern>
+		<url-pattern>/PubblicaVoti</url-pattern>
+		<url-pattern>/VerbalizzaVoti</url-pattern>
+		<url-pattern>/GetCorsiStudente</url-pattern>
+		<url-pattern>/GetAppelliStudente</url-pattern>
+		<url-pattern>/GetEsitoStudente</url-pattern>
+		<url-pattern>/RifiutaVoto</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>DocenteChecker</filter-name>
+		<url-pattern>/HomeDocente.html</url-pattern>
+		<url-pattern>/HomeDocente.html#</url-pattern>
+		<url-pattern>/GetAppelli</url-pattern>
+		<url-pattern>/GetCorsi</url-pattern>
+		<url-pattern>/GetDatiStudente</url-pattern>
+		<url-pattern>/GetIscritti</url-pattern>
+		<url-pattern>/GetVerbale</url-pattern>
+		<url-pattern>/GetVerbali</url-pattern>
+		<url-pattern>/ModificaVoto</url-pattern>
+		<url-pattern>/ModificaVotoMultipla</url-pattern>
+		<url-pattern>/PubblicaVoti</url-pattern>
+		<url-pattern>/VerbalizzaVoti</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>StudenteChecker</filter-name>
+		<url-pattern>/HomeStudente.html</url-pattern>
+		<url-pattern>/HomeStudente.html#</url-pattern>
+		<url-pattern>/GetCorsiStudente</url-pattern>
+		<url-pattern>/GetAppelliStudente</url-pattern>
+		<url-pattern>/GetEsitoStudente</url-pattern>
+		<url-pattern>/RifiutaVoto</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>CorsoDelDocenteChecker</filter-name>
+		<url-pattern>/GetAppelli</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>AppelloDelDocenteChecker</filter-name>
+		<url-pattern>/GetIscritti</url-pattern>
+		<url-pattern>/ModificaVoto</url-pattern>
+		<url-pattern>/ModificaVotoMultipla</url-pattern>
+		<url-pattern>/PubblicaVoti</url-pattern>
+		<url-pattern>/VerbalizzaVoti</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>StudenteDiAppelloChecker</filter-name>
+		<url-pattern>/GetDatiStudente</url-pattern>
+		<!--<url-pattern>/ModificaVoto</url-pattern> -->
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>VerbaleDelDocenteChecker</filter-name>
+		<url-pattern>/GetVerbale</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>CorsoDelloStudenteChecker</filter-name>
+		<url-pattern>/GetAppelliStudente</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>AppelloDelloStudenteChecker</filter-name>
+		<url-pattern>/GetEsitoStudente</url-pattern>
+		<url-pattern>/RifiutaVoto</url-pattern>
+	</filter-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
 </web-app>
