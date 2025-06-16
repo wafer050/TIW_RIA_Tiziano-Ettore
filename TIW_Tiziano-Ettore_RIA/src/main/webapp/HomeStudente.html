@@ -1,13 +1,93 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
 <title>Studente's home</title>
+<link rel="stylesheet" type="text/css" media="all" href="CSS/mystyle.css" />
+<script src="utils.js" charset="utf-8" defer></script>
+<script src="HomeStudenteGestione.js" charset="utf-8" defer></script>
 </head>
 <body>
 	<div align="right">
-		<a th:href="@{/Logout}">Logout</a>
-	</div> 
-	<h1>Welcome to the studente Home page</h1>
+		<table>
+			<tr>
+				<td><a href="Logout">Logout</a></td>
+			</tr>
+		</table>
+	</div>
+	<h1>Welcome to the Studente Home page</h1>
+	<p>
+		Nice to see you again <span id="id_nominativo"></span>
+	</p>
+	<div id="id_alert" class="alertmessage"></div>
+
+
+	<table id="corsiEaltro" class="superhidden">
+
+		<tr>
+			<td><table id="id_tabellacorsi" border="1">
+					<thead>
+						<tr>
+							<th>Corso ID</th>
+							<th>Corso Name</th>
+						</tr>
+					</thead>
+					<tbody id="id_tabellacorsibody">
+					</tbody>
+				</table></td>
+		</tr>
+
+
+		<tr>
+			<td><table id="id_tabellaappelli" border="1">
+					<thead>
+						<tr>
+							<th>Data appello</th>
+						</tr>
+					</thead>
+					<tbody id="id_tabellaappellibody">
+					</tbody>
+				</table></td>
+		</tr>
+	</table>
+
+
+	<div id="esitoSection" class="superhidden">
+	<h2>Esito Appello</h2>
+	<p id="esitoNonPubblicatoMessage" class="superhidden">
+		<em>Voto non ancora pubblicato</em>
+	</p>
+
+	<div id="esitoContentWrapper">
+		<div id="datiEsito" draggable="true" class="superhidden">
+			<p><strong>Studente:</strong> <span id="esitoStudente"></span></p>
+			<p><strong>Matricola:</strong> <span id="esitoMatricola"></span></p>
+			<p><strong>Email:</strong> <span id="esitoEmail"></span></p>
+			<p><strong>Corso di Laurea:</strong> <span id="esitoCorsoDiLaurea"></span></p>
+			<p><strong>Corso:</strong> <span id="esitoCorso"></span></p>
+			<p><strong>Appello del:</strong> <span id="esitoData"></span></p>
+			<p><strong>Voto:</strong> <span id="esitoVoto"></span></p>
+			<p><strong>Stato di valutazione:</strong> <span id="esitoStatoDiValutazione"></span></p>
+		</div>
+
+		<div id="cestino" class="dropzone" style="font-size: 5rem;"> 🗑️ </div>
+	</div>
+
+	<p id="votoRifiutatoMsg" class="superhidden">
+		<em>Il voto è stato rifiutato</em>
+	</p>
+</div>
+
+
+
+
+	<div id="overlay" class="overlay">
+		<div class="popup">
+			<p>Sei sicuro di voler rifiutare?</p>
+			<button id="cancellaRifiuto">Cancella</button>
+			<button id="confermaRifiuto">Conferma</button>
+		</div>
+	</div>
+	
 </body>
 </html>

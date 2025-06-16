@@ -48,3 +48,24 @@ th.sortable {
   font-size: 24px;
   cursor: pointer;
 }
+
+#esitoContentWrapper {
+	display: flex;
+	align-items: center;      /* Allinea verticalmente */
+	justify-content: space-between;
+	gap: 20px;                 /* Spazio tra i due blocchi */
+	margin-top: 1em;
+}
+
+#datiEsito {
+	width: 33.33%;
+}
+
+#cestino {
+	align-self: center;
+	background-color: #f0f0f0;
+	padding: 10px;
+	border: 1px solid #ccc;
+}
+
+
