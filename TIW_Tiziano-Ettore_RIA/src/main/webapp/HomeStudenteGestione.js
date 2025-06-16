@@ -238,6 +238,8 @@
 			document.getElementById("esitoSection").classList.remove("superhidden");
 			document.getElementById("esitoNonPubblicatoMessage").classList.add("superhidden");
 			document.getElementById("datiEsito").classList.remove("superhidden");
+			document.getElementById("datiEsito").setAttribute("draggable", "false");
+			document.getElementById("datiEsito").style.cursor = "default";
 
 			// Popola i dati
 			document.getElementById("esitoStudente").textContent = esito.nome + " " + esito.cognome;
@@ -261,6 +263,8 @@
 			const cestino = document.getElementById("cestino");
 			if (((Number(esito.voto) >= 18 && Number(esito.voto) <= 30) || esito.voto === "30 e lode") && esito.statoDiValutazione === "pubblicato") {
 				cestino.classList.remove("superhidden");
+				document.getElementById("datiEsito").setAttribute("draggable", "true");		
+				document.getElementById("datiEsito").style.cursor = "grab";
 			} else {
 				cestino.classList.add("superhidden");
 			}
