@@ -480,13 +480,13 @@
 				)
 
 				if (righe_votoNonInserito.length === 0) {
-					document.getElementById("tabella_votononinserito").classList.add("superhidden");;
-					document.getElementById("no_votononinserito").classList.remove("superhidden");;
+					document.getElementById("tabella_votononinserito").classList.add("superhidden");
+					document.getElementById("no_votononinserito").classList.remove("superhidden");
 
 				}
 				else {
-					document.getElementById("tabella_votononinserito").classList.remove("superhidden");;
-					document.getElementById("no_votononinserito").classList.add("superhidden");;
+					document.getElementById("tabella_votononinserito").classList.remove("superhidden");
+					document.getElementById("no_votononinserito").classList.add("superhidden");
 
 					let body = document.getElementById("id_tabella_votononinserito");
 					body.innerHTML = "";
@@ -518,7 +518,7 @@
 			document.getElementById("chiudiPopup2").addEventListener("click", function() {
 				document.getElementById("overlay2").style.display = "none";
 				
-				document.getElementById("erroreinput").style.display = "none";
+				document.getElementById("erroreinput").classList.add("superhidden");
 			});
 
 			// Chiudi se clicchi fuori dal popup
@@ -526,7 +526,7 @@
 				if (e.target === this) {
 					this.style.display = "none";
 					
-					document.getElementById("erroreinput").style.display = "none";
+					document.getElementById("erroreinput").classList.add("superhidden");
 				}
 			});
 
