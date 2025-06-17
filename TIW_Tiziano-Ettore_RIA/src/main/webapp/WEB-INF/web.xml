@@ -72,9 +72,15 @@
 		<url-pattern>/index.html</url-pattern>
 		<url-pattern>/Homedocente.html</url-pattern>
 		<url-pattern>/HomeStudente.html</url-pattern>
+		<url-pattern>/HomeDocente.html#</url-pattern>
+		<url-pattern>/HomeStudente.html#</url-pattern>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>Checker</filter-name>
+		<url-pattern>/HomeDocente.html</url-pattern>
+		<url-pattern>/HomeDocente.html#</url-pattern>
+		<url-pattern>/HomeStudente.html</url-pattern>
+		<url-pattern>/HomeStudente.html#</url-pattern>
 		<url-pattern>/GetAppelli</url-pattern>
 		<url-pattern>/GetCorsi</url-pattern>
 		<url-pattern>/GetDatiStudente</url-pattern>

@@ -33,7 +33,7 @@
 		this.listcontainerbody = _listcontainerbody;
 
 		this.reset = function() {
-			this.listcontainer.style.visibility = "hidden";
+			this.listcontainer.classList.add("superhidden");
 		}
 
 		this.show = function(next) {
@@ -135,7 +135,7 @@
 				self.listcontainerbody.appendChild(row);
 			});
 			///document.getElementById("corsiEaltro").classList.remove("superhidden");
-			this.listcontainer.style.visibility = "visible";
+			this.listcontainer.classList.remove("superhidden");
 
 		}
 
@@ -160,7 +160,7 @@
 		this.listcontainerbody = _listcontainerbody;
 
 		this.reset = function() {
-			this.listcontainer.style.visibility = "hidden";
+			this.listcontainer.classList.add("superhidden");
 		}
 
 		this.show = function(corsoid, next) {
@@ -219,7 +219,7 @@
 				row.appendChild(datecell);
 				self.listcontainerbody.appendChild(row);
 			});
-			this.listcontainer.style.visibility = "visible";
+			this.listcontainer.classList.remove("superhidden");
 
 		}
 

@@ -33,7 +33,7 @@
 		this.listcontainerbody = _listcontainerbody;
 
 		this.reset = function() {
-			this.listcontainer.style.visibility = "hidden";
+			this.listcontainer.classList.add("superhidden");;
 		}
 
 		this.show = function(next) {
@@ -166,7 +166,7 @@
 				row.appendChild(namecell);
 				self.listcontainerbody.appendChild(row);
 			});
-			this.listcontainer.style.visibility = "visible";
+			this.listcontainer.classList.remove("superhidden");;
 
 		}
 
@@ -191,7 +191,7 @@
 		this.listcontainerbody = _listcontainerbody;
 
 		this.reset = function() {
-			this.listcontainer.style.visibility = "hidden";
+			this.listcontainer.classList.add("superhidden");;
 		}
 
 		this.show = function(corsoid, next) {
@@ -280,7 +280,7 @@
 				row.appendChild(datecell);
 				self.listcontainerbody.appendChild(row);
 			});
-			this.listcontainer.style.visibility = "visible";
+			this.listcontainer.classList.remove("superhidden");;
 
 		}
 
@@ -328,9 +328,9 @@
 		this.listcontainerbody = _listcontainerbody;
 
 		this.reset = function() {
-			this.listcontainer.style.visibility = "hidden";
-			document.getElementById("id_pubblicaform").style.visibility = "hidden";
-			document.getElementById("id_verbalizzaform").style.visibility = "hidden";
+			this.listcontainer.classList.add("superhidden");;
+			document.getElementById("id_pubblicaform").classList.add("superhidden");;
+			document.getElementById("id_verbalizzaform").classList.add("superhidden");;
 		}
 
 		this.show = function(appelloid, next) {
@@ -340,15 +340,15 @@
 
 
 			//form modifica voto
-			document.getElementById("id_modificavotoform").style.visibility = "hidden";
+			document.getElementById("id_modificavotoform").classList.add("superhidden");;
 
 			//mostra bottone pubblica
-			document.getElementById("id_pubblicaform").style.visibility = "visible";
+			document.getElementById("id_pubblicaform").classList.remove("superhidden");;
 			//sessionStorage.setItem("currentAppelloId", appelloid);
 			//mostra bottone verbalizza
-			document.getElementById("id_verbalizzaform").style.visibility = "visible";
+			document.getElementById("id_verbalizzaform").classList.remove("superhidden");;
 			//mostra bottone inserimento multiplo
-			document.getElementById("id_inserimentomultiplo").style.visibility = "visible";
+			document.getElementById("id_inserimentomultiplo").classList.remove("superhidden");;
 
 			//il resto di iscritti
 			var self = this;
@@ -407,7 +407,7 @@
 									if (req.status == 200) {
 										var datiStudenteToShow = JSON.parse(req.responseText);
 
-										document.getElementById("id_modificavotoform").style.visibility = "visible";
+										document.getElementById("id_modificavotoform").classList.remove("superhidden");;
 
 										document.getElementById("campo_studenteid").innerText = datiStudenteToShow.id;
 
@@ -467,7 +467,7 @@
 
 				self.listcontainerbody.appendChild(row);
 			});
-			this.listcontainer.style.visibility = "visible";
+			this.listcontainer.classList.remove("superhidden");;
 
 		}
 
@@ -523,13 +523,13 @@
 
 
 			//bottone inserimento multiplo
-			document.getElementById("erroreinput").style.visibility = "hidden";
+			document.getElementById("erroreinput").classList.add("superhidden");;
 
-			document.getElementById("id_inserimentomultiplo").style.visibility = "hidden";
-			document.getElementById("no_votononinserito").style.visibility = "hidden";
+			document.getElementById("id_inserimentomultiplo").classList.add("superhidden");;
+			document.getElementById("no_votononinserito").classList.add("superhidden");;
 			document.getElementById("id_bottoneinserimentomultiplo").addEventListener('click', (e) => {
 
-				document.getElementById("overlay2").style.visibility = "visible";
+				document.getElementById("overlay2").classList.remove("superhidden");;
 				document.getElementById("overlay2").style.display = "flex";
 
 				//clona
@@ -541,13 +541,13 @@
 				)
 
 				if (righe_votoNonInserito.length === 0) {
-					document.getElementById("tabella_votononinserito").style.visibility = "hidden";
-					document.getElementById("no_votononinserito").style.visibility = "visible";
+					document.getElementById("tabella_votononinserito").classList.add("superhidden");;
+					document.getElementById("no_votononinserito").classList.remove("superhidden");;
 
 				}
 				else {
-					document.getElementById("tabella_votononinserito").style.visibility = "visible";
-					document.getElementById("no_votononinserito").style.visibility = "hidden";
+					document.getElementById("tabella_votononinserito").classList.remove("superhidden");;
+					document.getElementById("no_votononinserito").classList.add("superhidden");;
 
 					let body = document.getElementById("id_tabella_votononinserito");
 					body.innerHTML = "";
@@ -625,10 +625,10 @@
 
 
 				if (!votoGiusto) {
-					document.getElementById("erroreinput").style.visibility = "visible";
+					document.getElementById("erroreinput").classList.remove("superhidden");;
 					return;
 				}
-				document.getElementById("erroreinput").style.visibility = "hidden";
+				document.getElementById("erroreinput").classList.add("superhidden");;
 
 
 
@@ -665,8 +665,8 @@
 
 
 			//form modifica voto singolo
-			//document.getElementById("erroreinput2").style.visibility = "hidden";
-			document.getElementById("id_modificavotoform").style.visibility = "hidden";
+			//document.getElementById("erroreinput2").classList.add("superhidden");;
+			document.getElementById("id_modificavotoform").classList.add("superhidden");;
 			document.getElementById("invio_formmodificavoto").addEventListener('click', (e) => {
 				form = e.target.closest("form")
 
@@ -695,10 +695,10 @@
 
 				/*
 				if (!votoGiusto){
-					document.getElementById("erroreinput2").style.visibility = "visible";
+					document.getElementById("erroreinput2").classList.remove("superhidden");;
 					return;
 				}
-				document.getElementById("erroreinput2").style.visibility = "hidden";		
+				document.getElementById("erroreinput2").classList.add("superhidden");;		
 				*/
 
 
@@ -738,7 +738,7 @@
 
 
 			//bottone pubblica
-			document.getElementById("id_pubblicaform").style.visibility = "hidden";
+			document.getElementById("id_pubblicaform").classList.add("superhidden");;
 			document.getElementById('id_pubblica').addEventListener('click', (e) => {
 				makeCall("GET", "PubblicaVoti?appelloid=" + sessionStorage.getItem("currentAppelloId"), null,
 					function(req) {
@@ -781,7 +781,7 @@
 
 
 
-			document.getElementById("id_verbalizzaform").style.visibility = "hidden";
+			document.getElementById("id_verbalizzaform").classList.add("superhidden");;
 			document.getElementById('id_verbalizza').addEventListener('click', (e) => {
 				makeCall("GET", "VerbalizzaVoti?appelloid=" + sessionStorage.getItem("currentAppelloId"), null,
 					function(req) {
@@ -802,16 +802,16 @@
 
 								//aggiorna dati popup verbale:
 								if (req.responseText === "") {
-									document.getElementById("noverbale").style.visibility = "visible";
-									document.getElementById("id_verbale").style.visibility = "hidden";
-									document.getElementById("id_studentiverbale").style.visibility = "hidden";
+									document.getElementById("noverbale").classList.remove("superhidden");;
+									document.getElementById("id_verbale").classList.add("superhidden");;
+									document.getElementById("id_studentiverbale").classList.add("superhidden");;
 								}
 								else {
 									document.getElementById("id_studentiverbalebody").innerHTML = ""; // empty the table body
 
-									document.getElementById("noverbale").style.visibility = "hidden";
-									document.getElementById("id_verbale").style.visibility = "visible";
-									document.getElementById("id_studentiverbale").style.visibility = "visible";
+									document.getElementById("noverbale").classList.add("superhidden");;
+									document.getElementById("id_verbale").classList.remove("superhidden");;
+									document.getElementById("id_studentiverbale").classList.remove("superhidden");;
 
 									let verbaleToShow = JSON.parse(req.responseText);
 
@@ -886,8 +886,8 @@
 
 
 			//document.getElementById("verbali").style.display = "none";
-			document.getElementById("id_verbale2").style.visibility = "hidden";
-			document.getElementById("id_studentiverbale2").style.visibility = "hidden";
+			document.getElementById("id_verbale2").classList.add("superhidden");;
+			document.getElementById("id_studentiverbale2").classList.add("superhidden");;
 
 			//MOSTRA CORSI
 			document.getElementById("corsiEaltro").classList.remove("superhidden");
@@ -969,7 +969,7 @@
 
 
 									bottone.addEventListener('click', (e) => {
-										document.getElementById("id_verbale2").style.visibility = "visible";
+										document.getElementById("id_verbale2").classList.remove("superhidden");;
 
 										let vId = e.target.closest('tr').querySelector('td:first-child').textContent;
 
@@ -994,7 +994,7 @@
 
 
 
-														document.getElementById("id_studentiverbale2").style.visibility = "visible";
+														document.getElementById("id_studentiverbale2").classList.remove("superhidden");;
 														//studenti:
 														let row;
 														let body;
@@ -1085,7 +1085,7 @@
 
 
 			//per evitare flckering
-			//document.getElementById("corsiEaltro").style.visibility = "visible";
+			//document.getElementById("corsiEaltro").classList.remove("superhidden");;
 			document.getElementById("corsiEaltro").classList.remove("superhidden");
 		};
 
