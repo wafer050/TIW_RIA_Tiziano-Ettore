@@ -207,7 +207,7 @@
 				// make list item clickable
 				dateanchor.setAttribute('appelloid', appello.id); // set a custom HTML attribute
 				dateanchor.addEventListener("click", (e) => {
-
+									
 					sessionStorage.setItem("firstTimeClick", false);
 
 					// dependency via module parameter
@@ -328,7 +328,7 @@
 			listaIscritti.forEach(function(iscritto) { // self visible here, not this
 				row = document.createElement("tr");
 
-				bottonecell = document.createElement("td")
+				bottonecell = document.createElement("td");
 				if (iscritto.statoValutazione == 'non inserito' || iscritto.statoValutazione == 'inserito') {
 					bottone = document.createElement("button")
 					bottonecell.appendChild(bottone);
@@ -406,27 +406,27 @@
 
 				self.listcontainerbody.appendChild(row);
 			});
-			this.listcontainer.classList.remove("superhidden");;
+			
+			this.listcontainer.classList.remove("superhidden");
+			
+			//per evitare flickering
+			document.getElementById("id_pubblicaform").classList.remove("superhidden");
+			document.getElementById("id_verbalizzaform").classList.remove("superhidden");
+			document.getElementById("id_inserimentomultiplo").classList.remove("superhidden");
 
 		}
 
 
 
-
+		/*
 		this.autoclick = function() {
-			//da vedere
+			
 		}
+		*/
 
 	}
 
 
-
-
-
-
-
-
-	//wizard
 
 
 
@@ -461,14 +461,20 @@
 			sessionStorage.setItem("firstTimeClick", "true");
 
 
+			//bottoni vari
+			document.getElementById("id_pubblicaform").classList.add("superhidden");
+			document.getElementById("id_verbalizzaform").classList.add("superhidden");
+			document.getElementById("id_inserimentomultiplo").classList.add("superhidden");
+			
+			
 			//bottone inserimento multiplo
-			document.getElementById("erroreinput").classList.add("superhidden");;
+			document.getElementById("erroreinput").classList.add("superhidden");
 
-			document.getElementById("id_inserimentomultiplo").classList.add("superhidden");;
-			document.getElementById("no_votononinserito").classList.add("superhidden");;
+			document.getElementById("id_inserimentomultiplo").classList.add("superhidden");
+			document.getElementById("no_votononinserito").classList.add("superhidden");
 			document.getElementById("id_bottoneinserimentomultiplo").addEventListener('click', (e) => {
 
-				document.getElementById("overlay2").classList.remove("superhidden");;
+				document.getElementById("overlay2").classList.remove("superhidden");
 				document.getElementById("overlay2").style.display = "flex";
 
 				//clona
