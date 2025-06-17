@@ -517,12 +517,16 @@
 			//chiudi se cliccki su x oppure fuori
 			document.getElementById("chiudiPopup2").addEventListener("click", function() {
 				document.getElementById("overlay2").style.display = "none";
+				
+				document.getElementById("erroreinput").style.display = "none";
 			});
 
 			// Chiudi se clicchi fuori dal popup
 			document.getElementById("overlay2").addEventListener("click", function(e) {
 				if (e.target === this) {
 					this.style.display = "none";
+					
+					document.getElementById("erroreinput").style.display = "none";
 				}
 			});
 
@@ -555,8 +559,8 @@
 					if (!(voto === lode || voto === "18" || voto === "19" || voto === "20" ||
 						voto === "21" || voto === "22" || voto === "23" || voto === "24" ||
 						voto === "25" || voto === "26" || voto === "27" || voto === "28" ||
-						voto === "29" || voto === "30" || input === "assente" || input === "rimandato"
-						|| input === "riprovato")
+						voto === "29" || voto === "30" || voto === "assente" || voto === "rimandato"
+						|| voto === "riprovato")
 					) {
 						votoGiusto = false;
 					}
