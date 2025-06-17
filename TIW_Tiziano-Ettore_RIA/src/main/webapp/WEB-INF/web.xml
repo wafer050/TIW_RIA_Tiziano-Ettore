@@ -136,7 +136,6 @@
 	<filter-mapping>
 		<filter-name>StudenteDiAppelloChecker</filter-name>
 		<url-pattern>/GetDatiStudente</url-pattern>
-		<!--<url-pattern>/ModificaVoto</url-pattern> -->
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>VerbaleDelDocenteChecker</filter-name>

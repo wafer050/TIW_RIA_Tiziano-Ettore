@@ -410,10 +410,6 @@
 			document.querySelector("a[href='Logout']").addEventListener('click', () => {
 				window.sessionStorage.clear();
 			})
-
-
-			//per evitare flickering
-			//document.getElementById("corsiEaltro").classList.remove("superhidden");
 		}
 
 

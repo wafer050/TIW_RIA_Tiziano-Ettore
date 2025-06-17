@@ -3,91 +3,95 @@
 <head>
 <meta charset="UTF-8">
 <title>Docente's home</title>
-<link rel="stylesheet" type="text/css" media="all" href="CSS/mystyle.css" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="CSS/mystyle.css" />
 <script src="utils.js" charset="utf-8" defer></script>
 <script src="HomeDocente.js" charset="utf-8" defer></script>
 <script src="sort.js" charset="utf-8" defer></script>
 </head>
 <body>
 	<div align="right">
-	<table>
-		<tr>
-			<td id="mostracorsi" class="likeHref">MOSTRA CORSI</td>
-			<td id="mostraverbali" class="likeHref">MOSTRA VERBALI</td>
-			<td><a href="Logout">Logout</a></td>
-		</tr>
-	</table>
+		<table>
+			<tr>
+				<td id="mostracorsi" class="likeHref">MOSTRA CORSI</td>
+				<td id="mostraverbali" class="likeHref">MOSTRA VERBALI</td>
+				<td><a href="Logout">Logout</a></td>
+			</tr>
+		</table>
 	</div>
 	<h1>Welcome to the docente Home page</h1>
-	<p>Nice to see you again <span id="id_nominativo"></span></p>
+	<p>
+		Nice to see you again <span id="id_nominativo"></span>
+	</p>
 	<div id="id_alert" class="alertmessage"></div>
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
 	<table id="verbali" class="superhidden">
-		<tr><td>
-		<table border="1">
-		<thead>
-			<tr>
-				<th>Verbale ID</th>
-				<th>Data Creazione</th>
-				<th>Ora Creazione</th>
-				<th>Appello id</th>
-				<th>Appello Data</th>
-				<th>Corso id</th>
-				<th>Corso Nome</th>
-				<th>Vai alla pagina di questo verbale</th>
-			</tr>
-		</thead>
-		<tbody id="id_tabellaverbali">
-		</tbody>
-		</table>
-		</td>
-		
-		<td>
-			<table id="id_verbale2">
-    
-    <caption>INFORMAZIONI VERBALE</caption>
-					
-					
-					
-  <tr>
-    <td>id:</td>
-    <td id="campo_verbaleid2"></td>
-  </tr>
-  <tr>
-    <td>data creazione:</td>
-    <td id="campo_verbaledatacreazione2"></td>
-  </tr>
-  <tr>
-    <td>ora creazione:</td>
-    <td id="campo_verbaleora2"></td>
-  </tr>
-  <tr>
-    <td>id appello:</td>
-    <td id="campo_verbaleappello2"></td>
-  </tr>
-  <tr>
-    <td>data appello:</td>
-    <td id="campo_verbaledataappello2"></td>
-  </tr>
-  <tr>
-    <td>id corso:</td>
-    <td id="campo_verbalecorso2"></td>
-  </tr>
-  <tr>
-    <td>nome corso:</td>
-    <td id="campo_verbalenomecorso2"></td>
-  </tr>
-</table>
-					
-	
-				
+		<tr>
+			<td>
+				<table border="1">
+					<thead>
+						<tr>
+							<th>Verbale ID</th>
+							<th>Data Creazione</th>
+							<th>Ora Creazione</th>
+							<th>Appello id</th>
+							<th>Appello Data</th>
+							<th>Corso id</th>
+							<th>Corso Nome</th>
+							<th>Vai alla pagina di questo verbale</th>
+						</tr>
+					</thead>
+					<tbody id="id_tabellaverbali">
+					</tbody>
+				</table>
+			</td>
+
+			<td>
+				<table id="id_verbale2">
+
+					<caption>INFORMAZIONI VERBALE</caption>
+
+
+
+					<tr>
+						<td>id:</td>
+						<td id="campo_verbaleid2"></td>
+					</tr>
+					<tr>
+						<td>data creazione:</td>
+						<td id="campo_verbaledatacreazione2"></td>
+					</tr>
+					<tr>
+						<td>ora creazione:</td>
+						<td id="campo_verbaleora2"></td>
+					</tr>
+					<tr>
+						<td>id appello:</td>
+						<td id="campo_verbaleappello2"></td>
+					</tr>
+					<tr>
+						<td>data appello:</td>
+						<td id="campo_verbaledataappello2"></td>
+					</tr>
+					<tr>
+						<td>id corso:</td>
+						<td id="campo_verbalecorso2"></td>
+					</tr>
+					<tr>
+						<td>nome corso:</td>
+						<td id="campo_verbalenomecorso2"></td>
+					</tr>
+				</table>
+
+
+
 				<table id="id_studentiverbale2" border="1">
 					<thead>
 						<tr>
@@ -103,29 +107,29 @@
 					<tbody id="id_studentiverbalebody2">
 					</tbody>
 				</table>
-				
-				
-		</td>
-		
-		
+
+
+			</td>
+
+
 		</tr>
 	</table>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	<table id="corsiEaltro" class="superhidden">
-	
+
 		<tr>
 			<td><table id="id_tabellacorsi" border="1">
 					<thead>
@@ -136,25 +140,26 @@
 					</thead>
 					<tbody id="id_tabellacorsibody">
 					</tbody>
-				</table></td>	
+				</table></td>
 		</tr>
-		
-		
-		<tr><td><table id="id_tabellaappelli" border="1">
-						<thead>
-							<tr>
-								<th>Data appello</th>
-							</tr>
-						</thead>
-						<tbody id="id_tabellaappellibody">
-						</tbody>
-					</table>
-			</td>
+
+
+		<tr>
+			<td><table id="id_tabellaappelli" border="1">
+					<thead>
+						<tr>
+							<th>Data appello</th>
+						</tr>
+					</thead>
+					<tbody id="id_tabellaappellibody">
+					</tbody>
+				</table></td>
 		</tr>
-		
-		
-		
-		<tr><td><table id="id_tabellaiscritti" border="1">
+
+
+
+		<tr>
+			<td><table id="id_tabellaiscritti" border="1">
 					<thead>
 						<tr>
 							<th>Modifica voto bottone</th>
@@ -170,218 +175,221 @@
 					</thead>
 					<tbody id="id_tabellaiscrittibody">
 					</tbody>
-				</table>
-			</td>
-			
-			
-			
-			
-			
+				</table></td>
+
+
+
+
+
 			<td>
-					<table id="id_modificavotoform">
-						<tr>
-							<td>id:</td>
-							<td id="campo_studenteid"></td>
-						</tr>
-						<tr>
-							<td>nome:</td>
-							<td id="campo_studentenome"></td>
-						</tr>
-						<tr>
-							<td>cognome:</td>
-							<td id="campo_studentecognome"></td>
-						</tr>
-						<tr>
-							<td>matricola:</td>
-							<td id="campo_studentematricola"></td>
-						</tr>
-						<tr>
-							<td>mail:</td>
-							<td id="campo_studentemail"></td>
-						</tr>
-						<tr>
-							<td>corso di laurea:</td>
-							<td id="campo_studentecorsolaurea"></td>
-						</tr>
-						<tr>
-							<td colspan="2">
+				<table id="id_modificavotoform">
+					<tr>
+						<td>id:</td>
+						<td id="campo_studenteid"></td>
+					</tr>
+					<tr>
+						<td>nome:</td>
+						<td id="campo_studentenome"></td>
+					</tr>
+					<tr>
+						<td>cognome:</td>
+						<td id="campo_studentecognome"></td>
+					</tr>
+					<tr>
+						<td>matricola:</td>
+						<td id="campo_studentematricola"></td>
+					</tr>
+					<tr>
+						<td>mail:</td>
+						<td id="campo_studentemail"></td>
+					</tr>
+					<tr>
+						<td>corso di laurea:</td>
+						<td id="campo_studentecorsolaurea"></td>
+					</tr>
+					<tr>
+						<td colspan="2">
 							<form>
-							<fieldset>
-							<p>voto: <input type="text" name="voto" id = "modificasingola"></p>
-							<input type="button" id="invio_formmodificavoto" value="modificaVoto">
-							<input type="hidden" id="modificavoto_appelloid" name="appelloid">
-                    		<input type="hidden" id="hidden_campo_studenteid" name="studenteid">
-                    		<!--<p id="erroreinput2">VOTI INSERITI SBAGLIATI</p> -->
-                    		</fieldset>
-                    		</form>
-							</td>
-						</tr>
-					</table>
-			</td>
-			
-			
-				
-		</tr>
-		
-		
-		
-		
-		<tr>
-			<td>
-			
-			
-			
-			<form id="id_pubblicaform" action="#">
-			<fieldset>
-                    <input type="hidden" id="appelloid" name="appelloid"></input>
-                    <input type="button" id="id_pubblica" value="PUBBLICA"></input>
-            </fieldset>
-                </form>					
-			</td>
-		</tr>
-		
-		
-		
-		
-		<tr>
-			<td>
-				<form id="id_verbalizzaform" action="#">
-			<fieldset>
-                    <input type="hidden" id="appelloid" name="appelloid"></input>
-                    <input type="button" id="id_verbalizza" value="VERBALIZZA"></input>
-            </fieldset>
-                </form>
-			</td>
-		</tr>
-		
-		
-		<tr>
-			<td>
-				<form id="id_inserimentomultiplo" action="#">
-					<fieldset>
-                    	<input type="button" id="id_bottoneinserimentomultiplo"
-                    		value="INSERIMENTO MULTIPLO">
-            		</fieldset>
-                </form>
-			</td>
-		</tr>
-			
-	</table>
-	
-	
-	
-	
-	<!-- pop up inserimento multiplo -->
-		<div id="overlay2" class="overlay">
-  <div class="popup">
-  <!-- &times; = 'x' ma migliore -->
-    <span id="chiudiPopup2">&times;</span>
-    <p id="no_votononinserito"> non ci sono studenti senza voto! <p>
-				
-				<table id="tabella_votononinserito" border="1">
-					<thead>
-						<tr>
-							<th>Studente ID</th>
-							<th>Studente Nome</th>
-							<th>Studente Cognome</th>
-							<th>Studente Matricola</th>
-							<th>Studente Mail</th>
-							<th>Studente Corso di Laurea</th>
-							<th>Studente Voto</th>
-							<th>Studente Stato di Valutazione</th>
-							<th>INSERISCI IN QUESTA COLONNA I VOTI</th>
-						</tr>
-					</thead>
-					
-					 <tfoot>
-    					<tr>
-      						<td>
-        						<button id="id_eseguiinserimentomultiplo">INVIO</button>
-        						<p id="erroreinput">VOTI INSERITI SBAGLIATI</p>
-     						 </td>
-   						 </tr>
-  					</tfoot>
-					
-					<tbody id="id_tabella_votononinserito">
-					</tbody>
+								<fieldset>
+									<p>
+										voto: <input type="text" name="voto" id="modificasingola">
+									</p>
+									<input type="button" id="invio_formmodificavoto"
+										value="modificaVoto"> <input type="hidden"
+										id="modificavoto_appelloid" name="appelloid"> <input
+										type="hidden" id="hidden_campo_studenteid" name="studenteid">
+									<!--<p id="erroreinput2">VOTI INSERITI SBAGLIATI</p> -->
+								</fieldset>
+							</form>
+						</td>
+					</tr>
 				</table>
-  </div>
-</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+			</td>
+
+
+
+		</tr>
+
+
+
+
+		<tr>
+			<td>
+
+
+
+				<form id="id_pubblicaform" >  
+					<fieldset>
+						<input type="hidden" id="appelloid" name="appelloid"></input> <input
+							type="button" id="id_pubblica" value="PUBBLICA"></input>
+					</fieldset>
+				</form>
+			</td>
+		</tr>
+
+
+
+
+		<tr>
+			<td>
+				<form id="id_verbalizzaform" > 
+					<fieldset>
+						<input type="hidden" id="appelloid" name="appelloid"></input> <input
+							type="button" id="id_verbalizza" value="VERBALIZZA"></input>
+					</fieldset>
+				</form>
+			</td>
+		</tr>
+
+
+		<tr>
+			<td>
+				<form id="id_inserimentomultiplo"> 
+					<fieldset>
+						<input type="button" id="id_bottoneinserimentomultiplo"
+							value="INSERIMENTO MULTIPLO">
+					</fieldset>
+				</form>
+			</td>
+		</tr>
+
+	</table>
+
+
+
+
+	<!-- pop up inserimento multiplo -->
+	<div id="overlay2" class="overlay">
+		<div class="popup">
+			<!-- &times; = 'x' ma migliore -->
+			<span id="chiudiPopup2">&times;</span>
+			<p id="no_votononinserito">non ci sono studenti senza voto!
+			<p>
+			<table id="tabella_votononinserito" border="1">
+				<thead>
+					<tr>
+						<th>Studente ID</th>
+						<th>Studente Nome</th>
+						<th>Studente Cognome</th>
+						<th>Studente Matricola</th>
+						<th>Studente Mail</th>
+						<th>Studente Corso di Laurea</th>
+						<th>Studente Voto</th>
+						<th>Studente Stato di Valutazione</th>
+						<th>INSERISCI IN QUESTA COLONNA I VOTI</th>
+					</tr>
+				</thead>
+
+				<tfoot>
+					<tr>
+						<td>
+							<button id="id_eseguiinserimentomultiplo">INVIO</button>
+							<p id="erroreinput">VOTI INSERITI SBAGLIATI</p>
+						</td>
+					</tr>
+				</tfoot>
+
+				<tbody id="id_tabella_votononinserito">
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+
+
+
+
+
+
+
+
+
+
 	<!-- pop up verbalizza -->
 	<div id="overlay" class="overlay">
-  <div class="popup">
-  <!-- &times; = 'x' ma migliore -->
-    <span id="chiudiPopup">&times;</span>
-    <p id="noverbale"> non è stato verbalizzato alcun voto! <p>
-    <table id="id_verbale">
-    
-    <caption>INFORMAZIONI VERBALE</caption>
-					
-					
-					
-  <tr>
-    <td>id:</td>
-    <td id="campo_verbaleid"></td>
-  </tr>
-  <tr>
-    <td>data creazione:</td>
-    <td id="campo_verbaledatacreazione"></td>
-  </tr>
-  <tr>
-    <td>ora creazione:</td>
-    <td id="campo_verbaleora"></td>
-  </tr>
-  <tr>
-    <td>id appello:</td>
-    <td id="campo_verbaleappello"></td>
-  </tr>
-  <tr>
-    <td>data appello:</td>
-    <td id="campo_verbaledataappello"></td>
-  </tr>
-  <tr>
-    <td>id corso:</td>
-    <td id="campo_verbalecorso"></td>
-  </tr>
-  <tr>
-    <td>nome corso:</td>
-    <td id="campo_verbalenomecorso"></td>
-  </tr>
-</table>
-					
-	
-				
-				<table id="id_studentiverbale" border="1">
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>Nome</th>
-							<th>Cognome</th>
-							<th>Matricola</th>
-							<th>Mail</th>
-							<th>Corso di Laurea</th>
-							<th>Voto</th>
-						</tr>
-					</thead>
-					<tbody id="id_studentiverbalebody">
-					</tbody>
-				</table>
-				
-				
-  </div>
-</div>
+		<div class="popup">
+			<!-- &times; = 'x' ma migliore -->
+			<span id="chiudiPopup">&times;</span>
+			<p id="noverbale">non è stato verbalizzato alcun voto!
+			<p>
+			<table id="id_verbale">
 
-	
+				<caption>INFORMAZIONI VERBALE</caption>
+
+
+
+				<tr>
+					<td>id:</td>
+					<td id="campo_verbaleid"></td>
+				</tr>
+				<tr>
+					<td>data creazione:</td>
+					<td id="campo_verbaledatacreazione"></td>
+				</tr>
+				<tr>
+					<td>ora creazione:</td>
+					<td id="campo_verbaleora"></td>
+				</tr>
+				<tr>
+					<td>id appello:</td>
+					<td id="campo_verbaleappello"></td>
+				</tr>
+				<tr>
+					<td>data appello:</td>
+					<td id="campo_verbaledataappello"></td>
+				</tr>
+				<tr>
+					<td>id corso:</td>
+					<td id="campo_verbalecorso"></td>
+				</tr>
+				<tr>
+					<td>nome corso:</td>
+					<td id="campo_verbalenomecorso"></td>
+				</tr>
+			</table>
+
+
+
+			<table id="id_studentiverbale" border="1">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Nome</th>
+						<th>Cognome</th>
+						<th>Matricola</th>
+						<th>Mail</th>
+						<th>Corso di Laurea</th>
+						<th>Voto</th>
+					</tr>
+				</thead>
+				<tbody id="id_studentiverbalebody">
+				</tbody>
+			</table>
+
+
+		</div>
+	</div>
+
+
 </body>
 </html>
