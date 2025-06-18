@@ -207,7 +207,7 @@
 				// make list item clickable
 				dateanchor.setAttribute('appelloid', appello.id); // set a custom HTML attribute
 				dateanchor.addEventListener("click", (e) => {
-
+									
 					sessionStorage.setItem("firstTimeClick", false);
 
 					// dependency via module parameter
@@ -328,7 +328,7 @@
 			listaIscritti.forEach(function(iscritto) { // self visible here, not this
 				row = document.createElement("tr");
 
-				bottonecell = document.createElement("td")
+				bottonecell = document.createElement("td");
 				if (iscritto.statoValutazione == 'non inserito' || iscritto.statoValutazione == 'inserito') {
 					bottone = document.createElement("button")
 					bottonecell.appendChild(bottone);
@@ -406,27 +406,27 @@
 
 				self.listcontainerbody.appendChild(row);
 			});
-			this.listcontainer.classList.remove("superhidden");;
+			
+			this.listcontainer.classList.remove("superhidden");
+			
+			//per evitare flickering
+			document.getElementById("id_pubblicaform").classList.remove("superhidden");
+			document.getElementById("id_verbalizzaform").classList.remove("superhidden");
+			document.getElementById("id_inserimentomultiplo").classList.remove("superhidden");
 
 		}
 
 
 
-
+		/*
 		this.autoclick = function() {
-			//da vedere
+			
 		}
+		*/
 
 	}
 
 
-
-
-
-
-
-
-	//wizard
 
 
 
@@ -461,14 +461,20 @@
 			sessionStorage.setItem("firstTimeClick", "true");
 
 
+			//bottoni vari
+			document.getElementById("id_pubblicaform").classList.add("superhidden");
+			document.getElementById("id_verbalizzaform").classList.add("superhidden");
+			document.getElementById("id_inserimentomultiplo").classList.add("superhidden");
+			
+			
 			//bottone inserimento multiplo
-			document.getElementById("erroreinput").classList.add("superhidden");;
+			document.getElementById("erroreinput").classList.add("superhidden");
 
-			document.getElementById("id_inserimentomultiplo").classList.add("superhidden");;
-			document.getElementById("no_votononinserito").classList.add("superhidden");;
+			document.getElementById("id_inserimentomultiplo").classList.add("superhidden");
+			document.getElementById("no_votononinserito").classList.add("superhidden");
 			document.getElementById("id_bottoneinserimentomultiplo").addEventListener('click', (e) => {
 
-				document.getElementById("overlay2").classList.remove("superhidden");;
+				document.getElementById("overlay2").classList.remove("superhidden");
 				document.getElementById("overlay2").style.display = "flex";
 
 				//clona
@@ -480,13 +486,13 @@
 				)
 
 				if (righe_votoNonInserito.length === 0) {
-					document.getElementById("tabella_votononinserito").classList.add("superhidden");;
-					document.getElementById("no_votononinserito").classList.remove("superhidden");;
+					document.getElementById("tabella_votononinserito").classList.add("superhidden");
+					document.getElementById("no_votononinserito").classList.remove("superhidden");
 
 				}
 				else {
-					document.getElementById("tabella_votononinserito").classList.remove("superhidden");;
-					document.getElementById("no_votononinserito").classList.add("superhidden");;
+					document.getElementById("tabella_votononinserito").classList.remove("superhidden");
+					document.getElementById("no_votononinserito").classList.add("superhidden");
 
 					let body = document.getElementById("id_tabella_votononinserito");
 					body.innerHTML = "";
@@ -517,12 +523,16 @@
 			//chiudi se cliccki su x oppure fuori
 			document.getElementById("chiudiPopup2").addEventListener("click", function() {
 				document.getElementById("overlay2").style.display = "none";
+				
+				document.getElementById("erroreinput").classList.add("superhidden");
 			});
 
 			// Chiudi se clicchi fuori dal popup
 			document.getElementById("overlay2").addEventListener("click", function(e) {
 				if (e.target === this) {
 					this.style.display = "none";
+					
+					document.getElementById("erroreinput").classList.add("superhidden");
 				}
 			});
 
@@ -555,8 +565,8 @@
 					if (!(voto === lode || voto === "18" || voto === "19" || voto === "20" ||
 						voto === "21" || voto === "22" || voto === "23" || voto === "24" ||
 						voto === "25" || voto === "26" || voto === "27" || voto === "28" ||
-						voto === "29" || voto === "30" || input === "assente" || input === "rimandato"
-						|| input === "riprovato")
+						voto === "29" || voto === "30" || voto === "assente" || voto === "rimandato"
+						|| voto === "riprovato")
 					) {
 						votoGiusto = false;
 					}
