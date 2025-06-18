@@ -88,12 +88,6 @@
 				/// make list item clickable
 				nameanchor.setAttribute('corsoid', corso.id); /// set a custom HTML attribute
 				nameanchor.addEventListener("click", (e) => {
-					//prima di autoclick 
-					/// dependency via module parameter
-					//sessionStorage.setItem("currentCorsoId", e.target.getAttribute("corsoid"));
-					//appelliList.show(e.target.getAttribute("corsoid")); /// the list must know the details container
-					//dopo autoclick
-					//xxxxxxxxx
 					let clickedCorsoId = e.target.getAttribute("corsoid");
 					let previousCorsoId = sessionStorage.getItem("currentCorsoId");
 
@@ -223,18 +217,6 @@
 
 		}
 
-		//prima di autoclick
-		/*
-		this.autoclick = function(appelloId) {
-			var e = new Event("click");
-			var selector = "a[appelloid='" + appelloId + "']";
-			var anchorToClick =  /// the first the one with that id
-				(appelloId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
-			if (anchorToClick) anchorToClick.dispatchEvent(e);
-		}
-		*/
-
-		//dopo autoclick
 		this.autoclick = function(appelloId) {
 			let targetId = appelloId;
 			if (!targetId) {
@@ -254,8 +236,6 @@
 
 	}
 
-
-	//da rivedere la forma per renderlo omogeneo col resto del codice
 	function Esito(_alert) {
 		this.alert = _alert;
 
@@ -319,7 +299,7 @@
 				votoRifiutatoMsg.classList.add("superhidden");
 			}
 
-			// Gestione bottone RIFIUTA
+			// Gestione cestino
 			const cestino = document.getElementById("cestino");
 			if (((Number(esito.voto) >= 18 && Number(esito.voto) <= 30) || esito.voto === "30 e lode") && esito.statoDiValutazione === "pubblicato") {
 				cestino.classList.remove("superhidden");
@@ -402,8 +382,6 @@
 			});
 
 
-
-			//MOSTRA CORSI
 			document.getElementById("corsiEaltro").classList.remove("superhidden");
 
 			//logout
