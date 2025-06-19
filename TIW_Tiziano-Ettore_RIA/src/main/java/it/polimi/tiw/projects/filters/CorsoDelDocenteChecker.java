@@ -10,7 +10,6 @@ import java.sql.DriverManager;
 
 import it.polimi.tiw.projects.beans.Corso;
 import it.polimi.tiw.projects.beans.User;
-import it.polimi.tiw.projects.dao.CorsoDAO;
 import it.polimi.tiw.projects.dao.DocenteDAO;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;

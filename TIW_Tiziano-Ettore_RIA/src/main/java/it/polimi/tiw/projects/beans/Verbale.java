@@ -1,5 +1,4 @@
 package it.polimi.tiw.projects.beans;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Verbale {

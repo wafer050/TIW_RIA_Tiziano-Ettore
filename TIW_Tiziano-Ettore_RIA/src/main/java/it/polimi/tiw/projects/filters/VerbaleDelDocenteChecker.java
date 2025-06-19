@@ -3,16 +3,13 @@ package it.polimi.tiw.projects.filters;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.servlet.ServletContext;
 import java.sql.DriverManager;
 
 import it.polimi.tiw.projects.beans.Verbale;
-import it.polimi.tiw.projects.beans.Corso;
 import it.polimi.tiw.projects.beans.User;
-import it.polimi.tiw.projects.dao.CorsoDAO;
 import it.polimi.tiw.projects.dao.DocenteDAO;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
