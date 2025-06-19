@@ -36,24 +36,27 @@
 	   */
 	function createComparer(idx, asc, isSpecialSort) {
 		return function(a, b) {
-			// get values to compare at column idx
-			// if order is ascending, compare 1st row to 2nd , otherwise 2nd to 1st
-			var v1 = getCellValue(asc ? a : b, idx),
-				v2 = getCellValue(asc ? b : a, idx);
+			//var v1 = getCellValue(asc ? a : b, idx);
+			//var v2 = getCellValue(asc ? b : a, idx);
+			var v1 = getCellValue(a, idx);
+			var v2 = getCellValue(b, idx);
 
 
 
 			//voti da ordinare in maniera diversa rispetto al resto
 			if (isSpecialSort) {
-				return getOrder(v1) - getOrder(v2);
+				return asc ? (getOrder(v1) - getOrder(v2)) : (getOrder(v2) - getOrder(v1));
 			}
 			else {
 				// If non numeric value
 				if (v1 === '' || v2 === '' || isNaN(v1) || isNaN(v2)) {
-					return v1.toString().localeCompare(v2); // lexical comparison
+					return asc ? v1.toString().localeCompare(v2) : v2.toString().localeCompare(v1);
+					// lexical comparison
 				}
 				// If numeric value
-				return v1 - v2; // v1 greater than v2 --> true
+				//return v1 - v2; 
+				// v1 greater than v2 --> true
+				return asc ? (v1 - v2) : (v2 - v1);
 			}
 		};
 	}
