@@ -117,10 +117,8 @@
 									sessionStorage.setItem("currentAppelloId", firstAppello.getAttribute("appelloid"));
 								}
 							} else
-								//if (document.querySelector(`a[appelloid='${targetAppelloId}']`)) {
-								// Altrimenti autoclick sull'appello salvato
+								//autoclick sull'appello salvato
 								appelliList.autoclick(targetAppelloId);
-							//}
 						});
 					}
 				}, false);
