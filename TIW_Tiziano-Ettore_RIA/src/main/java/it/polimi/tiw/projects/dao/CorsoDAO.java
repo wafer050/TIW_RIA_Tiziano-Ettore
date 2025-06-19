@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.tiw.projects.beans.Appello;
-import it.polimi.tiw.projects.beans.Corso;
-import it.polimi.tiw.projects.beans.User;
 
 public class CorsoDAO {
 	private Connection con;

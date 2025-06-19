@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;
 
 import com.google.gson.Gson;
 
@@ -15,15 +14,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
-import it.polimi.tiw.projects.beans.Corso;
-import it.polimi.tiw.projects.beans.Appello;
-import it.polimi.tiw.projects.beans.User;
 import it.polimi.tiw.projects.beans.Verbale;
-import it.polimi.tiw.projects.dao.VotoDAO;
-import it.polimi.tiw.projects.dao.AppelloDAO;
-import it.polimi.tiw.projects.dao.CorsoDAO;
 import it.polimi.tiw.projects.dao.VerbaleDAO;
 
 

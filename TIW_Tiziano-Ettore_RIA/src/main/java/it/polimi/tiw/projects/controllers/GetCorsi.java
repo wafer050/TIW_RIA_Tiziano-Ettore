@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
@@ -21,7 +20,6 @@ import jakarta.servlet.http.HttpSession;
 import it.polimi.tiw.projects.beans.Corso;
 import it.polimi.tiw.projects.beans.User;
 import it.polimi.tiw.projects.dao.DocenteDAO;
-import it.polimi.tiw.projects.dao.CorsoDAO;
 
 @WebServlet("/GetCorsi")
 public class GetCorsi extends HttpServlet {

@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -19,20 +17,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
-import it.polimi.tiw.projects.beans.Corso;
-import it.polimi.tiw.projects.beans.StudenteAndEsitoAppello;
-import it.polimi.tiw.projects.beans.Appello;
-import it.polimi.tiw.projects.beans.StudenteDati;
 import it.polimi.tiw.projects.beans.User;
 import it.polimi.tiw.projects.dao.DocenteDAO;
-import it.polimi.tiw.projects.dao.AppelloDAO;
-import it.polimi.tiw.projects.dao.CorsoDAO;
 import it.polimi.tiw.projects.beans.Verbale;
-import it.polimi.tiw.projects.dao.StudenteDAO;
 
 @WebServlet("/GetVerbali")
 public class GetVerbali extends HttpServlet {
