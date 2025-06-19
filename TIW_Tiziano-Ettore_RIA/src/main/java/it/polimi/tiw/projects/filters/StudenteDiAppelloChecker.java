@@ -10,14 +10,12 @@ import java.sql.DriverManager;
 
 import it.polimi.tiw.projects.dao.AppelloDAO;
 import it.polimi.tiw.projects.beans.StudenteAndEsitoAppello;
-import it.polimi.tiw.projects.beans.User;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -50,9 +48,6 @@ public class StudenteDiAppelloChecker implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		String errorPage = req.getServletContext().getContextPath() + "/Error.html";
-
-		HttpSession s = req.getSession();
-		User u = (User) s.getAttribute("user");
 		
 		boolean trovato = false;
 		
