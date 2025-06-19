@@ -12,6 +12,23 @@
     return tr.children[idx].textContent; // idx indexes the columns of the tr
     // row
   }
+  
+  function getOrder(v){
+	switch (v){
+					case "":
+						return -infinity;
+					case "assente":
+						return -49;
+					case "rimandato":					
+						return -48;
+					case "riprovato":
+						return -47;
+					case "30 e lode":
+						return Infinity;
+					default:
+						return parseInt(v);
+				}
+  }
 
   /*
 	 * Creates a function that compares two rows based on the cell in the idx
@@ -28,44 +45,9 @@
 		
 		//voti da ordinare in maniera diversa rispetto al resto
 		if(isSpecialSort){
-			switch (v1){
-				case "":
-					return -Infinity;
-				case "assente":
-					if (v2 !== ""){
-					return -Infinity;
-					}
-					else{
-						return Infinity
-					}
-				case "rimandato":
-					if (v2 !== "" && v2 !== "assente"){
-					return -Infinity;
-					}
-					else{
-						return Infinity;
-					}
-				case "riprovato":
-					if (v2 !== "" && v2 !== "assente" && v2 !== "rimandato"){
-						
-					return -Infinity;
-					}
-					else{
-						return Infinity;
-					}
-				case "30 e lode":
-					return Infinity;
-				default:
-					return v1 - v2;
+			return getOrder(v1) - getOrder(v2);
 			}
-		}
-		else{
-		    
-		
-		
-		
-		
-		
+		else{	
 		// If non numeric value
       if (v1 === '' || v2 === '' || isNaN(v1) || isNaN(v2)) {
         return v1.toString().localeCompare(v2); // lexical comparison
