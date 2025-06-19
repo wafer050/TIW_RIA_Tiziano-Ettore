@@ -16,7 +16,7 @@
 	function getOrder(v) {
 		switch (v) {
 			case "":
-				return -infinity;
+				return -Infinity;
 			case "assente":
 				return -49;
 			case "rimandato":
