@@ -17,297 +17,307 @@
 
 	///Constructors of view components
 
-	function PersonalMessage(_user, messagecontainer) {
-		this.nome = JSON.parse(_user).nome;
-		this.cognome = JSON.parse(_user).cognome;
-		this.show = function() {
-			messagecontainer.textContent = this.nome + " " + this.cognome;
-		}
-	}
+	class PersonalMessage {
+        constructor(_user, messagecontainer) {
+            this.nome = JSON.parse(_user).nome;
+            this.cognome = JSON.parse(_user).cognome;
+            this.show = function() {
+                messagecontainer.textContent = this.nome + " " + this.cognome;
+            };
+        }
+    }
 
 
 
-	function CorsiList(_alert, _listcontainer, _listcontainerbody) {
-		this.alert = _alert;
-		this.listcontainer = _listcontainer;
-		this.listcontainerbody = _listcontainerbody;
+	class CorsiList {
+        constructor(_alert, _listcontainer, _listcontainerbody) {
+            this.alert = _alert;
+            this.listcontainer = _listcontainer;
+            this.listcontainerbody = _listcontainerbody;
 
-		this.reset = function() {
-			this.listcontainer.classList.add("superhidden");
-		}
+            this.reset = function() {
+                this.listcontainer.classList.add("superhidden");
+            };
 
-		this.show = function(next) {
-			var self = this;
-			makeCall("GET", "GetCorsiStudente", null,
-				function(req) {
-					if (req.readyState == 4) {
-						var message = req.responseText;
-						if (req.status == 200) {
-							var corsiToShow = JSON.parse(req.responseText);
-							if (corsiToShow.length == 0) {
-								self.alert.textContent = "No corsi yet!";
-								return;
-							}
-							self.update(corsiToShow); /// self visible by closure
-							if (next) next(); /// show the default element of the list if present
+            this.show = function(next) {
+                var self = this;
+                makeCall("GET", "GetCorsiStudente", null,
+                    function(req) {
+                        if (req.readyState == 4) {
+                            var message = req.responseText;
+                            if (req.status == 200) {
+                                var corsiToShow = JSON.parse(req.responseText);
+                                if (corsiToShow.length == 0) {
+                                    self.alert.textContent = "No corsi yet!";
+                                    return;
+                                }
+                                self.update(corsiToShow); /// self visible by closure
+                                if (next) next(); /// show the default element of the list if present
 
-						} else if (req.status == 403) {
-							window.location.href = req.getResponseHeader("Location");
-							///Location definito nel filtro loginChecker
-							///window.sessionStorage.removeItem('user');
-							window.sessionStorage.clear();
-						}
-						else {
-							self.alert.textContent = message;
-						}
-					}
-				}
-			);
-		};
-
-
-		this.update = function(listaCorsi) {
-			var elem, i, row, idcell, namecell, nameanchor, linkText;
-			this.listcontainerbody.innerHTML = ""; /// empty the table body
-			/// build updated list
-			var self = this;
-			listaCorsi.forEach(function(corso) { /// self visible here, not this
-				row = document.createElement("tr");
-				idcell = document.createElement("td");
-				idcell.textContent = corso.id;
-				row.appendChild(idcell);
+                            } else if (req.status == 403) {
+                                window.location.href = req.getResponseHeader("Location");
+                                ///Location definito nel filtro loginChecker
+                                ///window.sessionStorage.removeItem('user');
+                                window.sessionStorage.clear();
+                            }
+                            else {
+                                self.alert.textContent = message;
+                            }
+                        }
+                    }
+                );
+            };
 
 
+            this.update = function(listaCorsi) {
+                var row, idcell, namecell, nameanchor, linkText;
+                this.listcontainerbody.innerHTML = ""; /// empty the table body
 
-				namecell = document.createElement("td");
-				nameanchor = document.createElement("a");
-
-				namecell.appendChild(nameanchor);
-				linkText = document.createTextNode(corso.name);
-				nameanchor.appendChild(linkText);
-				/// make list item clickable
-				nameanchor.setAttribute('corsoid', corso.id); /// set a custom HTML attribute
-				nameanchor.addEventListener("click", (e) => {
-					let clickedCorsoId = e.target.getAttribute("corsoid");
-					let previousCorsoId = sessionStorage.getItem("currentCorsoId");
-
-					sessionStorage.setItem("currentCorsoId", clickedCorsoId);
-					let isFirstTime = sessionStorage.getItem("firstTimeClick") === "true";
-
-					let corsoDiverso = false;
-					if (clickedCorsoId !== previousCorsoId) {
-						sessionStorage.removeItem("currentAppelloId");
-						corsoDiverso = true;
-					}
-
-					if (isFirstTime === true) {
-						// Comportamento prima volta
-						//sessionStorage.setItem("firstTimeClick", "false");
-						appelliList.show(clickedCorsoId); // Mostra solo appelli
-					} else {
-						// Comportamento normale
-						appelliList.show(clickedCorsoId, () => {
-							let targetAppelloId = sessionStorage.getItem("currentAppelloId");
-							if (corsoDiverso) {
-								//autoclick sul primo appello
-								appelliList.autoclick();
-								// Aggiorna sessionStorage con il primo appello
-								let firstAppello = appelliList.listcontainerbody.querySelector("a[appelloid]");
-								if (firstAppello) {
-									sessionStorage.setItem("currentAppelloId", firstAppello.getAttribute("appelloid"));
-								}
-							} else
-								//autoclick sull'appello salvato
-								appelliList.autoclick(targetAppelloId);
-						});
-					}
-				}, false);
-				nameanchor.href = "#";
-				row.appendChild(namecell);
-				self.listcontainerbody.appendChild(row);
-			});
-			///document.getElementById("corsiEaltro").classList.remove("superhidden");
-			this.listcontainer.classList.remove("superhidden");
-
-		}
-
-		this.autoclick = function(corsoId) {
-			var e = new Event("click");
-			var selector = "a[corsoid='" + corsoId + "']";
-			var anchorToClick =  /// the first the one with that id
-				(corsoId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
-			if (anchorToClick) anchorToClick.dispatchEvent(e);
-		}
-
-	}
+                /// build updated list
+                var self = this;
+                listaCorsi.forEach(function(corso) {
+                    row = document.createElement("tr");
+                    idcell = document.createElement("td");
+                    idcell.textContent = corso.id;
+                    row.appendChild(idcell);
 
 
 
+                    namecell = document.createElement("td");
+                    nameanchor = document.createElement("a");
+
+                    namecell.appendChild(nameanchor);
+                    linkText = document.createTextNode(corso.name);
+                    nameanchor.appendChild(linkText);
+                    /// make list item clickable
+                    nameanchor.setAttribute('corsoid', corso.id); /// set a custom HTML attribute
+                    nameanchor.addEventListener("click", (e) => {
+                        let clickedCorsoId = e.target.getAttribute("corsoid");
+                        let previousCorsoId = sessionStorage.getItem("currentCorsoId");
+
+                        sessionStorage.setItem("currentCorsoId", clickedCorsoId);
+                        let isFirstTime = sessionStorage.getItem("firstTimeClick") === "true";
+
+                        let corsoDiverso = false;
+                        if (clickedCorsoId !== previousCorsoId) {
+                            sessionStorage.removeItem("currentAppelloId");
+                            corsoDiverso = true;
+                        }
+
+                        if (isFirstTime === true) {
+                            // Comportamento prima volta
+                            //sessionStorage.setItem("firstTimeClick", "false");
+                            appelliList.show(clickedCorsoId); // Mostra solo appelli
+                        } else {
+                            // Comportamento normale
+                            appelliList.show(clickedCorsoId, () => {
+                                let targetAppelloId = sessionStorage.getItem("currentAppelloId");
+                                if (corsoDiverso) {
+                                    //autoclick sul primo appello
+                                    appelliList.autoclick();
+                                    // Aggiorna sessionStorage con il primo appello
+                                    let firstAppello = appelliList.listcontainerbody.querySelector("a[appelloid]");
+                                    if (firstAppello) {
+                                        sessionStorage.setItem("currentAppelloId", firstAppello.getAttribute("appelloid"));
+                                    }
+                                }
+                                else
+                                    //autoclick sull'appello salvato
+                                    appelliList.autoclick(targetAppelloId);
+                            });
+                        }
+                    }, false);
+                    nameanchor.href = "#";
+                    row.appendChild(namecell);
+                    self.listcontainerbody.appendChild(row);
+                });
+                ///document.getElementById("corsiEaltro").classList.remove("superhidden");
+                this.listcontainer.classList.remove("superhidden");
+
+            };
+
+            this.autoclick = function(corsoId) {
+                var e = new Event("click");
+                var selector = "a[corsoid='" + corsoId + "']";
+                var anchorToClick = /// the first the one with that id
+                    (corsoId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
+                if (anchorToClick) anchorToClick.dispatchEvent(e);
+            };
+
+        }
+    }
 
 
 
-	function AppelliList(_alert, _listcontainer, _listcontainerbody) {
-		this.alert = _alert;
-		this.listcontainer = _listcontainer;
-		this.listcontainerbody = _listcontainerbody;
-
-		this.reset = function() {
-			this.listcontainer.classList.add("superhidden");
-		}
-
-		this.show = function(corsoid, next) {
-			var self = this;
-			makeCall("GET", "GetAppelliStudente?corsoid=" + corsoid, null,
-				function(req) {
-					if (req.readyState == 4) {
-						var message = req.responseText;
-						if (req.status == 200) {
-							var appelliToShow = JSON.parse(req.responseText);
-							if (appelliToShow.length == 0) {
-								self.alert.textContent = "No appelli yet!";
-								return;
-							}
-							self.update(appelliToShow); /// self visible by closure
-							if (next) next(); /// show the default element of the list if present
-
-						} else if (req.status == 403) {
-							window.location.href = req.getResponseHeader("Location");
-							///Location definito nel filtro loginChecker
-							///window.sessionStorage.removeItem('user');
-							window.sessionStorage.clear();
-						}
-						else {
-							self.alert.textContent = message;
-						}
-					}
-				}
-			);
-		};
 
 
-		this.update = function(listaAppelli) {
-			var elem, i, row, datecell, dateanchor, linkText;
-			this.listcontainerbody.innerHTML = ""; /// empty the table body
-			/// build updated list
-			var self = this;
-			listaAppelli.forEach(function(appello) { /// self visible here, not this
-				row = document.createElement("tr");
 
-				datecell = document.createElement("td");
-				dateanchor = document.createElement("a");
+	class AppelliList {
+        constructor(_alert, _listcontainer, _listcontainerbody) {
+            this.alert = _alert;
+            this.listcontainer = _listcontainer;
+            this.listcontainerbody = _listcontainerbody;
 
-				datecell.appendChild(dateanchor);
-				linkText = document.createTextNode(appello.date);
-				dateanchor.appendChild(linkText);
-				/// make list item clickable
-				dateanchor.setAttribute('appelloid', appello.id); /// set a custom HTML attribute
-				dateanchor.addEventListener("click", (e) => {
-					sessionStorage.setItem("firstTimeClick", false);
-					/// dependency via module parameter
-					sessionStorage.setItem("currentAppelloId", e.target.getAttribute("appelloid"));
-					esito.show(e.target.getAttribute("appelloid"));
-				}, false);
-				dateanchor.href = "#";
-				row.appendChild(datecell);
-				self.listcontainerbody.appendChild(row);
-			});
-			this.listcontainer.classList.remove("superhidden");
+            this.reset = function() {
+                this.listcontainer.classList.add("superhidden");
+            };
 
-		}
+            this.show = function(corsoid, next) {
+                var self = this;
+                makeCall("GET", "GetAppelliStudente?corsoid=" + corsoid, null,
+                    function(req) {
+                        if (req.readyState == 4) {
+                            var message = req.responseText;
+                            if (req.status == 200) {
+                                var appelliToShow = JSON.parse(req.responseText);
+                                if (appelliToShow.length == 0) {
+                                    self.alert.textContent = "No appelli yet!";
+                                    return;
+                                }
+                                self.update(appelliToShow); /// self visible by closure
+                                if (next) next(); /// show the default element of the list if present
 
-		this.autoclick = function(appelloId) {
-			let targetId = appelloId;
-			if (!targetId) {
-				let firstAppello = this.listcontainerbody.querySelector("a[appelloid]");
-				targetId = firstAppello ? firstAppello.getAttribute("appelloid") : null;
-			}
+                            } else if (req.status == 403) {
+                                window.location.href = req.getResponseHeader("Location");
+                                ///Location definito nel filtro loginChecker
+                                ///window.sessionStorage.removeItem('user');
+                                window.sessionStorage.clear();
+                            }
+                            else {
+                                self.alert.textContent = message;
+                            }
+                        }
+                    }
+                );
+            };
 
-			if (targetId) {
-				let e = new Event("click");
-				let anchor = document.querySelector(`a[appelloid='${targetId}']`);
-				if (anchor) {
-					sessionStorage.setItem("currentAppelloId", targetId);
-					anchor.dispatchEvent(e);
-				}
-			}
-		};
 
-	}
+            this.update = function(listaAppelli) {
+                var row, datecell, dateanchor, linkText;
+                this.listcontainerbody.innerHTML = ""; /// empty the table body
 
-	function Esito(_alert) {
-		this.alert = _alert;
+                /// build updated list
+                var self = this;
+                listaAppelli.forEach(function(appello) {
+                    row = document.createElement("tr");
 
-		this.reset = function() {
-			document.getElementById("esitoSection").classList.add("superhidden");
-			document.getElementById("datiEsito").classList.add("superhidden");
-			document.getElementById("cestino").classList.add("superhidden");
-			document.getElementById("votoRifiutatoMsg").classList.add("superhidden");
-			document.getElementById("esitoNonPubblicatoMessage").classList.add("superhidden");
-		};
+                    datecell = document.createElement("td");
+                    dateanchor = document.createElement("a");
 
-		this.show = function(appelloid, next) {
-			var self = this;
-			makeCall("GET", "GetEsitoStudente?appelloid=" + sessionStorage.getItem("currentAppelloId"), null, function(req) {
-				if (req.readyState == 4) {
-					var message = req.responseText;
-					if (req.status == 200) {
-						var esito = JSON.parse(req.responseText);
-						if (esito.statoDiValutazione === "non inserito" || esito.statoDiValutazione === "inserito") {
-							self.reset();
-							document.getElementById("esitoSection").classList.remove("superhidden");
-							document.getElementById("esitoNonPubblicatoMessage").classList.remove("superhidden");
-						} else {
-							self.update(esito);
-							if (next) next();
-						}
-					} else if (req.status == 403) {
-						window.location.href = req.getResponseHeader("Location");
-						window.sessionStorage.clear();
-					} else {
-						self.alert.textContent = message;
-					}
-				}
-			});
-		};
+                    datecell.appendChild(dateanchor);
+                    linkText = document.createTextNode(appello.date);
+                    dateanchor.appendChild(linkText);
+                    /// make list item clickable
+                    dateanchor.setAttribute('appelloid', appello.id); /// set a custom HTML attribute
+                    dateanchor.addEventListener("click", (e) => {
+                        sessionStorage.setItem("firstTimeClick", false);
+                        /// dependency via module parameter
+                        sessionStorage.setItem("currentAppelloId", e.target.getAttribute("appelloid"));
+                        esito.show(e.target.getAttribute("appelloid"));
+                    }, false);
+                    dateanchor.href = "#";
+                    row.appendChild(datecell);
+                    self.listcontainerbody.appendChild(row);
+                });
+                this.listcontainer.classList.remove("superhidden");
 
-		this.update = function(esito) {
-			var self = this;
-			// Mostra sezione
-			document.getElementById("esitoSection").classList.remove("superhidden");
-			document.getElementById("esitoNonPubblicatoMessage").classList.add("superhidden");
-			document.getElementById("datiEsito").classList.remove("superhidden");
-			document.getElementById("datiEsito").setAttribute("draggable", "false");
-			document.getElementById("datiEsito").style.cursor = "default";
+            };
 
-			// Popola i dati
-			document.getElementById("esitoStudente").textContent = esito.nome + " " + esito.cognome;
-			document.getElementById("esitoMatricola").textContent = esito.matricola;
-			document.getElementById("esitoEmail").textContent = esito.mail;
-			document.getElementById("esitoCorsoDiLaurea").textContent = esito.corsoLaurea;
-			document.getElementById("esitoCorso").textContent = esito.nomeCorso;
-			document.getElementById("esitoData").textContent = esito.dataAppello;
-			document.getElementById("esitoVoto").textContent = esito.voto;
-			document.getElementById("esitoStatoDiValutazione").textContent = esito.statoDiValutazione;
+            this.autoclick = function(appelloId) {
+                let targetId = appelloId;
+                if (!targetId) {
+                    let firstAppello = this.listcontainerbody.querySelector("a[appelloid]");
+                    targetId = firstAppello ? firstAppello.getAttribute("appelloid") : null;
+                }
 
-			//testo voto rifiutato
-			const votoRifiutatoMsg = document.getElementById("votoRifiutatoMsg");
-			if (esito.statoDiValutazione === "rifiutato") {
-				votoRifiutatoMsg.classList.remove("superhidden");
-			} else {
-				votoRifiutatoMsg.classList.add("superhidden");
-			}
+                if (targetId) {
+                    let e = new Event("click");
+                    let anchor = document.querySelector(`a[appelloid='${targetId}']`);
+                    if (anchor) {
+                        sessionStorage.setItem("currentAppelloId", targetId);
+                        anchor.dispatchEvent(e);
+                    }
+                }
+            };
 
-			// Gestione cestino
-			const cestino = document.getElementById("cestino");
-			if (((Number(esito.voto) >= 18 && Number(esito.voto) <= 30) || esito.voto === "30 e lode") && esito.statoDiValutazione === "pubblicato") {
-				cestino.classList.remove("superhidden");
-				document.getElementById("datiEsito").setAttribute("draggable", "true");
-				document.getElementById("datiEsito").style.cursor = "grab";
-			} else {
-				cestino.classList.add("superhidden");
-			}
-		};
-	}
+        }
+    }
+
+	class Esito {
+        constructor(_alert) {
+            this.alert = _alert;
+
+            this.reset = function() {
+                document.getElementById("esitoSection").classList.add("superhidden");
+                document.getElementById("datiEsito").classList.add("superhidden");
+                document.getElementById("cestino").classList.add("superhidden");
+                document.getElementById("votoRifiutatoMsg").classList.add("superhidden");
+                document.getElementById("esitoNonPubblicatoMessage").classList.add("superhidden");
+            };
+
+            this.show = function(next) {
+                var self = this;
+                makeCall("GET", "GetEsitoStudente?appelloid=" + sessionStorage.getItem("currentAppelloId"), null, function(req) {
+                    if (req.readyState == 4) {
+                        var message = req.responseText;
+                        if (req.status == 200) {
+                            var esito = JSON.parse(req.responseText);
+                            if (esito.statoDiValutazione === "non inserito" || esito.statoDiValutazione === "inserito") {
+                                self.reset();
+                                document.getElementById("esitoSection").classList.remove("superhidden");
+                                document.getElementById("esitoNonPubblicatoMessage").classList.remove("superhidden");
+                            } else {
+                                self.update(esito);
+                                if (next) next();
+                            }
+                        } else if (req.status == 403) {
+                            window.location.href = req.getResponseHeader("Location");
+                            window.sessionStorage.clear();
+                        } else {
+                            self.alert.textContent = message;
+                        }
+                    }
+                });
+            };
+
+            this.update = function(esito) {
+                // Mostra sezione
+                document.getElementById("esitoSection").classList.remove("superhidden");
+                document.getElementById("esitoNonPubblicatoMessage").classList.add("superhidden");
+                document.getElementById("datiEsito").classList.remove("superhidden");
+                document.getElementById("datiEsito").setAttribute("draggable", "false");
+                document.getElementById("datiEsito").style.cursor = "default";
+
+                // Popola i dati
+                document.getElementById("esitoStudente").textContent = esito.nome + " " + esito.cognome;
+                document.getElementById("esitoMatricola").textContent = esito.matricola;
+                document.getElementById("esitoEmail").textContent = esito.mail;
+                document.getElementById("esitoCorsoDiLaurea").textContent = esito.corsoLaurea;
+                document.getElementById("esitoCorso").textContent = esito.nomeCorso;
+                document.getElementById("esitoData").textContent = esito.dataAppello;
+                document.getElementById("esitoVoto").textContent = esito.voto;
+                document.getElementById("esitoStatoDiValutazione").textContent = esito.statoDiValutazione;
+
+                //testo voto rifiutato
+                const votoRifiutatoMsg = document.getElementById("votoRifiutatoMsg");
+                if (esito.statoDiValutazione === "rifiutato") {
+                    votoRifiutatoMsg.classList.remove("superhidden");
+                } else {
+                    votoRifiutatoMsg.classList.add("superhidden");
+                }
+
+                // Gestione cestino
+                const cestino = document.getElementById("cestino");
+                if (((Number(esito.voto) >= 18 && Number(esito.voto) <= 30) || esito.voto === "30 e lode") && esito.statoDiValutazione === "pubblicato") {
+                    cestino.classList.remove("superhidden");
+                    document.getElementById("datiEsito").setAttribute("draggable", "true");
+                    document.getElementById("datiEsito").style.cursor = "grab";
+                } else {
+                    cestino.classList.add("superhidden");
+                }
+            };
+        }
+    }
 
 
 
@@ -315,7 +325,7 @@
 		var alertContainer = document.getElementById("id_alert");
 
 		this.start = function() {
-			personalMessage = new PersonalMessage(sessionStorage.getItem('user'),
+			var personalMessage = new PersonalMessage(sessionStorage.getItem('user'),
 				document.getElementById("id_nominativo"));
 			personalMessage.show();
 
@@ -348,7 +358,7 @@
 			})
 
 			//rifiuta se clicchi conferma
-			document.getElementById("confermaRifiuto").addEventListener('click', (e) => {
+			document.getElementById("confermaRifiuto").addEventListener('click', () => {
 				//document.getElementById("overlay").style.display = "none";
 				makeCall("POST", "RifiutaVoto?appelloid=" + sessionStorage.getItem("currentAppelloId"), null,
 					function(req) {
