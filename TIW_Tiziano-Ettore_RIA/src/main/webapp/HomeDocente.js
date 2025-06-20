@@ -2,7 +2,7 @@
 
 	// page components
 	//let missionDetails, missionsList, wizard,
-	let corsiList, appelliList, iscritti, wizard,
+	let corsiList, appelliList, iscritti,
 		pageOrchestrator = new PageOrchestrator(); // main controller
 
 	window.addEventListener("load", () => {
@@ -67,7 +67,7 @@
 
 
 		this.update = function(listaCorsi) {
-			var elem, i, row, idcell, namecell, nameanchor, linkText;
+			var row, idcell, namecell, nameanchor, linkText;
 			this.listcontainerbody.innerHTML = ""; // empty the table body
 			// build updated list
 			var self = this;
@@ -191,7 +191,7 @@
 
 
 		this.update = function(listaAppelli) {
-			var elem, i, row, datecell, dateanchor, linkText;
+			var row, datecell, dateanchor, linkText;
 			this.listcontainerbody.innerHTML = ""; // empty the table body
 			// build updated list
 			var self = this;
@@ -272,7 +272,7 @@
 			document.getElementById("id_verbalizzaform").classList.add("superhidden");;
 		}
 
-		this.show = function(appelloid, next) {
+		this.show = function(next) {
 
 
 			//console.log("Appelloid passato al server:", appelloid);
@@ -320,7 +320,7 @@
 
 
 		this.update = function(listaIscritti) {
-			var elem, i, row, bottonecell, bottone, idcell, nomecell, cognomecell, matricolacell,
+			var row, bottonecell, bottone, idcell, nomecell, cognomecell, matricolacell,
 				mailcell, corsoLaureacell, votocell, statoValutazionecell;
 			this.listcontainerbody.innerHTML = ""; // empty the table body
 			// build updated list
@@ -336,7 +336,7 @@
 
 
 					//fa comparire il form per inserire il voto
-					bottone.addEventListener('click', (e) => {
+					bottone.addEventListener('click', () => {
 						makeCall("GET", "GetDatiStudente?studenteid=" + iscritto.id
 							+ "&appelloid=" + sessionStorage.getItem("currentAppelloId")
 							, null,
@@ -472,7 +472,7 @@
 
 			document.getElementById("id_inserimentomultiplo").classList.add("superhidden");
 			document.getElementById("no_votononinserito").classList.add("superhidden");
-			document.getElementById("id_bottoneinserimentomultiplo").addEventListener('click', (e) => {
+			document.getElementById("id_bottoneinserimentomultiplo").addEventListener('click', () => {
 
 				document.getElementById("overlay2").classList.remove("superhidden");
 				document.getElementById("overlay2").style.display = "flex";
@@ -688,7 +688,7 @@
 
 			//bottone pubblica
 			document.getElementById("id_pubblicaform").classList.add("superhidden");;
-			document.getElementById('id_pubblica').addEventListener('click', (e) => {
+			document.getElementById('id_pubblica').addEventListener('click', () => {
 				makeCall("GET", "PubblicaVoti?appelloid=" + sessionStorage.getItem("currentAppelloId"), null,
 					function(req) {
 						if (req.readyState == 4) {
@@ -731,7 +731,7 @@
 
 
 			document.getElementById("id_verbalizzaform").classList.add("superhidden");;
-			document.getElementById('id_verbalizza').addEventListener('click', (e) => {
+			document.getElementById('id_verbalizza').addEventListener('click', () => {
 				makeCall("GET", "VerbalizzaVoti?appelloid=" + sessionStorage.getItem("currentAppelloId"), null,
 					function(req) {
 						if (req.readyState == 4) {
