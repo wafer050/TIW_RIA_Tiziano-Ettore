@@ -840,10 +840,11 @@
 
 			//MOSTRA CORSI
 			document.getElementById("corsiEaltro").classList.remove("superhidden");
-			document.getElementById("verbali").classList.add("superhidden");
+			document.getElementById("verbali").classList.add("superhidden");		
 
 			document.getElementById("mostracorsi").addEventListener('click', () => {
 				document.getElementById("verbali").classList.add("superhidden");
+				document.getElementById("verbaliErrore").classList.add("superhidden");
 				document.getElementById("corsiEaltro").classList.remove("superhidden");
 				corsiList.show();
 			});
@@ -853,17 +854,30 @@
 			document.getElementById("mostraverbali").addEventListener('click', () => {
 				//document.getElementById("corsiEaltro").style.display = "none";
 				document.getElementById("corsiEaltro").classList.add("superhidden");
-				document.getElementById("verbali").classList.remove("superhidden");
+				//document.getElementById("verbali").classList.remove("superhidden");
 
 				makeCall("GET", "GetVerbali", null,
 					function(req) {
 						if (req.readyState == 4) {
 							var message = req.responseText;
-							if (req.status == 200) {
-
+							if (req.status == 200) {			
 								//refresh
 
 								let verbaliToShow = JSON.parse(req.responseText);
+								
+								
+								if(verbaliToShow.length === 0){
+																	document.getElementById("verbaliErrore").classList.remove("superhidden");
+																	return;
+																}
+																
+								document.getElementById("verbali").classList.remove("superhidden");
+								document.getElementById("verbaliErrore").classList.add("superhidden");
+								
+								
+								
+								
+								
 								let body = document.getElementById("id_tabellaverbali");
 								body.innerHTML = "";
 								let row;
