@@ -17,13 +17,15 @@
 
 	// Constructors of view components
 
-	function PersonalMessage(_user, messagecontainer) {
-		this.nome = JSON.parse(_user).nome;
-		this.cognome = JSON.parse(_user).cognome;
-		this.show = function() {
-			messagecontainer.textContent = this.nome + " " + this.cognome;
-		}
-	}
+	class PersonalMessage {
+        constructor(_user, messagecontainer) {
+            this.nome = JSON.parse(_user).nome;
+            this.cognome = JSON.parse(_user).cognome;
+            this.show = function() {
+                messagecontainer.textContent = this.nome + " " + this.cognome;
+            };
+        }
+    }
 
 
 
