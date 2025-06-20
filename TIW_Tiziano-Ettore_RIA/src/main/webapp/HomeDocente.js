@@ -155,110 +155,111 @@
 
 
 
-	function AppelliList(_alert, _listcontainer, _listcontainerbody) {
-		this.alert = _alert;
-		this.listcontainer = _listcontainer;
-		this.listcontainerbody = _listcontainerbody;
+	class AppelliList {
+		constructor(_alert, _listcontainer, _listcontainerbody) {
+			this.alert = _alert;
+			this.listcontainer = _listcontainer;
+			this.listcontainerbody = _listcontainerbody;
 
-		this.reset = function() {
-			this.listcontainer.classList.add("superhidden");;
-		}
+			this.reset = function() {
+				this.listcontainer.classList.add("superhidden");;
+			};
 
-		this.show = function(corsoid, next) {
-			var self = this;
-			makeCall("GET", "GetAppelli?corsoid=" + corsoid, null,
-				function(req) {
-					if (req.readyState == 4) {
-						var message = req.responseText;
-						if (req.status == 200) {
-							var appelliToShow = JSON.parse(req.responseText);
-							if (appelliToShow.length == 0) {
-								self.alert.textContent = "No appelli yet!";
-								return;
+			this.show = function(corsoid, next) {
+				var self = this;
+				makeCall("GET", "GetAppelli?corsoid=" + corsoid, null,
+					function(req) {
+						if (req.readyState == 4) {
+							var message = req.responseText;
+							if (req.status == 200) {
+								var appelliToShow = JSON.parse(req.responseText);
+								if (appelliToShow.length == 0) {
+									self.alert.textContent = "No appelli yet!";
+									return;
+								}
+								self.update(appelliToShow); // self visible by closure
+
+								if (next) { next(); }
+
+
+							} else if (req.status == 403) {
+								window.location.href = req.getResponseHeader("Location");
+								//Location definito nel filtro loginChecker
+								//window.sessionStorage.removeItem('user');
+								window.sessionStorage.clear();
 							}
-							self.update(appelliToShow); // self visible by closure
-
-							if (next) { next(); }
-
-
-						} else if (req.status == 403) {
-							window.location.href = req.getResponseHeader("Location");
-							//Location definito nel filtro loginChecker
-							//window.sessionStorage.removeItem('user');
-							window.sessionStorage.clear();
-						}
-						else {
-							self.alert.textContent = message;
+							else {
+								self.alert.textContent = message;
+							}
 						}
 					}
+				);
+			};
+
+
+			this.update = function(listaAppelli) {
+				var row, datecell, dateanchor, linkText;
+				this.listcontainerbody.innerHTML = ""; // empty the table body
+
+				// build updated list
+				var self = this;
+				listaAppelli.forEach(function(appello) {
+					row = document.createElement("tr");
+
+					datecell = document.createElement("td");
+					dateanchor = document.createElement("a");
+
+					datecell.appendChild(dateanchor);
+					linkText = document.createTextNode(appello.date);
+					dateanchor.appendChild(linkText);
+					// make list item clickable
+					dateanchor.setAttribute('appelloid', appello.id); // set a custom HTML attribute
+					dateanchor.addEventListener("click", (e) => {
+
+						sessionStorage.setItem("firstTimeClick", false);
+
+						// dependency via module parameter
+						sessionStorage.setItem("currentAppelloId", e.target.getAttribute("appelloid"));
+						iscritti.show(e.target.getAttribute("appelloid"));
+
+					}, false);
+					dateanchor.href = "#";
+					row.appendChild(datecell);
+					self.listcontainerbody.appendChild(row);
+				});
+				this.listcontainer.classList.remove("superhidden");;
+
+			};
+
+			/*
+			this.autoclick = function(appelloId) {
+				var e = new Event("click");
+				var selector = "a[appelloid='" + appelloId + "']";
+				var anchorToClick =  // the first the one with that id
+					(appelloId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
+				if (anchorToClick) anchorToClick.dispatchEvent(e);
+			}
+			*/
+			this.autoclick = function(appelloId) {
+				let targetId = appelloId;
+				if (!targetId) {
+					let firstAppello = this.listcontainerbody.querySelector("a[appelloid]");
+					targetId = firstAppello ? firstAppello.getAttribute("appelloid") : null;
 				}
-			);
-		};
+
+				if (targetId) {
+					let e = new Event("click");
+					let anchor = document.querySelector(`a[appelloid='${targetId}']`);
+					if (anchor) {
+						sessionStorage.setItem("currentAppelloId", targetId);
+						anchor.dispatchEvent(e);
+					}
+				}
+			};
 
 
-		this.update = function(listaAppelli) {
-			var row, datecell, dateanchor, linkText;
-			this.listcontainerbody.innerHTML = ""; // empty the table body
-			// build updated list
-			var self = this;
-			listaAppelli.forEach(function(appello) { // self visible here, not this
-				row = document.createElement("tr");
-
-				datecell = document.createElement("td");
-				dateanchor = document.createElement("a");
-
-				datecell.appendChild(dateanchor);
-				linkText = document.createTextNode(appello.date);
-				dateanchor.appendChild(linkText);
-				// make list item clickable
-				dateanchor.setAttribute('appelloid', appello.id); // set a custom HTML attribute
-				dateanchor.addEventListener("click", (e) => {
-									
-					sessionStorage.setItem("firstTimeClick", false);
-
-					// dependency via module parameter
-					sessionStorage.setItem("currentAppelloId", e.target.getAttribute("appelloid"));
-					iscritti.show(e.target.getAttribute("appelloid"));
-
-				}, false);
-				dateanchor.href = "#";
-				row.appendChild(datecell);
-				self.listcontainerbody.appendChild(row);
-			});
-			this.listcontainer.classList.remove("superhidden");;
 
 		}
-
-		/*
-		this.autoclick = function(appelloId) {
-			var e = new Event("click");
-			var selector = "a[appelloid='" + appelloId + "']";
-			var anchorToClick =  // the first the one with that id
-				(appelloId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
-			if (anchorToClick) anchorToClick.dispatchEvent(e);
-		}
-		*/
-
-
-		this.autoclick = function(appelloId) {
-			let targetId = appelloId;
-			if (!targetId) {
-				let firstAppello = this.listcontainerbody.querySelector("a[appelloid]");
-				targetId = firstAppello ? firstAppello.getAttribute("appelloid") : null;
-			}
-
-			if (targetId) {
-				let e = new Event("click");
-				let anchor = document.querySelector(`a[appelloid='${targetId}']`);
-				if (anchor) {
-					sessionStorage.setItem("currentAppelloId", targetId);
-					anchor.dispatchEvent(e);
-				}
-			}
-		};
-
-
-
 	}
 
 
@@ -267,168 +268,167 @@
 
 
 
-	function Iscritti(_alert, _listcontainer, _listcontainerbody) {
-		this.alert = _alert;
-		this.listcontainer = _listcontainer;
-		this.listcontainerbody = _listcontainerbody;
+	class Iscritti {
+		constructor(_alert, _listcontainer, _listcontainerbody) {
+			this.alert = _alert;
+			this.listcontainer = _listcontainer;
+			this.listcontainerbody = _listcontainerbody;
 
-		this.reset = function() {
-			this.listcontainer.classList.add("superhidden");;
-			document.getElementById("id_pubblicaform").classList.add("superhidden");;
-			document.getElementById("id_verbalizzaform").classList.add("superhidden");;
-		}
+			this.reset = function() {
+				this.listcontainer.classList.add("superhidden");;
+				document.getElementById("id_pubblicaform").classList.add("superhidden");;
+				document.getElementById("id_verbalizzaform").classList.add("superhidden");;
+			};
 
-		this.show = function(next) {
-
-
-			//console.log("Appelloid passato al server:", appelloid);
+			this.show = function(next) {
+				//console.log("Appelloid passato al server:", appelloid);
 
 
-			//form modifica voto
-			document.getElementById("id_modificavotoform").classList.add("superhidden");;
+				//form modifica voto
+				document.getElementById("id_modificavotoform").classList.add("superhidden");;
 
-			//mostra bottone pubblica
-			document.getElementById("id_pubblicaform").classList.remove("superhidden");;
-			//sessionStorage.setItem("currentAppelloId", appelloid);
-			//mostra bottone verbalizza
-			document.getElementById("id_verbalizzaform").classList.remove("superhidden");;
-			//mostra bottone inserimento multiplo
-			document.getElementById("id_inserimentomultiplo").classList.remove("superhidden");;
+				//mostra bottone pubblica
+				document.getElementById("id_pubblicaform").classList.remove("superhidden");;
+				//sessionStorage.setItem("currentAppelloId", appelloid);
+				//mostra bottone verbalizza
+				document.getElementById("id_verbalizzaform").classList.remove("superhidden");;
+				//mostra bottone inserimento multiplo
+				document.getElementById("id_inserimentomultiplo").classList.remove("superhidden");;
 
-			//il resto di iscritti
-			var self = this;
-			makeCall("GET", "GetIscritti?appelloid=" + sessionStorage.getItem("currentAppelloId"), null,
-				function(req) {
-					if (req.readyState == 4) {
-						var message = req.responseText;
-						if (req.status == 200) {
-							var iscrittiToShow = JSON.parse(req.responseText);
-							if (iscrittiToShow.length == 0) {
-								self.alert.textContent = "No iscritti yet!";
-								return;
+				//il resto di iscritti
+				var self = this;
+				makeCall("GET", "GetIscritti?appelloid=" + sessionStorage.getItem("currentAppelloId"), null,
+					function(req) {
+						if (req.readyState == 4) {
+							var message = req.responseText;
+							if (req.status == 200) {
+								var iscrittiToShow = JSON.parse(req.responseText);
+								if (iscrittiToShow.length == 0) {
+									self.alert.textContent = "No iscritti yet!";
+									return;
+								}
+								self.update(iscrittiToShow); // self visible by closure
+								if (next) next(); // show the default element of the list if present
+
+							} else if (req.status == 403) {
+								window.location.href = req.getResponseHeader("Location");
+								//Location definito nel filtro loginChecker
+								//window.sessionStorage.removeItem('user');
+								window.sessionStorage.clear();
 							}
-							self.update(iscrittiToShow); // self visible by closure
-							if (next) next(); // show the default element of the list if present
-
-						} else if (req.status == 403) {
-							window.location.href = req.getResponseHeader("Location");
-							//Location definito nel filtro loginChecker
-							//window.sessionStorage.removeItem('user');
-							window.sessionStorage.clear();
-						}
-						else {
-							self.alert.textContent = message;
+							else {
+								self.alert.textContent = message;
+							}
 						}
 					}
-				}
-			);
-		};
+				);
+			};
 
 
-		this.update = function(listaIscritti) {
-			var row, bottonecell, bottone, idcell, nomecell, cognomecell, matricolacell,
-				mailcell, corsoLaureacell, votocell, statoValutazionecell;
-			this.listcontainerbody.innerHTML = ""; // empty the table body
-			// build updated list
-			var self = this;
-			listaIscritti.forEach(function(iscritto) { // self visible here, not this
-				row = document.createElement("tr");
+			this.update = function(listaIscritti) {
+				var row, bottonecell, bottone, idcell, nomecell, cognomecell, matricolacell, mailcell, corsoLaureacell, votocell, statoValutazionecell;
+				this.listcontainerbody.innerHTML = ""; // empty the table body
 
-				bottonecell = document.createElement("td");
-				if (iscritto.statoValutazione == 'non inserito' || iscritto.statoValutazione == 'inserito') {
-					bottone = document.createElement("button")
-					bottonecell.appendChild(bottone);
-					bottone.appendChild(document.createTextNode("bottone modifica voto"));
+				// build updated list
+				var self = this;
+				listaIscritti.forEach(function(iscritto) {
+					row = document.createElement("tr");
 
-
-					//fa comparire il form per inserire il voto
-					bottone.addEventListener('click', () => {
-						makeCall("GET", "GetDatiStudente?studenteid=" + iscritto.id
-							+ "&appelloid=" + sessionStorage.getItem("currentAppelloId")
-							, null,
-							function(req) {
-								if (req.readyState == 4) {
-									if (req.status == 200) {
-										var datiStudenteToShow = JSON.parse(req.responseText);
-
-										document.getElementById("id_modificavotoform").classList.remove("superhidden");;
-
-										document.getElementById("campo_studenteid").innerText = datiStudenteToShow.id;
-
-										document.getElementById("hidden_campo_studenteid").value = datiStudenteToShow.id;
-										document.getElementById("modificavoto_appelloid").value = sessionStorage.getItem("currentAppelloId")
-
-										document.getElementById("campo_studentenome").innerText = datiStudenteToShow.nome;
-										document.getElementById("campo_studentecognome").innerText = datiStudenteToShow.cognome;
-										document.getElementById("campo_studentematricola").innerText = datiStudenteToShow.matricola;
-										document.getElementById("campo_studentemail").innerText = datiStudenteToShow.mail;
-										document.getElementById("campo_studentecorsolaurea").innerText = datiStudenteToShow.corsoLaurea;
+					bottonecell = document.createElement("td");
+					if (iscritto.statoValutazione == 'non inserito' || iscritto.statoValutazione == 'inserito') {
+						bottone = document.createElement("button");
+						bottonecell.appendChild(bottone);
+						bottone.appendChild(document.createTextNode("bottone modifica voto"));
 
 
+						//fa comparire il form per inserire il voto
+						bottone.addEventListener('click', () => {
+							makeCall("GET", "GetDatiStudente?studenteid=" + iscritto.id
+								+ "&appelloid=" + sessionStorage.getItem("currentAppelloId"),
+								null,
+								function(req) {
+									if (req.readyState == 4) {
+										if (req.status == 200) {
+											var datiStudenteToShow = JSON.parse(req.responseText);
 
+											document.getElementById("id_modificavotoform").classList.remove("superhidden");;
+
+											document.getElementById("campo_studenteid").innerText = datiStudenteToShow.id;
+
+											document.getElementById("hidden_campo_studenteid").value = datiStudenteToShow.id;
+											document.getElementById("modificavoto_appelloid").value = sessionStorage.getItem("currentAppelloId");
+
+											document.getElementById("campo_studentenome").innerText = datiStudenteToShow.nome;
+											document.getElementById("campo_studentecognome").innerText = datiStudenteToShow.cognome;
+											document.getElementById("campo_studentematricola").innerText = datiStudenteToShow.matricola;
+											document.getElementById("campo_studentemail").innerText = datiStudenteToShow.mail;
+											document.getElementById("campo_studentecorsolaurea").innerText = datiStudenteToShow.corsoLaurea;
+
+
+
+										}
 									}
-								}
-							});
-					});
-				}
-				else {
-					bottonecell.appendChild(document.createTextNode("non modificabile"));
-				}
+								});
+						});
+					}
+					else {
+						bottonecell.appendChild(document.createTextNode("non modificabile"));
+					}
 
-				idcell = document.createElement("td");
-				idcell.appendChild(document.createTextNode(iscritto.id));
+					idcell = document.createElement("td");
+					idcell.appendChild(document.createTextNode(iscritto.id));
 
-				nomecell = document.createElement("td");
-				nomecell.appendChild(document.createTextNode(iscritto.nome));
+					nomecell = document.createElement("td");
+					nomecell.appendChild(document.createTextNode(iscritto.nome));
 
-				cognomecell = document.createElement("td");
-				cognomecell.appendChild(document.createTextNode(iscritto.cognome));
+					cognomecell = document.createElement("td");
+					cognomecell.appendChild(document.createTextNode(iscritto.cognome));
 
-				matricolacell = document.createElement("td");
-				matricolacell.appendChild(document.createTextNode(iscritto.matricola));
+					matricolacell = document.createElement("td");
+					matricolacell.appendChild(document.createTextNode(iscritto.matricola));
 
-				mailcell = document.createElement("td");
-				mailcell.appendChild(document.createTextNode(iscritto.mail));
+					mailcell = document.createElement("td");
+					mailcell.appendChild(document.createTextNode(iscritto.mail));
 
-				corsoLaureacell = document.createElement("td");
-				corsoLaureacell.appendChild(document.createTextNode(iscritto.corsoLaurea));
+					corsoLaureacell = document.createElement("td");
+					corsoLaureacell.appendChild(document.createTextNode(iscritto.corsoLaurea));
 
-				votocell = document.createElement("td");
-				votocell.appendChild(document.createTextNode(iscritto.voto));
+					votocell = document.createElement("td");
+					votocell.appendChild(document.createTextNode(iscritto.voto));
 
-				statoValutazionecell = document.createElement("td");
-				statoValutazionecell.appendChild(document.createTextNode(iscritto.statoValutazione));
+					statoValutazionecell = document.createElement("td");
+					statoValutazionecell.appendChild(document.createTextNode(iscritto.statoValutazione));
 
-				row.appendChild(bottonecell);
-				row.appendChild(idcell);
-				row.appendChild(nomecell);
-				row.appendChild(cognomecell);
-				row.appendChild(matricolacell);
-				row.appendChild(mailcell);
-				row.appendChild(corsoLaureacell);
-				row.appendChild(votocell);
-				row.appendChild(statoValutazionecell);
+					row.appendChild(bottonecell);
+					row.appendChild(idcell);
+					row.appendChild(nomecell);
+					row.appendChild(cognomecell);
+					row.appendChild(matricolacell);
+					row.appendChild(mailcell);
+					row.appendChild(corsoLaureacell);
+					row.appendChild(votocell);
+					row.appendChild(statoValutazionecell);
 
-				self.listcontainerbody.appendChild(row);
-			});
-			
-			this.listcontainer.classList.remove("superhidden");
-			
-			//per evitare flickering
-			document.getElementById("id_pubblicaform").classList.remove("superhidden");
-			document.getElementById("id_verbalizzaform").classList.remove("superhidden");
-			document.getElementById("id_inserimentomultiplo").classList.remove("superhidden");
+					self.listcontainerbody.appendChild(row);
+				});
 
+				this.listcontainer.classList.remove("superhidden");
+
+				//per evitare flickering
+				document.getElementById("id_pubblicaform").classList.remove("superhidden");
+				document.getElementById("id_verbalizzaform").classList.remove("superhidden");
+				document.getElementById("id_inserimentomultiplo").classList.remove("superhidden");
+
+			};
+
+
+
+			/*
+			this.autoclick = function() {
+			    
+			}
+			*/
 		}
-
-
-
-		/*
-		this.autoclick = function() {
-			
-		}
-		*/
-
 	}
 
 
