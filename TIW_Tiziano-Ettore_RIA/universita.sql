@@ -230,7 +230,8 @@ VALUES
 ('2025-07-05', 4),  -- Secondo appello per TIW (ID corso = 4)
 ('2025-09-01', 4),  -- Terzo appello per TIW (ID corso = 4)
 ('2025-06-10', 5),
-('2025-06-11', 6);
+('2025-06-11', 6),
+('2025-05-29', 3); 	-- 9
 /*!40000 ALTER TABLE `appello` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -294,7 +295,8 @@ VALUES
 (18, 6, '', 'non inserito'), 
 (19, 6, '', 'non inserito'), 
 (20, 7, '', 'non inserito'), 
-(21, 8, '', 'non inserito');
+(21, 8, '', 'non inserito'),
+(1 , 9, '', 'non inserito');
 /*!40000 ALTER TABLE `esito` ENABLE KEYS */;
 UNLOCK TABLES;
 
