@@ -884,8 +884,7 @@
 								body.innerHTML = "";
 								let row;
 								let id; let dataCreazione; let oraCreazione; let idAppello; let dataAppello; let idCorso;
-								let nomeCorso; let paginaVerbale;
-								let bottone; let bottoneCell;
+								let nomeCorso; let bottone; let bottoneCell;
 
 
 								verbaliToShow.forEach(function(verbale) {
