@@ -29,121 +29,125 @@
 
 
 
-	function CorsiList(_alert, _listcontainer, _listcontainerbody) {
-		this.alert = _alert;
-		this.listcontainer = _listcontainer;
-		this.listcontainerbody = _listcontainerbody;
+	class CorsiList {
+		constructor(_alert, _listcontainer, _listcontainerbody) {
+			this.alert = _alert;
+			this.listcontainer = _listcontainer;
+			this.listcontainerbody = _listcontainerbody;
 
-		this.reset = function() {
-			this.listcontainer.classList.add("superhidden");;
-		}
+			this.reset = function() {
+				this.listcontainer.classList.add("superhidden");;
+			};
 
-		this.show = function(next) {
-			var self = this;
-			makeCall("GET", "GetCorsi", null,
-				function(req) {
-					if (req.readyState == 4) {
-						var message = req.responseText;
-						if (req.status == 200) {
-							var corsiToShow = JSON.parse(req.responseText);
-							if (corsiToShow.length == 0) {
-								self.alert.textContent = "No corsi yet!";
-								return;
-							}
-							self.update(corsiToShow); // self visible by closure
-							if (next) next(); // show the default element of the list if present
-
-						} else if (req.status == 403) {
-							window.location.href = req.getResponseHeader("Location");
-							//Location definito nel filtro loginChecker
-							//window.sessionStorage.removeItem('user');
-							window.sessionStorage.clear();
-						}
-						else {
-							self.alert.textContent = message;
-						}
-					}
-				}
-			);
-		};
-
-
-		this.update = function(listaCorsi) {
-			var row, idcell, namecell, nameanchor, linkText;
-			this.listcontainerbody.innerHTML = ""; // empty the table body
-			// build updated list
-			var self = this;
-			listaCorsi.forEach(function(corso) { // self visible here, not this
-				row = document.createElement("tr");
-				idcell = document.createElement("td");
-				idcell.textContent = corso.id;
-				row.appendChild(idcell);
-
-
-
-				namecell = document.createElement("td");
-				nameanchor = document.createElement("a");
-
-				namecell.appendChild(nameanchor);
-				linkText = document.createTextNode(corso.name);
-				nameanchor.appendChild(linkText);
-				// make list item clickable
-				nameanchor.setAttribute('corsoid', corso.id); // set a custom HTML attribute
-				nameanchor.addEventListener("click", (e) => {
-
-					let clickedCorsoId = e.target.getAttribute("corsoid");
-					let previousCorsoId = sessionStorage.getItem("currentCorsoId");
-
-					sessionStorage.setItem("currentCorsoId", clickedCorsoId);
-					let isFirstTime = sessionStorage.getItem("firstTimeClick") === "true";
-
-					let corsoDiverso = false;
-					if (clickedCorsoId !== previousCorsoId) {
-						sessionStorage.removeItem("currentAppelloId");
-						corsoDiverso = true;
-					}
-
-					if (isFirstTime === true) {
-						// Comportamento prima volta
-						//sessionStorage.setItem("firstTimeClick", "false");
-						appelliList.show(clickedCorsoId); // Mostra solo appelli
-					} else {
-						// Comportamento normale
-						appelliList.show(clickedCorsoId, () => {
-							let targetAppelloId = sessionStorage.getItem("currentAppelloId");
-							if (corsoDiverso) {
-								//autoclick sul primo appello
-								appelliList.autoclick();
-								// Aggiorna sessionStorage con il primo appello
-								let firstAppello = appelliList.listcontainerbody.querySelector("a[appelloid]");
-								if (firstAppello) {
-									sessionStorage.setItem("currentAppelloId", firstAppello.getAttribute("appelloid"));
+			this.show = function(next) {
+				var self = this;
+				makeCall("GET", "GetCorsi", null,
+					function(req) {
+						if (req.readyState == 4) {
+							var message = req.responseText;
+							if (req.status == 200) {
+								var corsiToShow = JSON.parse(req.responseText);
+								if (corsiToShow.length == 0) {
+									self.alert.textContent = "No corsi yet!";
+									return;
 								}
-							} else
-								//if (document.querySelector(`a[appelloid='${targetAppelloId}']`)) {
-								// Altrimenti autoclick sull'appello salvato
-								appelliList.autoclick(targetAppelloId);
-							//}
-						});
+								self.update(corsiToShow); // self visible by closure
+								if (next) next(); // show the default element of the list if present
+
+							} else if (req.status == 403) {
+								window.location.href = req.getResponseHeader("Location");
+								//Location definito nel filtro loginChecker
+								//window.sessionStorage.removeItem('user');
+								window.sessionStorage.clear();
+							}
+							else {
+								self.alert.textContent = message;
+							}
+						}
 					}
-				}, false);
+				);
+			};
 
-				nameanchor.href = "#";
-				row.appendChild(namecell);
-				self.listcontainerbody.appendChild(row);
-			});
-			this.listcontainer.classList.remove("superhidden");;
+
+			this.update = function(listaCorsi) {
+				var row, idcell, namecell, nameanchor, linkText;
+				this.listcontainerbody.innerHTML = ""; // empty the table body
+
+				// build updated list
+				var self = this;
+				listaCorsi.forEach(function(corso) {
+					row = document.createElement("tr");
+					idcell = document.createElement("td");
+					idcell.textContent = corso.id;
+					row.appendChild(idcell);
+
+
+
+					namecell = document.createElement("td");
+					nameanchor = document.createElement("a");
+
+					namecell.appendChild(nameanchor);
+					linkText = document.createTextNode(corso.name);
+					nameanchor.appendChild(linkText);
+					// make list item clickable
+					nameanchor.setAttribute('corsoid', corso.id); // set a custom HTML attribute
+					nameanchor.addEventListener("click", (e) => {
+
+						let clickedCorsoId = e.target.getAttribute("corsoid");
+						let previousCorsoId = sessionStorage.getItem("currentCorsoId");
+
+						sessionStorage.setItem("currentCorsoId", clickedCorsoId);
+						let isFirstTime = sessionStorage.getItem("firstTimeClick") === "true";
+
+						let corsoDiverso = false;
+						if (clickedCorsoId !== previousCorsoId) {
+							sessionStorage.removeItem("currentAppelloId");
+							corsoDiverso = true;
+						}
+
+						if (isFirstTime === true) {
+							// Comportamento prima volta
+							//sessionStorage.setItem("firstTimeClick", "false");
+							appelliList.show(clickedCorsoId); // Mostra solo appelli
+						} else {
+							// Comportamento normale
+							appelliList.show(clickedCorsoId, () => {
+								let targetAppelloId = sessionStorage.getItem("currentAppelloId");
+								if (corsoDiverso) {
+									//autoclick sul primo appello
+									appelliList.autoclick();
+									// Aggiorna sessionStorage con il primo appello
+									let firstAppello = appelliList.listcontainerbody.querySelector("a[appelloid]");
+									if (firstAppello) {
+										sessionStorage.setItem("currentAppelloId", firstAppello.getAttribute("appelloid"));
+									}
+								}
+								else
+									//if (document.querySelector(`a[appelloid='${targetAppelloId}']`)) {
+									// Altrimenti autoclick sull'appello salvato
+									appelliList.autoclick(targetAppelloId);
+								//}
+							});
+						}
+					}, false);
+
+					nameanchor.href = "#";
+					row.appendChild(namecell);
+					self.listcontainerbody.appendChild(row);
+				});
+				this.listcontainer.classList.remove("superhidden");;
+
+			};
+
+			this.autoclick = function(corsoId) {
+				var e = new Event("click");
+				var selector = "a[corsoid='" + corsoId + "']";
+				var anchorToClick = // the first the one with that id
+					(corsoId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
+				if (anchorToClick) anchorToClick.dispatchEvent(e);
+			};
 
 		}
-
-		this.autoclick = function(corsoId) {
-			var e = new Event("click");
-			var selector = "a[corsoid='" + corsoId + "']";
-			var anchorToClick =  // the first the one with that id
-				(corsoId) ? document.querySelector(selector) : this.listcontainerbody.querySelectorAll("a")[0];
-			if (anchorToClick) anchorToClick.dispatchEvent(e);
-		}
-
 	}
 
 
@@ -344,7 +348,6 @@
 							, null,
 							function(req) {
 								if (req.readyState == 4) {
-									var message = req.responseText;
 									if (req.status == 200) {
 										var datiStudenteToShow = JSON.parse(req.responseText);
 
