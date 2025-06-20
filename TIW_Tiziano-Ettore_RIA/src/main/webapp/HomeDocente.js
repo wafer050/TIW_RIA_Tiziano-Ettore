@@ -439,7 +439,7 @@
 		var alertContainer = document.getElementById("id_alert");
 
 		this.start = function() {
-			personalMessage = new PersonalMessage(sessionStorage.getItem('user'),
+			var personalMessage = new PersonalMessage(sessionStorage.getItem('user'),
 				document.getElementById("id_nominativo"));
 			personalMessage.show();
 
