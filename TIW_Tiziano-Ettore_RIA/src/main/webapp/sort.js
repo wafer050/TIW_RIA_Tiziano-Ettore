@@ -69,9 +69,13 @@
 
 			var isSpecialSort = (th.id === "specialsort");
 			//to avoid having to click twice to invert the order at the beginning
+			//this = cliccked tag
+			
+			//query sql già ordina in maniera crescente i voti
 			if (isSpecialSort && typeof this.asc === 'undefined') {
 				this.asc = true;
 			}
+			
 
 
 			var table = th.closest('table'); // get the closest table tag
